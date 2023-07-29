@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./Inter-VariableFont_slnt\,wght.ttf');
+}
+
+:root {
+  --primary: hsl(102, 54%, 41%);
+  --primary--dark: hsl(102, 54%, 25%);
+  --primary--light: hsl(102, 54%, 80%);
+
+  --secondary: hsl(14, 25%, 34%);
+
+  --grey: hsl(0, 0%, 50%);
+  --grey--dark: hsl(0, 0%, 25%);
+  --grey--light: hsl(0, 0%, 85%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HTML DEFAULTS */
+
+html {
+  font-family: Inter, sans-serif;
+  font-size: 62.5%;
+}
+
+/* CLASSES */
