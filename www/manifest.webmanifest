@@ -1,0 +1,28 @@
+{
+  "name": "Reinwiese Biohof App",
+  "short name": "BiohofApp",
+  "description": "Ein Programm zur Planung und Dokumentation eines kleinen, vielfältigen Bio-Bauernhofs",
+  "start_url": "/",
+  "background_color": "hsl(102, 54%, 41%)",
+  "theme_color": "hsl(102, 54%, 41%)",
+  "orientation": "any",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay"],
+  "icons": [
+    {
+      "src": "./android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
