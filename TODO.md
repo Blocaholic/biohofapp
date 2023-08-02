@@ -5,7 +5,9 @@
 ### Prio A
 
 - store user config data
-- login/signup
+- login
+- signup
+- forgot password
 
 ### Prio B
 
