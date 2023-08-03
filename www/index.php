@@ -24,7 +24,29 @@
 <body>
   <nav></nav>
   <main>
-    <h1>Lorem Ipsum</h1>
+    <?php
+      
+      ini_set('display_errors', 1);
+      ini_set('display_startup_errors', 1);
+      error_reporting(E_ALL);
+
+      function files_in_directory($dir) {
+        return array_diff(scandir($dir), ['.', '..']);
+      }
+
+      function wrap_content_of($files) {
+        $result = '';
+        foreach($files as $file) {
+          $result .= '<section id="'.pathinfo($file, PATHINFO_FILENAME).'">'
+            . file_get_contents( './templates/main/'.$file)
+            .'</section>';
+        }
+        return $result;
+      }
+
+      echo wrap_content_of(files_in_directory('./templates/main'));
+
+    ?>
   </main>
   <script type="module"
           src="app.mjs"></script>
