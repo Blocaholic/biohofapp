@@ -12,3 +12,9 @@ const storeLocalPersistent = async items => {
   }
   return false;
 };
+
+const fetchJson = async (url, options) => {
+  const response = await fetch(url, options);
+  const json = await response.json();
+  return json;
+};
