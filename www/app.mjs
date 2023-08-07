@@ -36,3 +36,25 @@ const randomString = length => {
     .join('');
   return string;
 };
+
+const signup = async event => {
+  event.preventDefault();
+  localStorage.clear();
+  const {status} = await fetchJson('./api/signup.php', {
+    method: 'POST',
+    body: new FormData($('signup__form')),
+  });
+
+  status === 'success'
+    ? storeLocalPersistent([
+        {email: $('signup__email').value},
+        {devicename: $('signup__devicename').value},
+        {devicepassword: $('signup__password').value},
+      ])
+    : console.log('FEHLER BEI DER REGISTRIERUNG!');
+
+  console.log(localStorage);
+};
+
+$('signup__password').value = randomString(32);
+$('signup__button').addEventListener('click', signup);
