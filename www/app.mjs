@@ -1,9 +1,9 @@
 const $ = id => document.getElementById(id);
 const $$ = query => document.querySelectorAll(query);
 
-const saveCredentialsPersistent = async (username, password) => {
-  localStorage.setItem('username', username);
-  localStorage.setItem('password', password);
+const storeLocalPersistent = async items => {
+  items.forEach(item => localStorage.setItem(...Object.entries(item)[0]));
+
   if (navigator.storage && navigator.storage.persist) {
     const alreadyPersisted = await navigator.storage.persisted();
     const persistent = alreadyPersisted || (await navigator.storage.persist());
