@@ -1,10 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 header('Content-Type: application/json');
+
+require_once __DIR__ . '/../Database.php';
 
 if (empty($_POST["email"])) {
   die('{"status": "error", "message": "Field \'email\' is required."}');
@@ -25,5 +23,11 @@ if (strlen($_POST["password"]) !== 32) {
 }
 
 $devicehash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+try {
+  $pdo = Database::connect();
+} catch (Exception $e) {
+  die('{"status": "error", "message": "' . $e->getMessage() . '"}');
+};
 
 echo '{"status": "success"}';

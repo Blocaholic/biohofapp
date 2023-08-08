@@ -1,5 +1,3 @@
 <?php
 
-require_once '../../php/api/signup.php';
-
-?>
+require_once __DIR__ . '/../../php/api/signup.php';
