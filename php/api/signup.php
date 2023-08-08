@@ -24,4 +24,6 @@ if (strlen($_POST["password"]) !== 32) {
   );
 }
 
+$devicehash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
 echo '{"status": "success"}';
