@@ -1,5 +1,14 @@
 <?php
 
+function randomString($length) {
+  $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  $randomString = '';
+  for ($i = 0; $i < $length; $i++) {
+    $randomString .= $chars[random_int(0, strlen($chars) - 1)];
+  }
+  return $randomString;
+}
+
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../Database.php';
