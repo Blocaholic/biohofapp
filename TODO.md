@@ -4,10 +4,9 @@
 
 ### Prio A
 
-- store user config data
+- signup: switch to 'add device' if email already exists in database
 - login
-- signup
-- forgot password
+- add device
 
 ### Prio B
 
