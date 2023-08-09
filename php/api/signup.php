@@ -53,6 +53,12 @@ try {
   // $insertedId = $pdo->lastInsertId();
   $pdo = null;
 } catch (Exception $e) {
+  if (str_starts_with(
+    $e->getMessage(),
+    "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry"
+  )) {
+    die('{"status": "error", "message": "E-Mail ist bereits vergeben."}');
+  }
   die('{"status": "error", "message": "' . $e->getMessage() . '"}');
 };
 
