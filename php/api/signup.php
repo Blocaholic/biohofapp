@@ -32,9 +32,26 @@ if (strlen($_POST["password"]) !== 32) {
 }
 
 $devicehash = password_hash($_POST["password"], PASSWORD_DEFAULT);
+$confirmationhash = randomString(32);
 
 try {
   $pdo = Database::connect();
+  $query = "INSERT INTO unconfirmed_users (
+    email,
+    confirmationhash,
+    devicehash,
+    devicename
+  ) VALUES(
+    :email,
+    :confirmationhash,
+    :devicehash,
+    :devicename
+  );";
+  $data = ["email" => $_POST['email'], "confirmationhash" => $confirmationhash, "devicehash" => $_POST['password'], "devicename" => $_POST['devicename']];
+  $statement = $pdo->prepare($query);
+  $statement->execute($data);
+  // $insertedId = $pdo->lastInsertId();
+  $pdo = null;
 } catch (Exception $e) {
   die('{"status": "error", "message": "' . $e->getMessage() . '"}');
 };
