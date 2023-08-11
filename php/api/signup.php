@@ -1,17 +1,9 @@
 <?php
 
-function randomString($length) {
-  $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  $randomString = '';
-  for ($i = 0; $i < $length; $i++) {
-    $randomString .= $chars[random_int(0, strlen($chars) - 1)];
-  }
-  return $randomString;
-}
+require_once __DIR__ . '/../Database.php';
+require_once __DIR__ . '/../Utils.php';
 
 header('Content-Type: application/json');
-
-require_once __DIR__ . '/../Database.php';
 
 if (empty($_POST["email"])) {
   die('{"status": "error", "message": "Field \'email\' is required."}');
@@ -32,7 +24,7 @@ if (strlen($_POST["password"]) !== 32) {
 }
 
 $devicehash = password_hash($_POST["password"], PASSWORD_DEFAULT);
-$confirmationpassword = randomString(32);
+$confirmationpassword = Utils::randomString(32);
 $confirmationhash = password_hash($confirmationpassword, PASSWORD_DEFAULT);
 
 try {
