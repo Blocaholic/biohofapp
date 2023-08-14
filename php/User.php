@@ -3,8 +3,37 @@
 require_once __DIR__ . '/Database.php';
 
 class User {
-  public static function verify($email, $deviceid, $devicepassword) {
+  public static function add($email) {
 
+    require_once __DIR__ . '/Database.php';
+    require_once __DIR__ . '/Utils.php';
+
+    if (empty($email)) {
+      return '{"status": "error", "message": "\'email\' is required."}';
+    }
+
+    try {
+      $pdo = Database::connect();
+      $query = "INSERT INTO unconfirmed_users (email) VALUES(:email);";
+      $data = ["email" => $email];
+      $statement = $pdo->prepare($query);
+      $statement->execute($data);
+      $userid = $pdo->lastInsertId();
+      $pdo = null;
+      return '{"status": "success", "userid": "' . $userid . '"}';
+    } catch (Exception $e) {
+      if (str_starts_with(
+        $e->getMessage(),
+        "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry"
+      )) {
+        return '{"status": "error", "message": "E-Mail ist bereits vergeben."}';
+      }
+      return '{"status": "error", "message": "' . $e->getMessage() . '"}';
+    };
+
+  }
+
+  public static function verify($email, $deviceid, $devicepassword) {
     $pdo = Database::connect();
     $query = "SELECT * FROM devices WHERE deviceid = ? LIMIT 1;";
     $statement = $pdo->prepare($query);
