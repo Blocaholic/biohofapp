@@ -7,7 +7,6 @@ const storeLocalPersistent = async items => {
   if (navigator.storage && navigator.storage.persist) {
     const alreadyPersisted = await navigator.storage.persisted();
     const persistent = alreadyPersisted || (await navigator.storage.persist());
-    console.log(`persistent storage: ${persistent}`);
     return persistent;
   }
   return false;
@@ -46,13 +45,13 @@ const signup = async event => {
     body: new FormData($('signup__form')),
   });
 
-  console.log(response);
-
   if (response.status === 'success') {
     storeLocalPersistent([
       {email: $('signup__email').value},
       {devicename: $('signup__devicename').value},
       {devicepassword: $('signup__password').value},
+      {deviceid: response.deviceid},
+      {userid: response.userid},
     ]);
   } else if (response.status === 'error') {
     console.log(response.message);
