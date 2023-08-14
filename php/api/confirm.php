@@ -22,7 +22,7 @@ if (empty($confirm_device_result['userid'])) {
 
 $userid = $confirm_device_result['userid'];
 
+User::confirmed($userid) || User::confirm($userid);
+
 header("Location: https://biohofapp.de/index.php?page=confirm&status=success&userid=" . $userid);
 die();
-
-//if (!User::confirmed($userid)) { User::confirm($userid);}

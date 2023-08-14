@@ -1,12 +1,9 @@
 <?php
 
-require_once __DIR__ . '/Database.php';
-
 class User {
   public static function add($email) {
 
     require_once __DIR__ . '/Database.php';
-    require_once __DIR__ . '/Utils.php';
 
     if (empty($email)) {
       return '{"status": "error", "message": "\'email\' is required."}';
@@ -33,7 +30,10 @@ class User {
 
   }
 
-  public static function verify($email, $deviceid, $devicepassword) {
+  public static function confirm($userid) {
+
+    require_once __DIR__ . '/Database.php';
+
     $pdo = Database::connect();
     $query = "SELECT * FROM devices WHERE deviceid = ? LIMIT 1;";
     $statement = $pdo->prepare($query);
@@ -55,5 +55,19 @@ class User {
 
     $pdo = null;
     return true;
+  }
+
+  public static function confirmed($userid) {
+
+    require_once __DIR__ . '/Database.php';
+
+    $pdo = Database::connect();
+    $query = "SELECT COUNT(*) FROM users WHERE userid = ?;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$userid]);
+    $number_of_rows = $statement->fetchColumn();
+
+    return ($number_of_rows > 0);
+
   }
 }
