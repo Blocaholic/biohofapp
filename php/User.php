@@ -35,23 +35,25 @@ class User {
     require_once __DIR__ . '/Database.php';
 
     $pdo = Database::connect();
-    $query = "SELECT * FROM devices WHERE deviceid = ? LIMIT 1;";
-    $statement = $pdo->prepare($query);
-    $statement->execute([$deviceid]);
-    $row = $statement->fetch(PDO::FETCH_ASSOC);
-    if (!password_verify($devicepassword, $row['devicehash'])) {
-      $pdo = null;
-      return false;
-    }
-    $userid = $row['userid'];
-    $query2 = "SELECT * FROM users WHERE userid = ? LIMIT 1;";
-    $statement2 = $pdo->prepare($query2);
-    $statement2->execute([$userid]);
-    $row = $statement2->fetch(PDO::FETCH_ASSOC);
-    if ($row['email'] !== $email) {
-      $pdo = null;
-      return false;
-    }
+    $get_query = "SELECT * FROM unconfirmed_users WHERE userid = ? LIMIT 1;";
+    $get_statement = $pdo->prepare($get_query);
+    $get_statement->execute([$userid]);
+    $user = $get_statement->fetch(PDO::FETCH_ASSOC);
+
+    $userid = $user['userid'];
+    $email = $user['email'];
+
+    $set_query = "INSERT INTO users (userid, email) VALUES (:userid, :email);";
+    $set_data = [
+      "userid" => $userid,
+      "email" => $email,
+    ];
+    $set_statement = $pdo->prepare($set_query);
+    $set_statement->execute($set_data);
+
+    $delete_query = "DELETE * FROM unconfirmed_users WHERE userid = ?;";
+    $delete_statement = $pdo - prepare($delete_query);
+    $delete_statement->execute([$userid]);
 
     $pdo = null;
     return true;
