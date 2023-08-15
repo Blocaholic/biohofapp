@@ -14,5 +14,6 @@
       "sizes": "any",
       "type": "image/svg+xml"
     }
-  ]
+  ],
+  "url_handlers": [{"origin": "https://biohofapp.de"}]
 }
