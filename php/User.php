@@ -44,7 +44,7 @@ class User {
     $set_statement->execute($set_data);
 
     $delete_query = "DELETE FROM unconfirmed_users WHERE userid = ?;";
-    $delete_statement = $pdo - prepare($delete_query);
+    $delete_statement = $pdo->prepare($delete_query);
     $delete_statement->execute([$userid]);
 
     $pdo = null;

@@ -58,25 +58,30 @@ class Device {
 
   public static function confirm($deviceid, $confirmationpassword) {
 
-    try {
+    require_once __DIR__ . '/Database.php';
 
-      require_once __DIR__ . '/Database.php';
+    $pdo = Database::connect();
 
-      $pdo = Database::connect();
+    $get_query = "SELECT * FROM unconfirmed_devices WHERE deviceid = ? LIMIT 1;";
+    $get_statement = $pdo->prepare($get_query);
+    $get_statement->execute([$deviceid]);
+    $unconfirmed_device = $get_statement->fetch(PDO::FETCH_ASSOC);
 
-      $get_query = "SELECT * FROM unconfirmed_devices WHERE deviceid = ? LIMIT 1;";
-      $get_statement = $pdo->prepare($get_query);
-      $get_statement->execute([$deviceid]);
-      $unconfirmed_device = $get_statement->fetch(PDO::FETCH_ASSOC);
+    $unconfirmed_device['userid'] || throw new Exception();
 
-      if (!password_verify(
-        $confirmationpassword,
-        $unconfirmed_device['confirmationhash']
-      )) {
-        throw new Exception('confirmation error');
-      }
+    password_verify(
+      $confirmationpassword,
+      $unconfirmed_device['confirmationhash']
+    ) || throw new Exception('confirmation error');
 
-      $set_query = "INSERT INTO devices (
+    $device = [
+      "deviceid" => $deviceid,
+      "userid" => $unconfirmed_device['userid'],
+      "devicehash" => $unconfirmed_device['devicehash'],
+      "devicename" => $unconfirmed_device['devicename'],
+    ];
+
+    $set_query = "INSERT INTO devices (
           deviceid,
           userid,
           devicehash,
@@ -87,26 +92,15 @@ class Device {
           :devicehash,
           :devicename
         );";
-      $set_data = [
-        "deviceid" => $deviceid,
-        "userid" => $unconfirmed_device['userid'],
-        "devicehash" => $unconfirmed_device['devicehash'],
-        "devicename" => $unconfirmed_device['devicename'],
-      ];
-      $set_statement = $pdo->prepare($set_query);
-      $set_statement->execute($set_data);
+    $set_statement = $pdo->prepare($set_query);
+    $set_statement->execute($device);
 
-      $delete_query = "DELETE FROM unconfirmed_devices WHERE deviceid = ?;";
-      $delete_statement = $pdo->prepare($delete_query);
-      $delete_statement->execute([$deviceid]);
+    $delete_query = "DELETE FROM unconfirmed_devices WHERE deviceid = ?;";
+    $delete_statement = $pdo->prepare($delete_query);
+    $delete_statement->execute([$deviceid]);
 
-      $pdo = null;
-      return ["status" => "success", "userid" => $unconfirmed_device['userid']];
+    $pdo = null;
+    return $device;
 
-    } catch (Exception $e) {
-
-      return ["status" => "error", "message" => $e->getMessage()];
-
-    }
   }
 }
