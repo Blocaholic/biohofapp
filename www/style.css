@@ -1,15 +1,92 @@
 @charset "utf-8";
 
 :root {
-  --primary: hsl(102, 54%, 41%);
-  --primary--dark: hsl(102, 54%, 25%);
-  --primary--light: hsl(102, 54%, 80%);
+  --green-1: #e1f2da;
+  --green-2: #b0e19c;
+  --green-3: #8cd070;
+  --green-4: #6cb94c;
+  --green-5: #52a230;
+  --green-6: #3d8d1b;
+  --green-7: #2a700c;
+  --green-8: #1c5603;
+  --green-9: #0f3300;
 
-  --secondary: hsl(14, 25%, 34%);
+  --green-light: var(--green-2);
+  --green: var(--green-5);
+  --green-dark: var(--green-8);
 
-  --grey: hsl(0, 0%, 50%);
-  --grey--dark: hsl(0, 0%, 25%);
-  --grey--light: hsl(0, 0%, 85%);
+  --blue-1: #becaed;
+  --blue-2: #8da1da;
+  --blue-3: #6d86d0;
+  --blue-4: #435fb5;
+  --blue-5: #244093;
+  --blue-6: #102a76;
+  --blue-7: #091e5e;
+  --blue-8: #021140;
+  --blue-9: #000a26;
+
+  --blue-light: var(--blue-2);
+  --blue: var(--blue-5);
+  --blue-dark: var(--blue-8);
+
+  --red-1: #f2cece;
+  --red-2: #e69999;
+  --red-3: #e07878;
+  --red-4: #d14949;
+  --red-5: #bb2525;
+  --red-6: #971414;
+  --red-7: #720c0c;
+  --red-8: #4e0606;
+  --red-9: #300303;
+
+  --red-light: var(--red-2);
+  --red: var(--red-5);
+  --red-dark: var(--red-8);
+
+  --yellow-1: #f2e1c2;
+  --yellow-2: #f0d29c;
+  --yellow-3: #efc57c;
+  --yellow-4: #e8b153;
+  --yellow-5: #da9a2b;
+  --yellow-6: #b27c1e;
+  --yellow-7: #875c12;
+  --yellow-8: #5a3d0a;
+  --yellow-9: #332205;
+
+  --yellow-light: var(--yellow-2);
+  --yellow: var(--yellow-5);
+  --yellow-dark: var(--yellow-8);
+
+  --brown-1: #e6cbc3;
+  --brown-2: #d09e8e;
+  --brown-3: #bf8776;
+  --brown-4: #a2624e;
+  --brown-5: #884936;
+  --brown-6: #6b2d1a;
+  --brown-7: #571e0d;
+  --brown-8: #401204;
+  --brown-9: #260900;
+
+  --brown-light: var(--brown-2);
+  --brown: var(--brown-5);
+  --brown-dark: var(--brown-8);
+
+  --grey-1: #fff;
+  --grey-2: #dfdfdf;
+  --grey-3: #bfbfbf;
+  --grey-4: #9f9f9f;
+  --grey-5: #808080;
+  --grey-6: #606060;
+  --grey-7: #404040;
+  --grey-8: #202020;
+  --grey-9: #000;
+
+  --grey-light: var(--grey-2);
+  --grey: var(--grey-5);
+  --grey-dark: var(--grey-8);
+
+  --primary: var(--green-5);
+  --secondary: var(--brown-5);
 }
 
 * {

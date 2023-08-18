@@ -5,7 +5,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
   <meta name="theme-color"
-        content="#52a130">
+        content="#52a230">
   <title>Biohof App</title>
   <style>
     @font-face {
@@ -25,28 +25,28 @@
   <nav></nav>
   <main>
     <?php
-      
-      ini_set('display_errors', 1);
-      ini_set('display_startup_errors', 1);
-      error_reporting(E_ALL);
 
-      function files_in_directory($dir) {
-        return array_diff(scandir($dir), ['.', '..']);
-      }
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-      function wrap_content_of($files) {
-        $result = '';
-        foreach($files as $file) {
-          $result .= '<section id="'.pathinfo($file, PATHINFO_FILENAME).'">'
-            . file_get_contents( './templates/main/'.$file)
-            .'</section>';
-        }
-        return $result;
-      }
+function files_in_directory($dir) {
+  return array_diff(scandir($dir), ['.', '..']);
+}
 
-      echo wrap_content_of(files_in_directory('./templates/main'));
+function wrap_content_of($files) {
+  $result = '';
+  foreach ($files as $file) {
+    $result .= '<section id="' . pathinfo($file, PATHINFO_FILENAME) . '">'
+    . file_get_contents('./templates/main/' . $file)
+      . '</section>';
+  }
+  return $result;
+}
 
-    ?>
+echo wrap_content_of(files_in_directory('./templates/main'));
+
+?>
   </main>
   <script type="module"
           src="app.mjs"></script>
