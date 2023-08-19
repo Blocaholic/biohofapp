@@ -139,3 +139,44 @@ html {
   width: 2.4em;
   height: 2.4em;
 }
+
+@media (display-mode: window-controls-overlay) {
+  body {
+    margin-top: env(titlebar-area-height, 33px);
+  }
+
+  .mainNav__nav {
+    position: fixed;
+    left: env(titlebar-area-x, 0);
+    top: env(titlebar-area-y, 0);
+    width: env(titlebar-area-width, 100%);
+    height: env(titlebar-area-height, 33px);
+    app-region: drag;
+    background-color: var(--primary);
+    background-image: url(./icon.svg);
+    background-repeat: no-repeat;
+    background-size: 2.4em 2.4em;
+    background-position-x: 0.8em;
+  }
+
+  .mainNav__nav::before {
+    content: 'Biohof App';
+    float: left;
+    font-size: 1.4em;
+    height: 100%;
+    line-height: env(titlebar-area-height, 33px);
+    margin-left: calc(env(titlebar-area-height) + 1em);
+  }
+
+  .mainNav__ul {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+
+  .mainNav__svg {
+    width: 2em;
+    height: 2em;
+    app-region: no-drag;
+  }
+}
