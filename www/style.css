@@ -95,6 +95,7 @@
   box-sizing: border-box;
 }
 
+/* ########################################################################## */
 /* HTML DEFAULTS */
 
 html {
@@ -102,4 +103,39 @@ html {
   font-size: 62.5%;
 }
 
+/* ########################################################################## */
 /* CLASSES */
+
+.hidden {
+  font-size: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* main navigation */
+
+.mainNav__nav {
+  float: right;
+}
+
+.mainNav__ul {
+  display: inline-flex;
+  gap: 0.5em;
+  justify-content: flex-end;
+}
+
+.mainNav__li {
+  list-style: none;
+}
+
+.mainNav__li:hover {
+  cursor: pointer;
+}
+
+.mainNav__svg {
+  width: 2.4em;
+  height: 2.4em;
+}
