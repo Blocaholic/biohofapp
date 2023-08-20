@@ -1,6 +1,9 @@
 @charset "utf-8";
 
 :root {
+  --system-ui: system-ui, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+    'Noto Sans' Cantarell, 'Helvetica Neue', sans-serif;
+
   --green-1: #e1f2da;
   --green-2: #b0e19c;
   --green-3: #8cd070;
@@ -103,6 +106,20 @@ html {
   font-size: 62.5%;
 }
 
+body {
+  padding: 0.8em;
+}
+
+main {
+  font-size: 1.8em;
+  float: left;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 2em;
+}
+
 /* ########################################################################## */
 /* CLASSES */
 
@@ -163,12 +180,14 @@ html {
     background-repeat: no-repeat;
     background-size: 2.4em 2.4em;
     background-position-x: 0.8em;
+    color: var(--grey-8);
   }
 
   .mainNav__nav::before {
+    font-family: var(--system-ui);
     content: 'Biohof App';
     float: left;
-    font-size: 1.4em;
+    font-size: 1.3em;
     height: 100%;
     line-height: env(titlebar-area-height, 33px);
     margin-left: calc(env(titlebar-area-height) + 1em);
@@ -181,8 +200,8 @@ html {
   }
 
   .mainNav__svg {
-    width: 2em;
-    height: 2em;
+    width: 1.6em;
+    height: 1.6em;
     app-region: no-drag;
   }
 }
