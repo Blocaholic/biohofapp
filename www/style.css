@@ -115,6 +115,12 @@ html {
   border: 0;
 }
 
+.icon--inline {
+  position: relative;
+  height: 1em;
+  top: 0.1em;
+}
+
 /* main navigation */
 
 .mainNav__nav {
