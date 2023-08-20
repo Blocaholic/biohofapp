@@ -1,0 +1,13 @@
+{
+  "web_apps": [
+    {
+      "manifest": "https://biohofapp.de/manifest.webmanifest",
+      "details": {
+        "paths": [
+          "*"
+        ],
+        "exclude_paths": []
+      }
+    }
+  ]
+}
