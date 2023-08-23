@@ -64,3 +64,28 @@ const signup = async event => {
 
 $('signup__password').value = randomString(32);
 $('signup__button').addEventListener('click', signup);
+
+const Sections = {};
+Sections.hideAll = () =>
+  $$('.mainSection').forEach(section => (section.style.display = 'none'));
+Sections.show = section => ($(section).style.display = '');
+
+const Settings = {};
+Settings.hideAll = () =>
+  $$('.settings__article').forEach(article => (article.style.display = 'none'));
+Settings.show = article => ($(article).style.display = '');
+
+const noGreatName = () => {
+  Sections.hideAll();
+  if (!localStorage.email || !localStorage.devicepassword) {
+    Settings.hideAll();
+    Settings.show('signup');
+    Sections.show('settings');
+  }
+  // else if (!userConfirmed()) {Sections.show('pleaseConfirm');}
+  else {
+    Sections.show('welcome');
+  }
+};
+
+noGreatName();

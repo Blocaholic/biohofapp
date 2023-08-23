@@ -56,7 +56,9 @@ function files_in_directory($dir) {
 function wrap_content_of($files) {
   $result = '';
   foreach ($files as $file) {
-    $result .= '<section id="' . pathinfo($file, PATHINFO_FILENAME) . '">'
+    $result .= '<section id="'
+    . pathinfo($file, PATHINFO_FILENAME)
+    . '" class="mainSection">'
     . file_get_contents('./templates/main/' . $file)
       . '</section>';
   }
