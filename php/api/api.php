@@ -5,7 +5,7 @@ require_once __DIR__ . '/Utils.php';
 Utils::configure_error_handling();
 
 spl_autoload_register(function ($class) {
-  require __DIR__ . "/$class.php";
+  require __DIR__ . "/endpoints/$class.php";
 });
 
 header("Content-type: application/json; charset=UTF-8");

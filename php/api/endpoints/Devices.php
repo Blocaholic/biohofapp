@@ -2,8 +2,16 @@
 
 class Devices {
   public static function POST() {
-    $_POST = json_decode(file_get_contents('php://input'));
+    require_once __DIR__ . '/../Users.php';
+
+    $_POST = json_decode(file_get_contents('php://input'), true);
     $validated = self::validate_post_input($_POST);
+
+    $email = $validated['email'];
+    $userid = Users::add($email);
+    $confirmationpassword = Utils::randomString(32);
+    $devicename = $validated['devicename'];
+    $devicepassword = $validated['devicepassword'];
 
     $response = $validated;
     // $response['message'] = "Devices::POST() wurde ausgeführt";
@@ -27,21 +35,21 @@ class Devices {
 
   private static function validate_post_input($input) {
     // check email
-    $email = $input['email'] ?: throw new Exception('\'email\' is required.');
+    $email = $input['email'] ?? throw new Exception('\'email\' is required.');
     filter_var($email, FILTER_VALIDATE_EMAIL) || throw new Exception(
       'Add device: \'email\' has invalid format.'
     );
     // check devicename
-    $devicename = $input['devicename'] ?: '';
+    $devicename = $input['devicename'] ?? '';
     ($devicename === htmlspecialchars($devicename)) || throw new Exception(
       'Add device: \'devicename\' must not contain \'"<>&'
     );
     // check password
-    $devicepassword = $input['password'] ?: throw new Exception(
+    $devicepassword = $input['password'] ?? throw new Exception(
       'Add device: no \'devicepassword\'.'
     );
     (strlen($devicepassword) === 32) || throw new Exception(
-      'Add device: \'devicepassword\' must be 32 characters.'
+      'Add device: \'password\' must be 32 characters.'
     );
     return [
       "email" => $email,
