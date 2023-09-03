@@ -103,4 +103,18 @@ class Device {
     return $device;
 
   }
+
+  public static function unconfirmed($deviceid) {
+
+    require_once __DIR__ . '/Database.php';
+
+    $pdo = Database::connect();
+    $query = "SELECT COUNT(*) FROM unconfirmed_devices WHERE deviceid = ?;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$deviceid]);
+    $number_of_rows = $statement->fetchColumn();
+
+    return ($number_of_rows > 0);
+
+  }
 }

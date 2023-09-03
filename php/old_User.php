@@ -19,7 +19,6 @@ class User {
     $pdo = null;
     $userid || throw new Exception('Fehler beim Erstellen der \'userid\'.');
     return $userid;
-
   }
 
   public static function confirm($userid) {
@@ -62,6 +61,5 @@ class User {
     $number_of_rows = $statement->fetchColumn();
 
     return ($number_of_rows > 0);
-
   }
 }

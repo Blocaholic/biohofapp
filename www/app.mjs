@@ -75,17 +75,58 @@ Settings.hideAll = () =>
   $$('.settings__article').forEach(article => (article.style.display = 'none'));
 Settings.show = article => ($(article).style.display = '');
 
+const Device = {};
+
+Device.isValid = async deviceData => {
+  const response = await fetchJson('./api/validDevice.php', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(deviceData),
+  });
+  // console.log(php error)
+  // return ???
+};
+
+Device.isUnconfirmed = async deviceData => {
+  const response = await fetchJson('./api/unconfirmedDevice.php', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(deviceData),
+  });
+  // console.log(php error)
+  // return ???
+};
+
 const noGreatName = () => {
   Sections.hideAll();
-  if (!localStorage.email || !localStorage.devicepassword) {
+
+  if (
+    !localStorage.userid ||
+    !localStorage.deviceid ||
+    !localStorage.devicepassword
+  ) {
     Settings.hideAll();
     Settings.show('signup');
     Sections.show('settings');
+    return;
   }
-  // else if (!userConfirmed()) {Sections.show('pleaseConfirm');}
-  else {
-    Sections.show('welcome');
-  }
+
+  const deviceData = {
+    userid: localStorage.userid,
+    deviceid: localStorage.deviceid,
+    devicepassword: localStorage.devicepassword,
+  };
+
+  if (Device.isValid(deviceData)) return Sections.show('welcome');
+  if (Device.isUnconfirmed(deviceData)) return Sections.show('pleaseConfirm');
+
+  return Sections.show('invalidUser');
 };
 
 noGreatName();
