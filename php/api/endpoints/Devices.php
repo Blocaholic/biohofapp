@@ -8,12 +8,15 @@ class Devices {
     $validated = self::validate_post_input($_POST);
 
     $email = $validated['email'];
-    $userid = Users::add($email);
-    $confirmationpassword = Utils::randomString(32);
-    $devicename = $validated['devicename'];
-    $devicepassword = $validated['devicepassword'];
 
-    $response = $validated;
+    $userid = Users::get_id($email) ?: Users::add($email);
+
+    // $userid = Users::add($email);
+    // $confirmationpassword = Utils::randomString(32);
+    // $devicename = $validated['devicename'];
+    // $devicepassword = $validated['devicepassword'];
+
+    $response = $userid;
     // $response['message'] = "Devices::POST() wurde ausgeführt";
     return $response;
   }
