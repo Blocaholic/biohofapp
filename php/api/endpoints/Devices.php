@@ -21,19 +21,17 @@ class Devices {
       $confirmationpassword
     );
 
-    /* self::send_confirmation_mail(
-    $email,
-    $deviceid,
-    $devicename,
-    $confirmationpassword
-    ); */
+    self::send_confirmation_mail(
+      $email,
+      $deviceid,
+      $devicename,
+      $confirmationpassword
+    );
 
-    $response = [
+    return [
       'userid' => $userid,
       'deviceid' => $deviceid,
     ];
-
-    return $response;
   }
 
   public static function PATCH($id) {
