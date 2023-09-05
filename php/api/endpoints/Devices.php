@@ -52,23 +52,24 @@ class Devices {
   }
 
   private static function validate_post_input($input) {
-    // check email
+
     $email = $input['email'] ?? throw new Exception('\'email\' is required.');
     filter_var($email, FILTER_VALIDATE_EMAIL) || throw new Exception(
       'Add device: \'email\' has invalid format.'
     );
-    // check devicename
+
     $devicename = $input['devicename'] ?? '';
     ($devicename === htmlspecialchars($devicename)) || throw new Exception(
       'Add device: \'devicename\' must not contain \'"<>&'
     );
-    // check password
+
     $devicepassword = $input['password'] ?? throw new Exception(
       'Add device: no \'devicepassword\'.'
     );
     (strlen($devicepassword) === 32) || throw new Exception(
       'Add device: \'password\' must be 32 characters.'
     );
+
     return [
       "email" => $email,
       "devicename" => $devicename,
