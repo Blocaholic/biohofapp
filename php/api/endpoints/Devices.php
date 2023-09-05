@@ -3,21 +3,36 @@
 class Devices {
   public static function POST() {
     require_once __DIR__ . '/../Users.php';
+    require_once __DIR__ . '/../Utils.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
     $validated = self::validate_post_input($_POST);
 
     $email = $validated['email'];
-
     $userid = Users::get_id($email) ?: Users::add($email);
+    $confirmationpassword = Utils::randomString(32);
+    $devicename = $validated['devicename'];
+    $devicepassword = $validated['devicepassword'];
 
-    // $userid = Users::add($email);
-    // $confirmationpassword = Utils::randomString(32);
-    // $devicename = $validated['devicename'];
-    // $devicepassword = $validated['devicepassword'];
+    $deviceid = self::add(
+      $userid,
+      $devicename,
+      $devicepassword,
+      $confirmationpassword
+    );
 
-    $response = $userid;
-    // $response['message'] = "Devices::POST() wurde ausgeführt";
+    /* self::send_confirmation_mail(
+    $email,
+    $deviceid,
+    $devicename,
+    $confirmationpassword
+    ); */
+
+    $response = [
+      'userid' => $userid,
+      'deviceid' => $deviceid,
+    ];
+
     return $response;
   }
 
@@ -59,6 +74,65 @@ class Devices {
       "devicename" => $devicename,
       "devicepassword" => $devicepassword,
     ];
+  }
+
+  private static function add(
+    $userid,
+    $devicename,
+    $devicepassword,
+    $confirmationpassword
+  ) {
+    require_once __DIR__ . '/../Database.php';
+
+    $devicehash = password_hash($devicepassword, PASSWORD_DEFAULT);
+    $confirmationhash = password_hash($confirmationpassword, PASSWORD_DEFAULT);
+
+    $pdo = Database::connect();
+    $query = "INSERT INTO devices (
+      userid,
+      devicehash,
+      devicename,
+      confirmationhash
+    ) VALUES (
+      :userid,
+      :devicehash,
+      :devicename,
+      :confirmationhash
+    );";
+    $data = [
+      "userid" => $userid,
+      "devicehash" => $devicehash,
+      "devicename" => $devicename,
+      "confirmationhash" => $confirmationhash,
+    ];
+    $statement = $pdo->prepare($query);
+    $statement->execute($data);
+    $deviceid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'deviceid\'.');
+
+    $pdo = null;
+    return $deviceid;
+  }
+
+  private static function send_confirmation_mail(
+    $email,
+    $deviceid,
+    $devicename,
+    $confirmationpassword
+  ) {
+    $title = 'Bitte bestätige die Registrierung';
+    $content = '<h1>Ein Neues Gerät wurde registriert</h1>';
+    $content .= '<p>Geräte-ID: ' . $deviceid . '</p>';
+    $content .= '<p>Geräte-Name: ' . $devicename . '</p>';
+    $content .= '<p>E-Mail-Adresse: ' . $email . '</p>';
+    $content .= '<p><a href="https://biohofapp.de/confirm/' . $deviceid . '/' . $confirmationpassword . '">Bestätigen</a></p>';
+    $header_array[] = 'MIME-Version: 1.0';
+    $header_array[] = 'Content-type: text/html; charset=utf-8';
+    $header_array[] = 'From: BiohofApp.de <kontakt@biohofapp.de>';
+    $header = implode("\r\n", $header_array);
+    $mailSent = mail(
+      $email, $title, $content, $header
+    ) ?: throw new Exception('Bestätigungsmail konnte nicht versand werden.');
+    return true;
   }
 
 }
