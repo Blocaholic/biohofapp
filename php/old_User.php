@@ -1,25 +1,6 @@
 <?php
 
 class User {
-  public static function add($email) {
-
-    require_once __DIR__ . '/Database.php';
-
-    if (empty($email)) {
-      throw new Exception('\'email\' is required.');
-    }
-
-    $pdo = Database::connect();
-    $query = "INSERT INTO unconfirmed_users (email) VALUES(:email);";
-    $data = ["email" => $email];
-    $statement = $pdo->prepare($query);
-    $statement->execute($data);
-    $userid = $pdo->lastInsertId();
-
-    $pdo = null;
-    $userid || throw new Exception('Fehler beim Erstellen der \'userid\'.');
-    return $userid;
-  }
 
   public static function confirm($userid) {
 
