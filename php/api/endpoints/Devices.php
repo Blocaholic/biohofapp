@@ -28,6 +28,7 @@ class Devices {
       $confirmationpassword
     );
 
+    http_response_code(201);
     return [
       'userid' => $userid,
       'deviceid' => $deviceid,
