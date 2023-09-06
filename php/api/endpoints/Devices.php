@@ -115,7 +115,7 @@ class Devices {
     $deviceid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'deviceid\'.');
 
     $pdo = null;
-    return $deviceid;
+    return (int) $deviceid;
   }
 
   private static function send_confirmation_mail(
