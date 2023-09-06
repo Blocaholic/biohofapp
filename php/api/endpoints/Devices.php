@@ -36,8 +36,11 @@ class Devices {
   }
 
   public static function PATCH($id) {
+    require_once __DIR__ . '/../Utils.php';
+
     $_PATCH = json_decode(file_get_contents('php://input'));
-    if (!isIntegerGreater0($id)) {
+
+    if (!Utils::isIntegerGreater0($id)) {
       http_response_exit(400, [
         "message" => "id must be an integer greater than 0",
         "syntax" => "https://biohofapp.de/api/<endpoint>/<id>",
@@ -135,8 +138,4 @@ class Devices {
     return true;
   }
 
-}
-
-function isIntegerGreater0($int) {
-  return $int === (string) (int) $int && $int > 0;
 }

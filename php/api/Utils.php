@@ -43,4 +43,8 @@ class Utils {
     }
     return json_encode($error_array);
   }
+
+  public static function isIntegerGreater0($int) {
+    return $int === (string) (int) $int && $int > 0;
+  }
 }
