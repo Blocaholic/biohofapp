@@ -36,23 +36,14 @@ class Devices {
   }
 
   public static function PATCH($id) {
-    require_once __DIR__ . '/../Utils.php';
 
-    $_PATCH = json_decode(file_get_contents('php://input'));
+    $_PATCH = json_decode(file_get_contents('php://input'), true);
+    $validated = self::validate_patch_input($_PATCH, $id);
 
-    if (!Utils::isIntegerGreater0($id)) {
-      http_response_exit(400, [
-        "message" => "id must be an integer greater than 0",
-        "syntax" => "https://biohofapp.de/api/<endpoint>/<id>",
-        "example" => "https://biohofapp.de/api/devices/123",
-        "id" => $id,
-      ]);
-    }
-
-    $userid = 666;
+    // TODO
 
     http_response_code(200);
-    return $userid;
+    return (int) $validated['deviceid'];
   }
 
   private static function validate_post_input($input) {
@@ -78,6 +69,32 @@ class Devices {
       "email" => $email,
       "devicename" => $devicename,
       "devicepassword" => $devicepassword,
+    ];
+  }
+
+  private static function validate_patch_input($input, $id) {
+    require_once __DIR__ . '/../Utils.php';
+
+    Utils::isIntegerGreater0($id) ?: http_response_exit(400, [
+      "message" => "id must be an integer greater than 0",
+      "syntax" => "https://biohofapp.de/api/<endpoint>/<id>",
+      "example" => "https://biohofapp.de/api/devices/123",
+      "id" => $id,
+    ]);
+
+    isset($input['confirmationpassword']) ?: http_response_exit(400, [
+      "message" => "confirmationpassword is required.",
+    ]);
+
+    strlen($input['confirmationpassword']) === 32 ?: http_response_exit(400, [
+      "message" => "confirmationpassword must be 32 characters.",
+      "confirmationpassword" => $input['confirmationpassword'],
+      "length" => strlen($input['confirmationpassword']),
+    ]);
+
+    return [
+      "deviceid" => $id,
+      "confirmationpassword" => $input['confirmationpassword'],
     ];
   }
 
