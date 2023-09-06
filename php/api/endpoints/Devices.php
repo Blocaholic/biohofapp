@@ -48,9 +48,11 @@ class Devices {
         "id" => $id,
       ]);
     }
-    $response = $_PATCH;
-    // $response['message'] = "Devices::PATCH() wurde ausgeführt"; {
-    return $response;
+
+    $userid = 666;
+
+    http_response_code(200);
+    return $userid;
   }
 
   private static function validate_post_input($input) {
