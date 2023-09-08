@@ -4,7 +4,6 @@
 
 ### Prio A
 
-- remove database credentials from repository
 - add device
 - login / token-authentication ?
 - show page after signup-success

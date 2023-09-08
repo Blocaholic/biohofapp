@@ -1,17 +1,14 @@
 <?php
 
 class Database {
-  private static $dbhost = '127.0.0.1';
-  private static $dbname = 'd03db2e1';
-  private static $dbuser = 'd03db2e1';
-  private static $dbpassword = 'MEkkrvrT2KeLhcg2rM5B';
 
   public static function connect() {
+    require_once __DIR__ . '/Config.php';
 
     $pdo = new PDO(
-      "mysql:dbname=" . self::$dbname . ";host=" . self::$dbhost,
-      self::$dbuser,
-      self::$dbpassword
+      "mysql:dbname=" . Config::$dbname . ";host=" . Config::$dbhost,
+      Config::$dbuser,
+      Config::$dbpassword
     );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
