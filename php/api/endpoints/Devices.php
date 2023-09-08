@@ -36,40 +36,19 @@ class Devices {
   }
 
   public static function PATCH($id) {
-    require_once __DIR__ . '/../Users.php';
-    require_once __DIR__ . '/../Utils.php';
 
     $_PATCH = json_decode(file_get_contents('php://input'), true);
     $validated = self::validate_patch_input($_PATCH, $id);
 
-    $deviceid = (int) $validated['deviceid'];
-    $confirmationpassword = $validated['confirmationpassword'];
+    if ($validated['operation'] === 'confirm') {
+      return self::confirm($validated);
+    }
 
-    $device = self::get($deviceid) ?: http_response_exit(404, [
-      "message" => "Could not find 'deviceid' in database.",
-      "deviceid" => $deviceid,
+    http_response_exit(400, [
+      "message" => "Unknown operation.",
+      "operation" => $validated['operation'],
     ]);
 
-    $userid = $device['userid'];
-    $confirmationhash = $device['confirmationhash'];
-
-    Utils::equalsIntegerGreater0($userid) || http_response_exit(500, [
-      "message" => "Invalid 'userid'.",
-      "userid" => $userid,
-    ]);
-
-    password_verify(
-      $confirmationpassword,
-      $confirmationhash
-    ) || http_response_exit(401, [
-      "message" => "'confirmationpassword' not accepted",
-    ]);
-
-    // self::confirm($deviceid, $confirmationpassword);
-    // Users::confirm($userid);
-
-    http_response_code(200);
-    return ["deviceid" => $deviceid];
   }
 
   private static function validate_post_input($input) {
@@ -101,6 +80,10 @@ class Devices {
   private static function validate_patch_input($input, $id) {
     require_once __DIR__ . '/../Utils.php';
 
+    if (!isset($input['operation'])) {http_response_exit(400, [
+      "message" => "'operation' must be defined",
+    ]);}
+
     Utils::equalsIntegerGreater0($id) ?: http_response_exit(400, [
       "message" => "id must be an integer greater than 0",
       "syntax" => "https://biohofapp.de/api/<endpoint>/<id>",
@@ -119,8 +102,9 @@ class Devices {
     ]);
 
     return [
-      "deviceid" => $id,
-      "confirmationpassword" => $input['confirmationpassword'],
+      "deviceid" => (int) $id,
+      "confirmationpassword" => (string) $input['confirmationpassword'],
+      "operation" => (string) $input['operation'],
     ];
   }
 
@@ -183,14 +167,37 @@ class Devices {
     return $device;
   }
 
-  private static function confirm($deviceid, $confirmationpassword) {
+  private static function confirm($input) {
     require_once __DIR__ . '/../Database.php';
 
-    $pdo = Database::connect();
+    $deviceid = (int) $input['deviceid'];
+    $confirmationpassword = $input['confirmationpassword'];
 
-    // update devices set confirmed where deviceid || http_response_exit()
+    $device = self::get($deviceid) ?: http_response_exit(404, [
+      "message" => "Could not find 'deviceid' in database.",
+      "deviceid" => $deviceid,
+    ]);
 
-    return (int) $userid;
+    $userid = $device['userid'];
+    $confirmationhash = $device['confirmationhash'];
+
+    Utils::equalsIntegerGreater0($userid) || http_response_exit(400, [
+      "message" => "Invalid 'userid'.",
+      "userid" => $userid,
+    ]);
+
+    password_verify(
+      $confirmationpassword,
+      $confirmationhash
+    ) || http_response_exit(401, [
+      "message" => "'confirmationpassword' not accepted",
+    ]);
+
+    Database::confirm_device($deviceid);
+    Database::confirm_user($userid);
+
+    http_response_code(200);
+    return ["deviceid" => $deviceid];
   }
 
   private static function send_confirmation_mail(
