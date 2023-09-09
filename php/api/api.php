@@ -13,7 +13,6 @@ header("Content-type: application/json; charset=UTF-8");
 $valid_endpoints = [
   'devices' => ['PATCH', 'POST'],
   'auth' => ['POST'],
-  'emails' => ['GET'],
 ];
 
 $http_methods = [
@@ -32,11 +31,6 @@ $parts = explode("/", $_SERVER["REQUEST_URI"]);
 $endpoint = $parts[2] ?? null;
 $class = ucfirst($endpoint);
 $method = $_SERVER['REQUEST_METHOD'];
-
-function http_response_exit($code, $body) {
-  http_response_code($code);
-  exit(json_encode($body));
-}
 
 if (!key_exists($endpoint, $valid_endpoints)) {
   http_response_exit(404, [
@@ -60,3 +54,8 @@ if (!in_array($method, $valid_endpoints[$endpoint])) {
 }
 
 echo json_encode($class::$method($parts[3] ?? null));
+
+function http_response_exit($code, $body) {
+  http_response_code($code);
+  exit(json_encode($body));
+}
