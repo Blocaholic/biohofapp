@@ -36,6 +36,27 @@ class Database {
     return $device;
   }
 
+  public static function get_user($userid) {
+
+    $pdo = self::connect();
+
+    $query = "SELECT * FROM users WHERE userid = ?;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$userid]);
+    $number_of_users = $statement->rowCount();
+
+    if ($number_of_users > 1) {http_response_exit(500, [
+      "message" => "'userid' must be unique, but is not.",
+      "userid" => $userid,
+    ]);}
+    if ($number_of_users < 1) {return null;}
+
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+    $pdo = null;
+    return $user;
+  }
+
   public static function get_userid($email) {
 
     $pdo = self::connect();
