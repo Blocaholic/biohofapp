@@ -14,11 +14,14 @@ class Devices {
     $devicename = $validated['devicename'];
     $devicepassword = $validated['devicepassword'];
 
-    $deviceid = self::add(
+    $devicehash = password_hash($devicepassword, PASSWORD_DEFAULT);
+    $confirmationhash = password_hash($confirmationpassword, PASSWORD_DEFAULT);
+
+    $deviceid = Database::add_device(
       $userid,
       $devicename,
-      $devicepassword,
-      $confirmationpassword
+      $devicehash,
+      $confirmationhash
     );
 
     self::send_confirmation_mail(
@@ -106,43 +109,6 @@ class Devices {
       "confirmationpassword" => (string) $input['confirmationpassword'],
       "operation" => (string) $input['operation'],
     ];
-  }
-
-  private static function add(
-    $userid,
-    $devicename,
-    $devicepassword,
-    $confirmationpassword
-  ) {
-    require_once __DIR__ . '/../Database.php';
-
-    $devicehash = password_hash($devicepassword, PASSWORD_DEFAULT);
-    $confirmationhash = password_hash($confirmationpassword, PASSWORD_DEFAULT);
-
-    $pdo = Database::connect();
-    $query = "INSERT INTO devices (
-      userid,
-      devicehash,
-      devicename,
-      confirmationhash
-    ) VALUES (
-      :userid,
-      :devicehash,
-      :devicename,
-      :confirmationhash
-    );";
-    $data = [
-      "userid" => $userid,
-      "devicehash" => $devicehash,
-      "devicename" => $devicename,
-      "confirmationhash" => $confirmationhash,
-    ];
-    $statement = $pdo->prepare($query);
-    $statement->execute($data);
-    $deviceid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'deviceid\'.');
-
-    $pdo = null;
-    return (int) $deviceid;
   }
 
   private static function confirm($input) {

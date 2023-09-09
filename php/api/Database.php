@@ -54,6 +54,39 @@ class Database {
     return $userid;
   }
 
+  public static function add_device(
+    $userid,
+    $devicename,
+    $devicehash,
+    $confirmationhash
+  ) {
+
+    $pdo = self::connect();
+    $query = "INSERT INTO devices (
+      userid,
+      devicehash,
+      devicename,
+      confirmationhash
+    ) VALUES (
+      :userid,
+      :devicehash,
+      :devicename,
+      :confirmationhash
+    );";
+    $data = [
+      "userid" => $userid,
+      "devicehash" => $devicehash,
+      "devicename" => $devicename,
+      "confirmationhash" => $confirmationhash,
+    ];
+    $statement = $pdo->prepare($query);
+    $statement->execute($data);
+    $deviceid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'deviceid\'.');
+
+    $pdo = null;
+    return (int) $deviceid;
+  }
+
   public static function add_user($email) {
 
     $pdo = self::connect();
