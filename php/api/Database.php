@@ -26,7 +26,7 @@ class Database {
 
     if ($number_of_devices > 1) {http_response_exit(500, [
       "message" => "'deviceid' must be unique, but is not.",
-      "deviceid" => $deviceid,
+      "deviceid" self=> $deviceid,
     ]);}
     if ($number_of_devices < 1) {return null;}
 
@@ -34,6 +34,36 @@ class Database {
 
     $pdo = null;
     return $device;
+  }
+
+  public static function get_userid($email) {
+
+    $pdo = self::connect();
+    $query = "SELECT userid FROM users WHERE email = ?;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$email]);
+
+    $number_of_users = $statement->rowCount();
+    if ($number_of_users > 1) {throw new Exception("Internal Database Error.");}
+    if ($number_of_users < 1) {return null;}
+
+    $user = $statement->fetch(PDO::FETCH_ASSOC);
+    $userid = $user['userid'] ?: throw new Exception('Fehler: \'userid\' konnte nicht aus der Datenbank geholt werden.');
+
+    $pdo = null;
+    return $userid;
+  }
+
+  public static function add_user($email) {
+
+    $pdo = self::connect();
+    $query = "INSERT INTO users (email) VALUES(?);";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$email]);
+    $userid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'userid\'.');
+
+    $pdo = null;
+    return (int) $userid;
   }
 
   public static function confirm_device($deviceid) {

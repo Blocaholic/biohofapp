@@ -2,14 +2,14 @@
 
 class Devices {
   public static function POST() {
-    require_once __DIR__ . '/../Users.php';
+    require_once __DIR__ . '/../Database.php';
     require_once __DIR__ . '/../Utils.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
     $validated = self::validate_post_input($_POST);
 
     $email = $validated['email'];
-    $userid = Users::get_id($email) ?: Users::add($email);
+    $userid = Database::get_userid($email) ?: Database::add_user($email);
     $confirmationpassword = Utils::randomString(32);
     $devicename = $validated['devicename'];
     $devicepassword = $validated['devicepassword'];
