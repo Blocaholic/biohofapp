@@ -26,7 +26,7 @@ class Database {
 
     if ($number_of_devices > 1) {http_response_exit(500, [
       "message" => "'deviceid' must be unique, but is not.",
-      "deviceid" self=> $deviceid,
+      "deviceid" => $deviceid,
     ]);}
     if ($number_of_devices < 1) {return null;}
 
