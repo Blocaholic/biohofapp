@@ -2,7 +2,7 @@
 
 class Database {
 
-  public static function connect() {
+  private static function connect() {
     require_once __DIR__ . '/Config.php';
 
     $pdo = new PDO(
@@ -13,6 +13,27 @@ class Database {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     return $pdo;
+  }
+
+  public static function get_device($deviceid) {
+
+    $pdo = self::connect();
+
+    $query = "SELECT * FROM devices WHERE deviceid = ?;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$deviceid]);
+    $number_of_devices = $statement->rowCount();
+
+    if ($number_of_devices > 1) {http_response_exit(500, [
+      "message" => "'deviceid' must be unique, but is not.",
+      "deviceid" => $deviceid,
+    ]);}
+    if ($number_of_devices < 1) {return null;}
+
+    $device = $statement->fetch(PDO::FETCH_ASSOC);
+
+    $pdo = null;
+    return $device;
   }
 
   public static function confirm_device($deviceid) {

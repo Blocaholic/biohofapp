@@ -145,35 +145,13 @@ class Devices {
     return (int) $deviceid;
   }
 
-  private static function get($deviceid) {
-    require_once __DIR__ . '/../Database.php';
-
-    $pdo = Database::connect();
-
-    $query = "SELECT * FROM devices WHERE deviceid = ?;";
-    $statement = $pdo->prepare($query);
-    $statement->execute([$deviceid]);
-    $number_of_devices = $statement->rowCount();
-
-    if ($number_of_devices > 1) {http_response_exit(500, [
-      "message" => "'deviceid' must be unique, but is not.",
-      "deviceid" => $deviceid,
-    ]);}
-    if ($number_of_devices < 1) {return null;}
-
-    $device = $statement->fetch(PDO::FETCH_ASSOC);
-
-    $pdo = null;
-    return $device;
-  }
-
   private static function confirm($input) {
     require_once __DIR__ . '/../Database.php';
 
     $deviceid = (int) $input['deviceid'];
     $confirmationpassword = $input['confirmationpassword'];
 
-    $device = self::get($deviceid) ?: http_response_exit(404, [
+    $device = Database::get_device($deviceid) ?: http_response_exit(404, [
       "message" => "Could not find 'deviceid' in database.",
       "deviceid" => $deviceid,
     ]);
