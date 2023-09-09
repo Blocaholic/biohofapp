@@ -1,7 +1,7 @@
 <?php
 
 class Auth {
-  public static function POST() {
+  public static function POST($deviceid) {
     require_once __DIR__ . '/../Token.php';
 
     $key = '123456789';
@@ -15,6 +15,9 @@ class Auth {
     $token = Token::sign($payload, $key);
 
     http_response_code(201);
-    return $token;
+    return [
+      "deviceid" => $deviceid,
+      "token" => $token,
+    ];
   }
 }
