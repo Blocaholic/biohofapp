@@ -22,7 +22,7 @@ class Auth {
       "deviceid" => "88",
     ]);
 
-    $token = Token::sign($payload, Config::token_key);
+    $token = Token::sign($payload, Config::$token_key);
 
     http_response_code(201);
     return [
