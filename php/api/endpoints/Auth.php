@@ -4,6 +4,7 @@ class Auth {
   public static function POST($_deviceid) {
     require_once __DIR__ . '/../Token.php';
     require_once __DIR__ . '/../Config.php';
+    require_once __DIR__ . '/../Database.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
     $validated = self::validate_post_input($_POST, $_deviceid);
@@ -11,15 +12,29 @@ class Auth {
     $deviceid = $validated['deviceid'];
     $password = $validated['password'];
 
-    // get passhash from db
-    // validate passhash
-    // create payload
+    $device = Database::get_device($deviceid) ?: http_response_exit(404, [
+      "message" => "Could not find 'deviceid' in database.",
+      "deviceid" => $deviceid,
+    ]);
+
+    $devicehash = $device['devicehash'];
+
+    password_verify(
+      $password,
+      $devicehash
+    ) || http_response_exit(401, [
+      "message" => "'password' not accepted",
+    ]);
+
+    $userid = $device['userid'];
+    $devicename = $device['devicename'];
+    ['email' => $email] = Database::get_user($userid);
 
     $payload = json_encode([
       "iat" => time(),
-      "email" => "test@mail.com",
-      "userid" => "69",
-      "deviceid" => "88",
+      "email" => $email,
+      "userid" => $userid,
+      "deviceid" => $deviceid,
     ]);
 
     $token = Token::sign($payload, Config::$token_key);
