@@ -17,6 +17,10 @@ class Auth {
       "deviceid" => $deviceid,
     ]);
 
+    $device['confirmed'] ?: http_response_exit(401, [
+      "message" => "Device is not confirmed.",
+    ]);
+
     $devicehash = $device['devicehash'];
 
     password_verify(
