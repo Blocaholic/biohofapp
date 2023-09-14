@@ -24,7 +24,7 @@ class Database {
     $statement->execute([$deviceid]);
     $number_of_devices = $statement->rowCount();
 
-    if ($number_of_devices > 1) {http_response_exit(500, [
+    if ($number_of_devices > 1) {exit_with_error(500, [
       "message" => "'deviceid' must be unique, but is not.",
       "deviceid" => $deviceid,
     ]);}
@@ -45,7 +45,7 @@ class Database {
     $statement->execute([$userid]);
     $number_of_users = $statement->rowCount();
 
-    if ($number_of_users > 1) {http_response_exit(500, [
+    if ($number_of_users > 1) {exit_with_error(500, [
       "message" => "'userid' must be unique, but is not.",
       "userid" => $userid,
     ]);}
@@ -127,11 +127,11 @@ class Database {
     $statement = $pdo->prepare($query);
     $statement->execute([$deviceid]);
     $updated_rows = $statement->rowCount();
-    if ($updated_rows < 1) {http_response_exit(500, [
+    if ($updated_rows < 1) {exit_with_error(500, [
       "message" => "Could not update device in the database.",
       "deviceid" => $deviceid,
     ]);}
-    if ($updated_rows > 1) {http_response_exit(500, [
+    if ($updated_rows > 1) {exit_with_error(500, [
       "message" => "Implausible number of devices affected in the database.",
       "deviceid" => $deviceid,
     ]);}
@@ -147,7 +147,7 @@ class Database {
     $statement->execute([$userid]);
     $updated_rows = $statement->rowCount();
 
-    if ($updated_rows > 1) {http_response_exit(500, [
+    if ($updated_rows > 1) {exit_with_error(500, [
       "message" => "Implausible number of users affected in the database.",
       "userid" => $userid,
     ]);}

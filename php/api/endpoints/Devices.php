@@ -47,7 +47,7 @@ class Devices {
       return self::confirm($validated);
     }
 
-    http_response_exit(400, [
+    exit_with_error(400, [
       "message" => "Unknown operation.",
       "operation" => $validated['operation'],
     ]);
@@ -83,22 +83,22 @@ class Devices {
   private static function validate_patch_input($input, $id) {
     require_once __DIR__ . '/../Utils.php';
 
-    if (!isset($input['operation'])) {http_response_exit(400, [
+    if (!isset($input['operation'])) {exit_with_error(400, [
       "message" => "'operation' must be defined",
     ]);}
 
-    Utils::equalsIntegerGreater0($id) ?: http_response_exit(400, [
+    Utils::equalsIntegerGreater0($id) ?: exit_with_error(400, [
       "message" => "id must be an integer greater than 0",
       "syntax" => "https://biohofapp.de/api/<endpoint>/<id>",
       "example" => "https://biohofapp.de/api/devices/123",
       "id" => $id,
     ]);
 
-    isset($input['confirmationpassword']) ?: http_response_exit(400, [
+    isset($input['confirmationpassword']) ?: exit_with_error(400, [
       "message" => "confirmationpassword is required.",
     ]);
 
-    strlen($input['confirmationpassword']) === 32 ?: http_response_exit(400, [
+    strlen($input['confirmationpassword']) === 32 ?: exit_with_error(400, [
       "message" => "confirmationpassword must be 32 characters.",
       "confirmationpassword" => $input['confirmationpassword'],
       "length" => strlen($input['confirmationpassword']),
@@ -117,7 +117,7 @@ class Devices {
     $deviceid = (int) $input['deviceid'];
     $confirmationpassword = $input['confirmationpassword'];
 
-    $device = Database::get_device($deviceid) ?: http_response_exit(404, [
+    $device = Database::get_device($deviceid) ?: exit_with_error(404, [
       "message" => "Could not find 'deviceid' in database.",
       "deviceid" => $deviceid,
     ]);
@@ -125,7 +125,7 @@ class Devices {
     $userid = $device['userid'];
     $confirmationhash = $device['confirmationhash'];
 
-    Utils::equalsIntegerGreater0($userid) || http_response_exit(400, [
+    Utils::equalsIntegerGreater0($userid) || exit_with_error(400, [
       "message" => "Invalid 'userid'.",
       "userid" => $userid,
     ]);
@@ -133,7 +133,7 @@ class Devices {
     password_verify(
       $confirmationpassword,
       $confirmationhash
-    ) || http_response_exit(401, [
+    ) || exit_with_error(401, [
       "message" => "'confirmationpassword' not accepted",
     ]);
 

@@ -12,12 +12,12 @@ class Auth {
     $deviceid = $validated['deviceid'];
     $password = $validated['password'];
 
-    $device = Database::get_device($deviceid) ?: http_response_exit(404, [
+    $device = Database::get_device($deviceid) ?: exit_with_error(404, [
       "message" => "Could not find 'deviceid' in database.",
       "deviceid" => $deviceid,
     ]);
 
-    $device['confirmed'] ?: http_response_exit(401, [
+    $device['confirmed'] ?: exit_with_error(401, [
       "message" => "Device is not confirmed.",
     ]);
 
@@ -26,7 +26,7 @@ class Auth {
     password_verify(
       $password,
       $devicehash
-    ) || http_response_exit(401, [
+    ) || exit_with_error(401, [
       "message" => "'password' not accepted",
     ]);
 
@@ -53,18 +53,18 @@ class Auth {
   private static function validate_post_input($input, $deviceid) {
     require_once __DIR__ . '/../Utils.php';
 
-    Utils::equalsIntegerGreater0($deviceid) ?: http_response_exit(400, [
+    Utils::equalsIntegerGreater0($deviceid) ?: exit_with_error(400, [
       "message" => "'deviceid' must be an integer greater than 0",
       "syntax" => "https://biohofapp.de/api/<endpoint>/<deviceid>",
       "example" => "https://biohofapp.de/api/auth/123",
       "deviceid" => $deviceid,
     ]);
 
-    isset($input['password']) ?: http_response_exit(400, [
+    isset($input['password']) ?: exit_with_error(400, [
       "message" => "Password is required.",
     ]);
 
-    strlen($input['password']) === 32 ?: http_response_exit(400, [
+    strlen($input['password']) === 32 ?: exit_with_error(400, [
       "message" => "Password must be 32 characters.",
       "password" => $input['password'],
       "length" => strlen($input['password']),
