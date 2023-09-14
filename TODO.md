@@ -6,13 +6,14 @@
 
 - add device
 - login / token-authentication ?
+- confirmation
 - show page after signup-success
 - show page after signup-error
+- show page after confirmation
 
 ### Prio B
 
-- api: change all thrown Exceptions to http_response_exit()
-- improve & test api error messages
+- automated api testing with postman
 - feature detection (js)
 - backup database
 - log all uncaught errors and hide from user

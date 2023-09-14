@@ -65,11 +65,15 @@ class Database {
     $statement->execute([$email]);
 
     $number_of_users = $statement->rowCount();
-    if ($number_of_users > 1) {throw new Exception("Internal Database Error.");}
+    if ($number_of_users > 1) {exit_with_error(500, [
+      "message" => "Database: users->email must be unique.",
+    ]);}
     if ($number_of_users < 1) {return null;}
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
-    $userid = $user['userid'] ?: throw new Exception('Fehler: \'userid\' konnte nicht aus der Datenbank geholt werden.');
+    $userid = $user['userid'] ?: exit_with_error(500, [
+      "message" => "Database: Userid not found.",
+    ]);
 
     $pdo = null;
     return $userid;
@@ -102,7 +106,9 @@ class Database {
     ];
     $statement = $pdo->prepare($query);
     $statement->execute($data);
-    $deviceid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'deviceid\'.');
+    $deviceid = $pdo->lastInsertId() ?: exit_with_error(500, [
+      "message" => "Database: failed to create deviceid.",
+    ]);
 
     $pdo = null;
     return (int) $deviceid;
@@ -114,7 +120,9 @@ class Database {
     $query = "INSERT INTO users (email) VALUES(?);";
     $statement = $pdo->prepare($query);
     $statement->execute([$email]);
-    $userid = $pdo->lastInsertId() ?: throw new Exception('Fehler beim Erstellen der \'userid\'.');
+    $userid = $pdo->lastInsertId() ?: exit_with_error(500, [
+      "message" => "Database: failed to create userid.",
+    ]);
 
     $pdo = null;
     return (int) $userid;

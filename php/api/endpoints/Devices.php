@@ -56,22 +56,28 @@ class Devices {
 
   private static function validate_post_input($input) {
 
-    $email = $input['email'] ?? throw new Exception('\'email\' is required.');
-    filter_var($email, FILTER_VALIDATE_EMAIL) || throw new Exception(
-      'Add device: \'email\' has invalid format.'
-    );
+    $email = $input['email'] ?? exit_with_error(400, [
+      "message" => "Email is required.",
+    ]);
+    filter_var($email, FILTER_VALIDATE_EMAIL) || exit_with_error(400, [
+      "message" => "Invalid email.",
+    ]);
 
     $devicename = $input['devicename'] ?? '';
-    ($devicename === htmlspecialchars($devicename)) || throw new Exception(
-      'Add device: \'devicename\' must not contain \'"<>&'
-    );
 
-    $devicepassword = $input['password'] ?? throw new Exception(
-      'Add device: no \'devicepassword\'.'
-    );
-    (strlen($devicepassword) === 32) || throw new Exception(
-      'Add device: \'password\' must be 32 characters.'
-    );
+    ($devicename === htmlspecialchars($devicename)) || exit_with_error(400, [
+      "message" => "Invalid characters in devicename.",
+      "invalidCharacters" => "\"'<>&",
+      "devicename" => $devicename,
+    ]);
+
+    $devicepassword = $input['password'] ?? exit_with_error(400, [
+      "message" => "Password is required.",
+    ]);
+    (strlen($devicepassword) === 32) || exit_with_error(400, [
+      "message" => "Password must be 32 characters.",
+      "passwordLength" => strlen($devicepassword),
+    ]);
 
     return [
       "email" => $email,
@@ -162,7 +168,9 @@ class Devices {
     $header = implode("\r\n", $header_array);
     $mailSent = mail(
       $email, $title, $content, $header
-    ) ?: throw new Exception('Bestätigungsmail konnte nicht versand werden.');
+    ) ?: exit_with_error(500, [
+      "message" => 'Bestätigungsmail konnte nicht versand werden.',
+    ]);
     return true;
   }
 
