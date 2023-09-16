@@ -41,7 +41,7 @@ if (!key_exists($endpoint, $valid_endpoints)) {
 
 if (!in_array($method, $http_methods)) {
   exit_with_error(501, [
-    "message" => "Unknown HTTP request method '$method'",
+    "message" => "Unknown http request method '$method'",
     "valid_http_request_methods" => $http_methods,
   ]);
 }
