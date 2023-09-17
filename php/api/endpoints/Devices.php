@@ -168,9 +168,7 @@ class Devices {
     $header = implode("\r\n", $header_array);
     $mailSent = mail(
       $email, $title, $content, $header
-    ) ?: exit_with_error(500, [
-      "message" => 'Bestätigungsmail konnte nicht versand werden.',
-    ]);
+    ) ?: throw new Exception("Could not send email.");
     return true;
   }
 
