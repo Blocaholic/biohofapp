@@ -90,22 +90,22 @@ class Devices {
     require_once __DIR__ . '/../Utils.php';
 
     if (!isset($input['operation'])) {exit_with_error(400, [
-      "message" => "'operation' must be defined",
+      "message" => "Operation must be defined.",
     ]);}
 
     Utils::equalsIntegerGreater0($id) ?: exit_with_error(400, [
-      "message" => "id must be an integer greater than 0",
+      "message" => "Id must be an integer greater than 0.",
       "syntax" => "https://biohofapp.de/api/<endpoint>/<id>",
       "example" => "https://biohofapp.de/api/devices/123",
       "id" => $id,
     ]);
 
     isset($input['confirmationpassword']) ?: exit_with_error(400, [
-      "message" => "confirmationpassword is required.",
+      "message" => "Confirmationpassword is required.",
     ]);
 
     strlen($input['confirmationpassword']) === 32 ?: exit_with_error(400, [
-      "message" => "confirmationpassword must be 32 characters.",
+      "message" => "Confirmationpassword must be 32 characters.",
       "confirmationpassword" => $input['confirmationpassword'],
       "length" => strlen($input['confirmationpassword']),
     ]);
@@ -124,7 +124,7 @@ class Devices {
     $confirmationpassword = $input['confirmationpassword'];
 
     $device = Database::get_device($deviceid) ?: exit_with_error(404, [
-      "message" => "Could not find 'deviceid' in database.",
+      "message" => "Could not find deviceid.",
       "deviceid" => $deviceid,
     ]);
 
@@ -132,7 +132,7 @@ class Devices {
     $confirmationhash = $device['confirmationhash'];
 
     Utils::equalsIntegerGreater0($userid) || exit_with_error(400, [
-      "message" => "Invalid 'userid'.",
+      "message" => "Invalid userid.",
       "userid" => $userid,
     ]);
 
@@ -140,7 +140,7 @@ class Devices {
       $confirmationpassword,
       $confirmationhash
     ) || exit_with_error(401, [
-      "message" => "'confirmationpassword' not accepted",
+      "message" => "Confirmationpassword not accepted.",
     ]);
 
     Database::confirm_device($deviceid);
