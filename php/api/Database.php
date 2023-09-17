@@ -24,10 +24,7 @@ class Database {
     $statement->execute([$deviceid]);
     $number_of_devices = $statement->rowCount();
 
-    if ($number_of_devices > 1) {exit_with_error(500, [
-      "message" => "'deviceid' must be unique, but is not.",
-      "deviceid" => $deviceid,
-    ]);}
+    ($number_of_devices > 1) ?: throw new Exception("Deviceid not unique.");
     if ($number_of_devices < 1) {return null;}
 
     $device = $statement->fetch(PDO::FETCH_ASSOC);
@@ -45,10 +42,7 @@ class Database {
     $statement->execute([$userid]);
     $number_of_users = $statement->rowCount();
 
-    if ($number_of_users > 1) {exit_with_error(500, [
-      "message" => "'userid' must be unique, but is not.",
-      "userid" => $userid,
-    ]);}
+    ($number_of_users > 1) ?: throw new Exception("Userid not unique.");
     if ($number_of_users < 1) {return null;}
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -65,15 +59,11 @@ class Database {
     $statement->execute([$email]);
 
     $number_of_users = $statement->rowCount();
-    if ($number_of_users > 1) {exit_with_error(500, [
-      "message" => "Database: users->email must be unique.",
-    ]);}
+    ($number_of_users > 1) ?: throw new Exception("Email not unique.");
     if ($number_of_users < 1) {return null;}
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
-    $userid = $user['userid'] ?: exit_with_error(500, [
-      "message" => "Database: Userid not found.",
-    ]);
+    $userid = $user['userid'] ?: throw new Exception("Userid not found.");
 
     $pdo = null;
     return $userid;
@@ -106,9 +96,9 @@ class Database {
     ];
     $statement = $pdo->prepare($query);
     $statement->execute($data);
-    $deviceid = $pdo->lastInsertId() ?: exit_with_error(500, [
-      "message" => "Database: failed to create deviceid.",
-    ]);
+    $deviceid = $pdo->lastInsertId() ?: throw new Exception(
+      "Failed to create deviceid."
+    );
 
     $pdo = null;
     return (int) $deviceid;
@@ -120,9 +110,9 @@ class Database {
     $query = "INSERT INTO users (email) VALUES(?);";
     $statement = $pdo->prepare($query);
     $statement->execute([$email]);
-    $userid = $pdo->lastInsertId() ?: exit_with_error(500, [
-      "message" => "Database: failed to create userid.",
-    ]);
+    $userid = $pdo->lastInsertId() ?: throw new Exception(
+      "Failed to create userid."
+    );
 
     $pdo = null;
     return (int) $userid;
@@ -135,14 +125,9 @@ class Database {
     $statement = $pdo->prepare($query);
     $statement->execute([$deviceid]);
     $updated_rows = $statement->rowCount();
-    if ($updated_rows < 1) {exit_with_error(500, [
-      "message" => "Could not update device in the database.",
-      "deviceid" => $deviceid,
-    ]);}
-    if ($updated_rows > 1) {exit_with_error(500, [
-      "message" => "Implausible number of devices affected in the database.",
-      "deviceid" => $deviceid,
-    ]);}
+
+    ($updated_rows < 1) ?: throw new Exception("No device affected.");
+    ($updated_rows > 1) ?: throw new Exception("Multiple devices affected.");
 
     return true;
   }
@@ -155,10 +140,8 @@ class Database {
     $statement->execute([$userid]);
     $updated_rows = $statement->rowCount();
 
-    if ($updated_rows > 1) {exit_with_error(500, [
-      "message" => "Implausible number of users affected in the database.",
-      "userid" => $userid,
-    ]);}
+    ($updated_rows < 1) ?: throw new Exception("No user affected.");
+    ($updated_rows > 1) ?: throw new Exception("Multiple users affected.");
 
     return true;
   }
