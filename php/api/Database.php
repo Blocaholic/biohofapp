@@ -24,7 +24,6 @@ class Database {
     $statement->execute([$deviceid]);
     $number_of_devices = $statement->rowCount();
 
-    ($number_of_devices > 1) ?: throw new Exception("Deviceid not unique.");
     if ($number_of_devices < 1) {return null;}
 
     $device = $statement->fetch(PDO::FETCH_ASSOC);
@@ -42,7 +41,6 @@ class Database {
     $statement->execute([$userid]);
     $number_of_users = $statement->rowCount();
 
-    ($number_of_users > 1) ?: throw new Exception("Userid not unique.");
     if ($number_of_users < 1) {return null;}
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
@@ -57,16 +55,14 @@ class Database {
     $query = "SELECT userid FROM users WHERE email = ?;";
     $statement = $pdo->prepare($query);
     $statement->execute([$email]);
-
     $number_of_users = $statement->rowCount();
-    ($number_of_users > 1) ?: throw new Exception("Email not unique.");
+
     if ($number_of_users < 1) {return null;}
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
-    $userid = $user['userid'] ?: throw new Exception("Userid not found.");
 
     $pdo = null;
-    return $userid;
+    return $user['userid'];
   }
 
   public static function add_device(

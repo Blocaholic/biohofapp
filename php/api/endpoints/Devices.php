@@ -131,11 +131,6 @@ class Devices {
     $userid = $device['userid'];
     $confirmationhash = $device['confirmationhash'];
 
-    Utils::equalsIntegerGreater0($userid) || exit_with_error(400, [
-      "message" => "Invalid userid.",
-      "userid" => $userid,
-    ]);
-
     password_verify(
       $confirmationpassword,
       $confirmationhash
