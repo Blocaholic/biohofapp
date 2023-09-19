@@ -41,15 +41,19 @@ class Devices {
   public static function PATCH($id) {
 
     $_PATCH = json_decode(file_get_contents('php://input'), true);
-    $validated = self::validate_patch_input($_PATCH, $id);
 
-    if ($validated['operation'] === 'confirm') {
+    if (!isset($_PATCH['operation'])) {exit_with_error(400, [
+      "message" => "Operation must be defined.",
+    ]);}
+
+    if ($_PATCH['operation'] === 'confirm') {
+      $validated = self::validate_confirmation_input($_PATCH, $id);
       return self::confirm($validated);
     }
 
     exit_with_error(400, [
       "message" => "Unknown operation.",
-      "operation" => $validated['operation'],
+      "operation" => $_PATCH['operation'],
     ]);
 
   }
@@ -86,12 +90,8 @@ class Devices {
     ];
   }
 
-  private static function validate_patch_input($input, $id) {
+  private static function validate_confirmation_input($input, $id) {
     require_once __DIR__ . '/../Utils.php';
-
-    if (!isset($input['operation'])) {exit_with_error(400, [
-      "message" => "Operation must be defined.",
-    ]);}
 
     Utils::equalsIntegerGreater0($id) ?: exit_with_error(400, [
       "message" => "Id must be an integer greater than 0.",
