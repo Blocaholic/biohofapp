@@ -122,8 +122,8 @@ class Database {
     $statement->execute([$deviceid]);
     $updated_rows = $statement->rowCount();
 
-    ($updated_rows < 1) ?: throw new Exception("No device affected.");
-    ($updated_rows > 1) ?: throw new Exception("Multiple devices affected.");
+    if ($updated_rows < 1) {throw new Exception("No device affected.");}
+    if ($updated_rows > 1) {throw new Exception("Multiple devices affected.");}
 
     return true;
   }
@@ -136,8 +136,8 @@ class Database {
     $statement->execute([$userid]);
     $updated_rows = $statement->rowCount();
 
-    ($updated_rows < 1) ?: throw new Exception("No user affected.");
-    ($updated_rows > 1) ?: throw new Exception("Multiple users affected.");
+    if ($updated_rows < 1) {throw new Exception("No user affected.");}
+    if ($updated_rows > 1) {throw new Exception("Multiple users affected.");}
 
     return true;
   }
