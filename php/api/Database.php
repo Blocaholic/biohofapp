@@ -131,7 +131,7 @@ class Database {
   public static function confirm_user($userid) {
 
     $pdo = self::connect();
-    $query = "UPDATE users SET confirmed = now() WHERE userid = ? AND confirmed IS NULL;";
+    $query = "UPDATE users SET confirmed = now() WHERE userid = ?;";
     $statement = $pdo->prepare($query);
     $statement->execute([$userid]);
     $updated_rows = $statement->rowCount();
