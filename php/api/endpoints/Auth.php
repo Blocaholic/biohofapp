@@ -13,7 +13,7 @@ class Auth {
     $password = $validated['password'];
 
     $device = Database::get_device($deviceid) ?: exit_with_error(404, [
-      "message" => "Could not find 'deviceid' in database.",
+      "message" => "Could not find deviceid.",
       "deviceid" => $deviceid,
     ]);
 
@@ -27,7 +27,7 @@ class Auth {
       $password,
       $devicehash
     ) || exit_with_error(401, [
-      "message" => "'password' not accepted",
+      "message" => "Password not accepted.",
     ]);
 
     $userid = $device['userid'];
@@ -54,7 +54,7 @@ class Auth {
     require_once __DIR__ . '/../Utils.php';
 
     Utils::equalsIntegerGreater0($deviceid) ?: exit_with_error(400, [
-      "message" => "'deviceid' must be an integer greater than 0",
+      "message" => "Deviceid must be an integer greater than 0.",
       "syntax" => "https://biohofapp.de/api/<endpoint>/<deviceid>",
       "example" => "https://biohofapp.de/api/auth/123",
       "deviceid" => $deviceid,
@@ -66,8 +66,7 @@ class Auth {
 
     strlen($input['password']) === 32 ?: exit_with_error(400, [
       "message" => "Password must be 32 characters.",
-      "password" => $input['password'],
-      "length" => strlen($input['password']),
+      "passwordLength" => strlen($input['password']),
     ]);
 
     return [

@@ -106,8 +106,7 @@ class Devices {
 
     strlen($input['confirmationpassword']) === 32 ?: exit_with_error(400, [
       "message" => "Confirmationpassword must be 32 characters.",
-      "confirmationpassword" => $input['confirmationpassword'],
-      "length" => strlen($input['confirmationpassword']),
+      "passwordLength" => strlen($input['confirmationpassword']),
     ]);
 
     return [
