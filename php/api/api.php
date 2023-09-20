@@ -35,21 +35,21 @@ $method = $_SERVER['REQUEST_METHOD'];
 if (!key_exists($endpoint, $valid_endpoints)) {
   exit_with_error(404, [
     "message" => "Unknown endpoint '$endpoint'",
-    "valid_endpoints" => array_keys($valid_endpoints),
+    "validEndpoints" => array_keys($valid_endpoints),
   ]);
 }
 
 if (!in_array($method, $http_methods)) {
   exit_with_error(501, [
     "message" => "Unknown http request method '$method'",
-    "valid_http_request_methods" => $http_methods,
+    "validHttpRequestMethods" => $http_methods,
   ]);
 }
 
 if (!in_array($method, $valid_endpoints[$endpoint])) {
   exit_with_error(405, [
     "message" => "Http request method '$method' not allowed for endpoint '$endpoint'",
-    "valid_methods" => $valid_endpoints[$endpoint],
+    "validMethods" => $valid_endpoints[$endpoint],
   ]);
 }
 
