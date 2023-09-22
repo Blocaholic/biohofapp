@@ -68,13 +68,18 @@ $('signup__button').addEventListener('click', signup);
 const Sections = {};
 Sections.hideAll = () =>
   $$('.mainSection').forEach(section => (section.style.display = 'none'));
-Sections.show = section => ($(section).style.display = '');
+Sections.show = section => {
+  Sections.hideAll();
+  $(section).style.display = '';
+};
 
-const Settings = {};
-// Refactor hideAll() to composition
+/* const Settings = {};
 Settings.hideAll = () =>
   $$('.settings__article').forEach(article => (article.style.display = 'none'));
-Settings.show = article => ($(article).style.display = '');
+Settings.show = article => {
+  Settings.hideAll();
+  $(article).style.display = '';
+}; */
 
 const Device = {};
 
@@ -112,13 +117,17 @@ const deviceIsRegistered = () =>
     localStorage.devicename ||
     localStorage.userid
   );
-const deviceIsConfirmed = () => {};
+const deviceIsConfirmed = () => {
+  // localStorage.confirmed || checkIfConfirmed
+};
 
 const noGreatName = () => {
-  Sections.hideAll();
-
   if (!deviceIsRegistered()) {
     return Sections.show('signup');
+  }
+
+  if (!localStorage.deviceIsConfirmed) {
+    Sections.show('pleaseConfirm');
   }
 
   const deviceData = {
