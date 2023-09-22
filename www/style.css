@@ -106,13 +106,14 @@ html {
   font-size: 62.5%;
 }
 
-body {
-  padding: 1em;
-}
-
 main {
   font-size: 1.8em;
   float: left;
+  display: flex;
+  width: 100%;
+  height: calc(100vh - env(titlebar-area-height, 33px));
+  align-items: center;
+  justify-content: center;
 }
 
 h1,
@@ -200,6 +201,10 @@ fieldset {
   background-color: var(--green-dark);
   border-color: var(--green-dark);
   color: var(--grey-1);
+}
+
+.mainSection {
+  padding: 1em;
 }
 
 /* main navigation */
