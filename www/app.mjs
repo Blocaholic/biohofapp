@@ -71,6 +71,7 @@ Sections.hideAll = () =>
 Sections.show = section => ($(section).style.display = '');
 
 const Settings = {};
+// Refactor hideAll() to composition
 Settings.hideAll = () =>
   $$('.settings__article').forEach(article => (article.style.display = 'none'));
 Settings.show = article => ($(article).style.display = '');
@@ -103,18 +104,21 @@ Device.isUnconfirmed = async deviceData => {
   // return ???
 };
 
+const deviceIsRegistered = () =>
+  !!(
+    localStorage.deviceid ||
+    localStorage.devicepassword ||
+    localStorage.email ||
+    localStorage.devicename ||
+    localStorage.userid
+  );
+const deviceIsConfirmed = () => {};
+
 const noGreatName = () => {
   Sections.hideAll();
 
-  if (
-    !localStorage.userid ||
-    !localStorage.deviceid ||
-    !localStorage.devicepassword
-  ) {
-    Settings.hideAll();
-    Settings.show('signup');
-    Sections.show('settings');
-    return;
+  if (!deviceIsRegistered()) {
+    return Sections.show('signup');
   }
 
   const deviceData = {
