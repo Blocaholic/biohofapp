@@ -63,6 +63,13 @@ class Devices {
     $email = $input['email'] ?? exit_with_error(400, [
       "message" => "Email is required.",
     ]);
+
+    if ($email === "") {
+      exit_with_error(400, [
+        "message" => "Email is required.",
+      ]);
+    }
+
     filter_var($email, FILTER_VALIDATE_EMAIL) || exit_with_error(400, [
       "message" => "Invalid email.",
     ]);
