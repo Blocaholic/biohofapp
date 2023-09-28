@@ -1,6 +1,11 @@
 const $ = id => document.getElementById(id);
 const $$ = query => document.querySelectorAll(query);
 
+const isValidEmail = email => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+};
+
 const storeLocalPersistent = async items => {
   items.forEach(item => localStorage.setItem(...Object.entries(item)[0]));
 
@@ -12,9 +17,18 @@ const storeLocalPersistent = async items => {
   return false;
 };
 
-const fetchJson = async (url, options) => {
+const fetchJson = async (url, method, jsonBody) => {
+  const options = {
+    method: method,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(jsonBody),
+  };
   const response = await fetch(url, options);
   const json = await response.json();
+  json.httpResponseCode = response.status;
   return json;
 };
 
@@ -36,110 +50,105 @@ const randomString = length => {
   return string;
 };
 
-const signup = async event => {
-  event.preventDefault();
-  localStorage.clear();
-
-  const response = await fetchJson('./api/signup.php', {
-    method: 'POST',
-    body: new FormData($('signup__form')),
-  });
-
-  if (response.status === 'success') {
-    storeLocalPersistent([
-      {email: $('signup__email').value},
-      {devicename: $('signup__devicename').value},
-      {devicepassword: $('signup__password').value},
-      {deviceid: response.deviceid},
-      {userid: response.userid},
-    ]);
-  } else if (response.status === 'error') {
-    console.log(response.message);
-  } else {
-    console.log('FEHLER BEI DER REGISTRIERUNG!');
-  }
-
-  console.log(localStorage);
-};
-
-$('signup__password').value = randomString(32);
-$('signup__button').addEventListener('click', signup);
-
 const Sections = {};
+
 Sections.hideAll = () =>
   $$('.mainSection').forEach(section => (section.style.display = 'none'));
+
 Sections.show = section => {
   Sections.hideAll();
   $(section).style.display = '';
 };
 
-/* const Settings = {};
-Settings.hideAll = () =>
-  $$('.settings__article').forEach(article => (article.style.display = 'none'));
-Settings.show = article => {
-  Settings.hideAll();
-  $(article).style.display = '';
-}; */
-
 const Device = {};
 
-Device.isValid = async deviceData => {
-  const response = await fetchJson('./api/validDevice.php', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(deviceData),
-  });
-  // console.log(php error)
-  // return ???
-};
-
-Device.isUnconfirmed = async deviceData => {
-  const response = await fetchJson('./api/unconfirmedDevice.php', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(deviceData),
-  });
-  // console.log(php error)
-  // return ???
-};
-
-const deviceIsRegistered = () =>
+Device.isRegistered = () =>
   !!(
-    localStorage.deviceid ||
-    localStorage.devicepassword ||
-    localStorage.email ||
-    localStorage.devicename ||
+    localStorage.deviceid &&
+    localStorage.devicepassword &&
+    localStorage.email &&
     localStorage.userid
   );
-const deviceIsConfirmed = () => {
-  // localStorage.confirmed || checkIfConfirmed
+
+Device.isConfirmed = () => !!localStorage.confirmed;
+
+Device.register = async data => {
+  const result = await fetchJson('./api/devices', 'POST', data);
+
+  if (result.httpResponseCode === 201) {
+    storeLocalPersistent([
+      {email: data.email},
+      {devicename: data.devicename},
+      {devicepassword: data.password},
+      {deviceid: result.deviceid},
+      {userid: result.userid},
+    ]) ||
+      (result.message = 'Zugangsdaten konnten nicht lokal gespeichert werden.');
+  }
+
+  return result;
 };
 
-const noGreatName = () => {
-  if (!deviceIsRegistered()) {
-    return Sections.show('signup');
-  }
+Device.handleRegistrationAttempt = async event => {
+  event.preventDefault();
+  localStorage.clear();
 
-  if (!localStorage.deviceIsConfirmed) {
-    Sections.show('pleaseConfirm');
-  }
-
-  const deviceData = {
-    userid: localStorage.userid,
-    deviceid: localStorage.deviceid,
-    devicepassword: localStorage.devicepassword,
+  const data = {
+    email: $('signup__email').value,
+    devicename: $('signup__devicename').value,
+    password: $('signup__password').value,
   };
 
-  if (Device.isValid(deviceData)) return Sections.show('welcome');
-  if (Device.isUnconfirmed(deviceData)) return Sections.show('pleaseConfirm');
+  const result = await Device.register(data);
 
-  return Sections.show('invalidUser');
+  result.message ? Error.show(result.message) : location.reload();
 };
 
-noGreatName();
+const Error = {};
+
+Error.show = message => {
+  $('error').innerText = `Fehler: ${message}`;
+  $('error').style.display = '';
+  console.log(`Error: ${message}`);
+};
+
+Error.reset = () => {
+  $('error').style.display = 'none';
+  $('error').innerText = '';
+};
+
+const Token = {};
+
+Token.get = () => {};
+Token.isExpired = () => {};
+
+const Signup = {};
+
+Signup.handleEmailInput = _ => {
+  const email = $('signup__email');
+  isValidEmail(email.value)
+    ? email.classList.remove('input--invalid')
+    : email.classList.add('input--invalid');
+};
+
+const init = () => {
+  $('signup__password').value = randomString(32);
+  $('signup__button').addEventListener(
+    'click',
+    Device.handleRegistrationAttempt
+  );
+  $('signup__email').addEventListener('input', Signup.handleEmailInput);
+};
+
+const main = () => {
+  if (!Device.isRegistered()) return Sections.show('signup');
+  if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
+  if (!localStorage.token || Token.isExpired()) Token.get();
+
+  // if (PATH is 'CONFIRM/ID/CONFIRMATIONPASSWORD') { check if correct && localStorage.confirmed = true}
+
+  return Sections.show('welcome');
+};
+
+init();
+main();
