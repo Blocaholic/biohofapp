@@ -22,6 +22,7 @@
         href="./manifest.webmanifest">
 </head>
 <body>
+  <div id="error" class="error"></div>
 <nav class="mainNav__nav">
     <ul class="mainNav__ul">
       <li class="mainNav__li">
