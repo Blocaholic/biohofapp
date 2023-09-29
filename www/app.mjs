@@ -57,7 +57,9 @@ Sections.hideAll = () =>
 
 Sections.show = section => {
   Sections.hideAll();
-  $(section).style.display = '';
+  $(section)
+    ? ($(section).style.display = '')
+    : ($('notFound').style.display = '');
 };
 
 const Device = {};
