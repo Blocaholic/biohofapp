@@ -135,8 +135,15 @@ const makeLinksFocusable = () => {
   [...$$('.link--inline')].forEach(link => link.setAttribute('tabindex', '0'));
 };
 
+const handleInternalLinks = () => {
+  [...$$('.link--inline')].forEach(link =>
+    link.addEventListener('click', _ => Sections.show(link.dataset.target))
+  );
+};
+
 const init = () => {
   makeLinksFocusable();
+  handleInternalLinks();
   $('signup__password').value = randomString(32);
   $('signup__button').addEventListener(
     'click',
