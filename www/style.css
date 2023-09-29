@@ -199,9 +199,10 @@ fieldset {
 }
 
 .link--inline:focus {
-  outline: var(--blue-dark);
+  outline: var(--blue-light) dotted 0.1em;
 }
 
+.link--inline:focus,
 .link--inline:hover,
 .link--inline:active {
   text-decoration: underline;
