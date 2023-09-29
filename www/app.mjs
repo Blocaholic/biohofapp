@@ -131,7 +131,12 @@ Signup.handleEmailInput = _ => {
     : email.classList.add('input--invalid');
 };
 
+const makeLinksFocusable = () => {
+  [...$$('.link--inline')].forEach(link => link.setAttribute('tabindex', '0'));
+};
+
 const init = () => {
+  makeLinksFocusable();
   $('signup__password').value = randomString(32);
   $('signup__button').addEventListener(
     'click',
