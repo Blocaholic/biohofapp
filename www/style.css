@@ -188,6 +188,25 @@ fieldset {
   top: 0.1em;
 }
 
+.link--inline,
+.link--inline:link,
+.link--inline:visited,
+.link--inline:focus,
+.link--inline:hover,
+.link--inline:active {
+  cursor: pointer;
+  color: var(--blue);
+}
+
+.link--inline:focus {
+  outline: var(--blue-dark);
+}
+
+.link--inline:hover,
+.link--inline:active {
+  text-decoration: underline;
+}
+
 .button--attention,
 .button--attention:link,
 .button--attention:visited {
