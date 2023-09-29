@@ -269,6 +269,10 @@ fieldset {
   height: 2.4em;
 }
 
+.mainNav__home {
+  display: none;
+}
+
 @media (display-mode: window-controls-overlay) {
   body {
     margin-top: env(titlebar-area-height, 33px);
@@ -289,14 +293,16 @@ fieldset {
     color: var(--grey-8);
   }
 
-  .mainNav__nav::before {
+  .mainNav__home {
+    display: block;
     font-family: var(--system-ui);
-    content: 'Biohof App';
     float: left;
     font-size: 1.3em;
     height: 100%;
     line-height: env(titlebar-area-height, 33px);
     margin-left: calc(env(titlebar-area-height) + 1em);
+    app-region: no-drag;
+    cursor: default;
   }
 
   .mainNav__ul {
