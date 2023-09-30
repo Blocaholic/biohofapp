@@ -264,9 +264,18 @@ fieldset {
   cursor: pointer;
 }
 
+.mainNav__li:focus-visible {
+  outline: none;
+}
+
 .mainNav__svg {
   width: 2.4em;
   height: 2.4em;
+}
+
+.mainNav__svg:hover,
+.mainNav__li:focus-visible .mainNav__svg {
+  transform: scale(1.15);
 }
 
 .mainNav__home {
