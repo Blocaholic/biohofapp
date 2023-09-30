@@ -1,35 +1,10 @@
 import {$, $$} from './js/$.mjs';
 import * as Sections from './js/Sections.mjs';
+import * as Device from './js/Device.mjs';
 
 const isValidEmail = email => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
-};
-
-const storeLocalPersistent = async items => {
-  items.forEach(item => localStorage.setItem(...Object.entries(item)[0]));
-
-  if (navigator.storage && navigator.storage.persist) {
-    const alreadyPersisted = await navigator.storage.persisted();
-    const persistent = alreadyPersisted || (await navigator.storage.persist());
-    return persistent;
-  }
-  return false;
-};
-
-const fetchJson = async (url, method, jsonBody) => {
-  const options = {
-    method: method,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(jsonBody),
-  };
-  const response = await fetch(url, options);
-  const json = await response.json();
-  json.httpResponseCode = response.status;
-  return json;
 };
 
 const randomString = length => {
@@ -48,63 +23,6 @@ const randomString = length => {
     })
     .join('');
   return string;
-};
-
-const Device = {};
-
-Device.isRegistered = () =>
-  !!(
-    localStorage.deviceid &&
-    localStorage.devicepassword &&
-    localStorage.email &&
-    localStorage.userid
-  );
-
-Device.isConfirmed = () => !!localStorage.confirmed;
-
-Device.register = async data => {
-  const result = await fetchJson('./api/devices', 'POST', data);
-
-  if (result.httpResponseCode === 201) {
-    storeLocalPersistent([
-      {email: data.email},
-      {devicename: data.devicename},
-      {devicepassword: data.password},
-      {deviceid: result.deviceid},
-      {userid: result.userid},
-    ]) ||
-      (result.message = 'Zugangsdaten konnten nicht lokal gespeichert werden.');
-  }
-
-  return result;
-};
-
-Device.handleRegistrationAttempt = async event => {
-  event.preventDefault();
-  localStorage.clear();
-
-  const data = {
-    email: $('signup__email').value,
-    devicename: $('signup__devicename').value,
-    password: $('signup__password').value,
-  };
-
-  const result = await Device.register(data);
-
-  result.message ? Error.show(result.message) : location.reload();
-};
-
-const Error = {};
-
-Error.show = message => {
-  $('error').innerText = `Fehler: ${message}`;
-  $('error').style.display = '';
-  console.log(`Error: ${message}`);
-};
-
-Error.reset = () => {
-  $('error').style.display = 'none';
-  $('error').innerText = '';
 };
 
 const Token = {};
