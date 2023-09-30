@@ -1,4 +1,4 @@
 const $ = id => document.getElementById(id);
-const $$ = query => document.querySelectorAll(query);
+const $$ = query => [...document.querySelectorAll(query)];
 
 export {$, $$};
