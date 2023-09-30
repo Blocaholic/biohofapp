@@ -122,7 +122,7 @@ Signup.handleEmailInput = _ => {
 };
 
 const makeLinksFocusable = () => {
-  [...$$('.link')].forEach(link => link.setAttribute('tabindex', '0'));
+  $$('.link').forEach(link => link.setAttribute('tabindex', '0'));
 };
 
 const handleInternalLinks = () => {
@@ -130,10 +130,10 @@ const handleInternalLinks = () => {
   $('mainNav__home').addEventListener('keyup', event => {
     if (event.key === 'Enter') location.reload();
   });
-  [...$$('.link')].forEach(link =>
+  $$('.link').forEach(link =>
     link.addEventListener('click', _ => Sections.show(link.dataset.target))
   );
-  [...$$('.link')].forEach(link =>
+  $$('.link').forEach(link =>
     link.addEventListener('keyup', event => {
       if (event.key === 'Enter') Sections.show(link.dataset.target);
     })
