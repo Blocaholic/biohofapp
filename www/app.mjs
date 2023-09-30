@@ -134,7 +134,7 @@ Signup.handleEmailInput = _ => {
 };
 
 const makeLinksFocusable = () => {
-  [...$$('.link--inline')].forEach(link => link.setAttribute('tabindex', '0'));
+  [...$$('.link')].forEach(link => link.setAttribute('tabindex', '0'));
 };
 
 const handleInternalLinks = () => {
