@@ -1,5 +1,5 @@
-const $ = id => document.getElementById(id);
-const $$ = query => document.querySelectorAll(query);
+import {$, $$} from './js/$.mjs';
+import * as Sections from './js/Sections.mjs';
 
 const isValidEmail = email => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,18 +48,6 @@ const randomString = length => {
     })
     .join('');
   return string;
-};
-
-const Sections = {};
-
-Sections.hideAll = () =>
-  $$('.mainSection').forEach(section => (section.style.display = 'none'));
-
-Sections.show = section => {
-  Sections.hideAll();
-  $(section)
-    ? ($(section).style.display = '')
-    : ($('notFound').style.display = '');
 };
 
 const Device = {};
