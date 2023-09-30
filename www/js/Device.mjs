@@ -29,6 +29,13 @@ const register = async data => {
   return result;
 };
 
+const handleEmailInput = _ => {
+  const email = $('signup__email');
+  isValidEmail(email.value)
+    ? email.classList.remove('input--invalid')
+    : email.classList.add('input--invalid');
+};
+
 const handleRegistrationAttempt = async event => {
   event.preventDefault();
   localStorage.clear();
@@ -44,4 +51,10 @@ const handleRegistrationAttempt = async event => {
   result.message ? Error.show(result.message) : location.reload();
 };
 
-export {isRegistered, isConfirmed, register, handleRegistrationAttempt};
+export {
+  isRegistered,
+  isConfirmed,
+  register,
+  handleEmailInput,
+  handleRegistrationAttempt,
+};

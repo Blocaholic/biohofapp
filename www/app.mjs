@@ -30,15 +30,6 @@ const Token = {};
 Token.get = () => {};
 Token.isExpired = () => {};
 
-const Signup = {};
-
-Signup.handleEmailInput = _ => {
-  const email = $('signup__email');
-  isValidEmail(email.value)
-    ? email.classList.remove('input--invalid')
-    : email.classList.add('input--invalid');
-};
-
 const makeLinksFocusable = () => {
   $$('.link').forEach(link => link.setAttribute('tabindex', '0'));
 };
@@ -66,7 +57,7 @@ const init = () => {
     'click',
     Device.handleRegistrationAttempt
   );
-  $('signup__email').addEventListener('input', Signup.handleEmailInput);
+  $('signup__email').addEventListener('input', Device.handleEmailInput);
 };
 
 const main = () => {
