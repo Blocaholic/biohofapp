@@ -139,6 +139,9 @@ const makeLinksFocusable = () => {
 
 const handleInternalLinks = () => {
   $('mainNav__home').addEventListener('click', _ => location.reload());
+  $('mainNav__home').addEventListener('keyup', event => {
+    if (event.key === 'Enter') location.reload();
+  });
   [...$$('.link')].forEach(link =>
     link.addEventListener('click', _ => Sections.show(link.dataset.target))
   );
