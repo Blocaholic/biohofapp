@@ -2,11 +2,7 @@ import {$, $$} from './js/$.mjs';
 import * as Sections from './js/Sections.mjs';
 import * as Device from './js/Device.mjs';
 import * as Utils from './js/Utils.mjs';
-
-const Token = {};
-
-Token.get = () => {};
-Token.isExpired = () => {};
+import * as Token from './js/Token.mjs';
 
 const makeLinksFocusable = () => {
   $$('.link').forEach(link => link.setAttribute('tabindex', '0'));
