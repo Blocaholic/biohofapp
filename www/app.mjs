@@ -139,7 +139,7 @@ const makeLinksFocusable = () => {
 
 const handleInternalLinks = () => {
   $('mainNav__home').addEventListener('click', _ => location.reload());
-  [...$$('.link--inline')].forEach(link =>
+  [...$$('.link')].forEach(link =>
     link.addEventListener('click', _ => Sections.show(link.dataset.target))
   );
 };

@@ -26,19 +26,19 @@
 <nav class="mainNav__nav">
 <div class="mainNav__home" id="mainNav__home">Biohof App</div>
 <ul class="mainNav__ul">
-      <li class="mainNav__li link--inline" data-target="documentation">
+      <li class="mainNav__li link" data-target="documentation">
         <span class="hidden">Dokumentation</span>
         <img src="./icon/documentation.svg" alt="" class="mainNav__svg">
       </li>
-      <li class="mainNav__li link--inline" data-target="reports">
+      <li class="mainNav__li link" data-target="reports">
       <span class="hidden">Auswertungen</span>
         <img src="./icon/reports.svg" alt="" class="mainNav__svg">
       </li>
-      <li class="mainNav__li link--inline" data-target="planning">
+      <li class="mainNav__li link" data-target="planning">
       <span class="hidden">Planung</span>
         <img src="./icon/planning.svg" alt="" class="mainNav__svg">
       </li>
-      <li class="mainNav__li link--inline" data-target="settings">
+      <li class="mainNav__li link" data-target="settings">
       <span class="hidden">Einstellungen</span>
         <img src="./icon/settings.svg" alt="" class="mainNav__svg">
       </li>
