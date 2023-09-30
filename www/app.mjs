@@ -142,6 +142,11 @@ const handleInternalLinks = () => {
   [...$$('.link')].forEach(link =>
     link.addEventListener('click', _ => Sections.show(link.dataset.target))
   );
+  [...$$('.link')].forEach(link =>
+    link.addEventListener('keyup', event => {
+      if (event.key === 'Enter') Sections.show(link.dataset.target);
+    })
+  );
 };
 
 const init = () => {
