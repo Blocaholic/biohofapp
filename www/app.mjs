@@ -2,11 +2,6 @@ import {$, $$} from './js/$.mjs';
 import * as Sections from './js/Sections.mjs';
 import * as Device from './js/Device.mjs';
 
-const isValidEmail = email => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
-};
-
 const randomString = length => {
   const chars =
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

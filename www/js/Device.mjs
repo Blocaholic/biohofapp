@@ -1,5 +1,5 @@
 import {$, $$} from './$.mjs';
-import {fetchJson, storeLocalPersistent} from './Utils.mjs';
+import {fetchJson, storeLocalPersistent, isValidEmail} from './Utils.mjs';
 import * as Error from './Error.mjs';
 
 const isRegistered = () =>
