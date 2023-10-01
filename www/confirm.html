@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color"
+        content="#52a230">
+  <title>Biohof App</title>
+  <style>
+    @font-face {
+      font-family: 'Inter';
+      src: url('./Inter-VariableFont_slnt\,wght.ttf');
+    }
+  </style>
+  <link rel="stylesheet"
+        href="./style.css">
+  <link rel="icon"
+        href="./icon.svg"
+        type="image/svg+xml">
+</head>
+<body>
+  <div id="error"
+       class="error"></div>
+  <nav class="mainNav__nav">
+    <div class="mainNav__home"
+         id="mainNav__home"
+         tabindex="0">Biohof App</div>
+  </nav>
+  <main>
+    <section id="success"
+             class="mainSection"
+             style="display: none;">
+      <h1>Gerät bestätigt</h1>
+      <p>Die App kann jetzt genutzt werden.</p>
+    </section>
+  </main>
+  <script type="module"
+          src="./js/confirm.mjs"></script>
+</body>
+</html>
