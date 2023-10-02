@@ -1,3 +1,22 @@
-export const get = () => {};
+export const get = async () => {
+  if (!localStorage.deviceid) return false;
+  if (!localStorage.devicepassword) return false;
+  const data = {password: localStorage.devicepassword};
+  const result = await fetchJson(
+    `./api/auth/${localStorage.deviceid}`,
+    'POST',
+    data
+  );
+
+  if (+localStorage.deviceid !== result.deviceid) return false;
+  if (result.httpResponseCode !== 201) return false;
+  if (!result.token) return false;
+
+  const success = await storeLocalPersistent([
+    {confirmed: true},
+    {token: result.token},
+  ]);
+  return success;
+};
 
 export const isExpired = () => {};

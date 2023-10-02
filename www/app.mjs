@@ -34,12 +34,11 @@ const init = () => {
   $('signup__email').addEventListener('input', Device.handleEmailInput);
 };
 
-const main = () => {
+const main = async () => {
   if (!Device.isRegistered()) return Sections.show('signup');
+  if (!Device.isConfirmed() || !localStorage.token || Token.isExpired())
+    await Token.get();
   if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
-  if (!localStorage.token || Token.isExpired()) Token.get();
-
-  // if (PATH is 'CONFIRM/ID/CONFIRMATIONPASSWORD') { check if correct && localStorage.confirmed = true}
 
   return Sections.show('welcome');
 };
