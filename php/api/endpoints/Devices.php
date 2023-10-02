@@ -162,7 +162,7 @@ class Devices {
     $content .= '<p>Geräte-ID: ' . $deviceid . '</p>';
     $content .= '<p>Geräte-Name: ' . $devicename . '</p>';
     $content .= '<p>E-Mail-Adresse: ' . $email . '</p>';
-    $content .= '<p><a href="https://biohofapp.de/confirm/' . $deviceid . '/' . $confirmationpassword . '">Bestätigen</a></p>';
+    $content .= '<p><a href="https://biohofapp.de/confirm.html?' . $deviceid . '&' . $confirmationpassword . '">Bestätigen</a></p>';
     $header_array[] = 'MIME-Version: 1.0';
     $header_array[] = 'Content-type: text/html; charset=utf-8';
     $header_array[] = 'From: BiohofApp.de <kontakt@biohofapp.de>';
