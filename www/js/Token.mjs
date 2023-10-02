@@ -21,4 +21,11 @@ export const get = async () => {
   return success;
 };
 
-export const isExpired = () => {};
+export const isExpired = () => {
+  if (!localStorage.token) return true;
+  const ageInSeconds =
+    Math.floor(Date.now() / 1000) -
+    JSON.parse(atob(localStorage.token.split('.')[1])).iat;
+  if (ageInSeconds > 600) return true;
+  return false;
+};
