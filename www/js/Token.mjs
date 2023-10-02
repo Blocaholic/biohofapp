@@ -1,7 +1,7 @@
 export const get = async () => {
   if (!localStorage.deviceid) return false;
-  if (!localStorage.devicepassword) return false;
-  const data = {password: localStorage.devicepassword};
+  if (!localStorage.password) return false;
+  const data = {password: localStorage.password};
   const result = await fetchJson(
     `./api/auth/${localStorage.deviceid}`,
     'POST',

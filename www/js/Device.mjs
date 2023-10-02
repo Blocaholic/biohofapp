@@ -5,7 +5,7 @@ import * as Error from './Error.mjs';
 const isRegistered = () =>
   !!(
     localStorage.deviceid &&
-    localStorage.devicepassword &&
+    localStorage.password &&
     localStorage.email &&
     localStorage.userid
   );
@@ -19,7 +19,7 @@ const register = async data => {
     storeLocalPersistent([
       {email: data.email},
       {devicename: data.devicename},
-      {devicepassword: data.password},
+      {password: data.password},
       {deviceid: result.deviceid},
       {userid: result.userid},
     ]) ||

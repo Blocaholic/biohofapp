@@ -12,9 +12,9 @@ class Devices {
     $userid = Database::get_userid($email) ?: Database::add_user($email);
     $confirmationpassword = Utils::randomString(32);
     $devicename = $validated['devicename'];
-    $devicepassword = $validated['devicepassword'];
+    $password = $validated['password'];
 
-    $devicehash = password_hash($devicepassword, PASSWORD_DEFAULT);
+    $devicehash = password_hash($password, PASSWORD_DEFAULT);
     $confirmationhash = password_hash($confirmationpassword, PASSWORD_DEFAULT);
 
     $deviceid = Database::add_device(
@@ -82,18 +82,18 @@ class Devices {
       "devicename" => $devicename,
     ]);
 
-    $devicepassword = $input['password'] ?? exit_with_error(400, [
+    $password = $input['password'] ?? exit_with_error(400, [
       "message" => "Password is required.",
     ]);
-    (strlen($devicepassword) === 32) || exit_with_error(400, [
+    (strlen($password) === 32) || exit_with_error(400, [
       "message" => "Password must be 32 characters.",
-      "passwordLength" => strlen($devicepassword),
+      "passwordLength" => strlen($password),
     ]);
 
     return [
       "email" => $email,
       "devicename" => $devicename,
-      "devicepassword" => $devicepassword,
+      "password" => $password,
     ];
   }
 
