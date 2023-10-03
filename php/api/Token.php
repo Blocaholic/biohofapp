@@ -20,4 +20,23 @@ class Token {
     return $token;
   }
 
+  public static function verify($token, $key) {
+    $token_parts = explode('.', $token);
+    [$base64header, $base64payload, $base64signature] = $token_parts;
+    [$header, $payload, $signature] = array_map('base64_decode', $token_parts);
+    $hashed = hash_hmac('SHA256', $base64header . $base64payload, $key);
+
+    if ($signature != $hashed) {
+      return false;
+    }
+
+    $json = json_decode($payload, true);
+
+    if ((time() - $json['iat']) > 660) {
+      return false;
+    }
+
+    return $json;
+  }
+
 }
