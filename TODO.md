@@ -5,8 +5,6 @@
 ### Prio A
 
 - login / token-authentication ?
-- show page after signup-success
-- show page after signup-error
 
 ### Prio B
 
