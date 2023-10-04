@@ -4,7 +4,9 @@
 
 ### Prio A
 
-- login / token-authentication ?
+- Navigationsmenü an Nutzerstatus anpassen
+- Inhalte für Settings anlegen
+- Betrieb anlegen / konfigurieren / wechseln / löschen
 
 ### Prio B
 
