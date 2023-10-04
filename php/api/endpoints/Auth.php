@@ -34,8 +34,11 @@ class Auth {
     $devicename = $device['devicename'];
     ['email' => $email] = Database::get_user($userid);
 
+    $now = time();
+
     $payload = json_encode([
-      "iat" => time(),
+      "iat" => $now,
+      "exp" => $now + 600,
       "email" => $email,
       "userid" => $userid,
       "deviceid" => $deviceid,

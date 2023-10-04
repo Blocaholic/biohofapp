@@ -32,7 +32,7 @@ class Token {
 
     $json = json_decode($payload, true);
 
-    if ((time() - $json['iat']) > 660) {
+    if (time() > $json['exp']) {
       return false;
     }
 

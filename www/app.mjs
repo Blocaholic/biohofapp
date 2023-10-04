@@ -36,7 +36,7 @@ const init = () => {
 
 const main = async () => {
   if (!Device.isRegistered()) return Sections.show('signup');
-  if (!Device.isConfirmed() || !localStorage.token || Token.isExpired())
+  if (!Device.isConfirmed() || !localStorage.token || Token.expiresSoon())
     await Token.get();
   if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
 
