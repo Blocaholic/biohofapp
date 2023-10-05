@@ -118,8 +118,20 @@ main {
 
 h1,
 h2,
-h3 {
+h3,
+h4,
+h5,
+h6 {
   margin-bottom: 1em;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6,
+form {
+  margin-top: 2em;
 }
 
 h1 {
@@ -150,6 +162,7 @@ button:active {
   cursor: pointer;
   color: var(--grey-9);
   background-color: var(--grey-1);
+  margin-top: 1.33em;
 }
 
 button:hover,
@@ -166,7 +179,6 @@ input {
 }
 
 fieldset {
-  margin-bottom: 1.33em;
   border: 0;
 }
 

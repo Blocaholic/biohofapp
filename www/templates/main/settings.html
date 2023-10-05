@@ -14,5 +14,18 @@
   <option value="company-C">Betrieb C</option>
 </select>
 
-<button id="settings__addCompany"
-        class="settings__company">Betrieb hinzufügen</button>
+<button id="addCompany__link">Betrieb hinzufügen</button>
+<form id="addCompany__form"
+      style="display: none;">
+  <h3>Betrieb hinzufügen</h3>
+  <label for="name">Name des Betriebs</label>
+  <input type="text"
+         name="name"
+         id="addCompany__name">
+  <h4>Module</h4>
+  <label for="chicken">Hühner</label>
+  <input type="checkbox"
+         name="chicken"
+         id="addCompany__moduleChicken">
+  <button id="addCompany__button">Betrieb hinzufügen</button>
+</form>
