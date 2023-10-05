@@ -38,7 +38,7 @@ const init = () => {
   });
   $('addFarm__close').addEventListener('click', _ => {
     $('addFarm__form').style.display = 'none';
-    $('$addFarm__link').style.display = '';
+    $('addFarm__link').style.display = '';
   });
 };
 
