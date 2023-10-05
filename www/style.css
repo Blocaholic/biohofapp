@@ -182,7 +182,7 @@ button:active {
 form {
   position: relative;
   padding: 1em 1.2em;
-  background-color: var(--green-1);
+  background-color: rgba(225, 242, 218, 0.5);
   border-radius: 1em;
 }
 
