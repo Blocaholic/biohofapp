@@ -32,6 +32,10 @@ const init = () => {
     Device.handleRegistrationAttempt
   );
   $('signup__email').addEventListener('input', Device.handleEmailInput);
+  $('addFarm__link').addEventListener('click', _ => {
+    $('addFarm__link').style.display = 'none';
+    $('addFarm__form').style.display = '';
+  });
 };
 
 const main = async () => {

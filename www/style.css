@@ -134,6 +134,15 @@ form {
   margin-top: 2.4em;
 }
 
+form > h1,
+form > h2,
+form > h3,
+form > h4,
+form > h5,
+form > h6 {
+  margin-top: 0;
+}
+
 h1 {
   font-weight: bold;
   font-size: 2em;
@@ -170,16 +179,23 @@ button:active {
   background-color: var(--green-4);
 }
 
+form {
+  position: relative;
+  padding: 1em 1.2em;
+  background-color: var(--green-1);
+  border-radius: 1em;
+}
+
+fieldset {
+  border: 0;
+}
+
 label {
   text-align: right;
 }
 
 input {
   padding: 0.2em 0.4em;
-}
-
-fieldset {
-  border: 0;
 }
 
 /* ########################################################################## */
@@ -198,6 +214,14 @@ fieldset {
   cursor: pointer;
   font-weight: bold;
   color: var(--grey-7);
+}
+
+.controlElement--close {
+  transform: rotate(45deg);
+  display: inline-block;
+  position: absolute;
+  top: 0.5em;
+  right: 0.6em;
 }
 
 .icon--inline {
