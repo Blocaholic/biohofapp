@@ -60,7 +60,7 @@ function wrap_content_of($files) {
   foreach ($files as $file) {
     $result .= '<section id="'
     . pathinfo($file, PATHINFO_FILENAME)
-    . '" class="mainSection">'
+    . '" class="mainSection" style="display:none;">'
     . file_get_contents('./templates/main/' . $file)
       . '</section>';
   }
