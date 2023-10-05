@@ -36,6 +36,10 @@ const init = () => {
     $('addFarm__link').style.display = 'none';
     $('addFarm__form').style.display = '';
   });
+  $('addFarm__close').addEventListener('click', _ => {
+    $('addFarm__form').style.display = 'none';
+    $('$addFarm__link').style.display = '';
+  });
 };
 
 const main = async () => {
