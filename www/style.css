@@ -194,6 +194,12 @@ fieldset {
   border: 0;
 }
 
+.controlElement {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--grey-7);
+}
+
 .icon--inline {
   position: relative;
   height: 1em;
