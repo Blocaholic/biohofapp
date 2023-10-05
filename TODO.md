@@ -6,7 +6,13 @@
 
 - Navigationsmenü an Nutzerstatus anpassen
 - Inhalte für Settings anlegen
-- Betrieb anlegen / konfigurieren / wechseln / löschen
+
+#### Betriebe API
+
+- farms POST anlegen (Name, ID, Boss, Module, Mitarbeiter)
+- farms/id PATCH ändern (Name, Boss, Module, Mitarbeiter)
+- farms/id DELETE löschen
+- farms/id POST get data
 
 ### Prio B
 
