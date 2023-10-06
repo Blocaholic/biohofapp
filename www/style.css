@@ -204,6 +204,10 @@ input {
   padding: 0.2em 0.4em;
 }
 
+input[type='radio'] {
+  width: 1.37em;
+}
+
 /* ########################################################################## */
 /* CLASSES */
 
@@ -218,8 +222,17 @@ input {
 
 .controlElement {
   cursor: pointer;
+  color: var(--grey-5);
+}
+
+.controlElement:hover,
+.controlElement:active,
+.controlElement:focus {
+  color: var(--grey-9);
+}
+
+.controlElement::first-letter {
   font-weight: bold;
-  color: var(--grey-7);
 }
 
 .controlElement--close {
@@ -397,4 +410,10 @@ input {
   grid-template-columns: auto 1fr;
   gap: 0.7em;
   align-items: center;
+}
+
+/* settings */
+
+.settings__selectFarm {
+  list-style: none;
 }
