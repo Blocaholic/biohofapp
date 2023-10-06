@@ -34,10 +34,10 @@ const init = () => {
   $('signup__email').addEventListener('input', Device.handleEmailInput);
   $('addFarm__link').addEventListener('click', _ => {
     $('addFarm__link').style.display = 'none';
-    $('addFarm__form').style.display = '';
+    $('addFarm__modal').style.display = '';
   });
   $('addFarm__close').addEventListener('click', _ => {
-    $('addFarm__form').style.display = 'none';
+    $('addFarm__modal').style.display = 'none';
     $('addFarm__link').style.display = '';
   });
 };

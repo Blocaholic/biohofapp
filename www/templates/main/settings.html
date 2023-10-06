@@ -17,20 +17,24 @@
 <span id="addFarm__link"
       class="controlElement controlElement--open"
       title="Betrieb hinzufügen">&#65291;</span>
-<form id="addFarm__form"
-      style="display: none;">
-  <h3>Betrieb hinzufügen</h3>
-  <span id="addFarm__close"
-        class="controlElement controlElement--close"
-        title="Abbrechen">&#65291;</span>
-  <label for="name">Name des Betriebs</label>
-  <input type="text"
-         name="name"
-         id="addFarm__name">
-  <h4>Module</h4>
-  <label for="chicken">Hühner</label>
-  <input type="checkbox"
-         name="chicken"
-         id="addFarm__moduleChicken">
-  <button id="addFarm__button">Betrieb hinzufügen</button>
-</form>
+<div id="addFarm__modal"
+     class="modal__background"
+     style="display: none;">
+  <form id="addFarm__form"
+        class="modal__box">
+    <h3>Betrieb hinzufügen</h3>
+    <span id="addFarm__close"
+          class="controlElement controlElement--close"
+          title="Abbrechen">&#65291;</span>
+    <label for="name">Name des Betriebs</label>
+    <input type="text"
+           name="name"
+           id="addFarm__name">
+    <h4>Module</h4>
+    <label for="chicken">Hühner</label>
+    <input type="checkbox"
+           name="chicken"
+           id="addFarm__moduleChicken">
+    <button id="addFarm__button">Betrieb hinzufügen</button>
+  </form>
+</div>

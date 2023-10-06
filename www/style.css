@@ -292,6 +292,22 @@ input {
   text-align: center;
 }
 
+.modal__background {
+  position: absolute;
+  top: calc(env(titlebar-area-height, 33px));
+  left: 0;
+  width: 100%;
+  height: calc(100% - env(titlebar-area-height, 33px));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal__box {
+  background-color: rgb(240, 248, 236);
+}
+
 /* main navigation */
 
 .mainNav__nav {
