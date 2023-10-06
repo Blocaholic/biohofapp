@@ -21,3 +21,10 @@ collation utf8mb4_unicode_520_ci
 ### Icons
 
 [Heroicons](https://heroicons.com/)
+
+#### Already used
+
+- chart-bar
+- pencil
+- wrench-screwdriver
+- user-group
