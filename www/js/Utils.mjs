@@ -9,12 +9,13 @@ export const storeLocalPersistent = async items => {
   return false;
 };
 
-export const fetchJson = async (url, method, jsonBody) => {
+export const fetchJson = async (url, method, jsonBody, headers = {}) => {
   const options = {
     method: method,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      ...headers,
     },
     body: JSON.stringify(jsonBody),
   };
