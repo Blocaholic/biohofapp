@@ -15,3 +15,9 @@
 ## Database
 
 collation utf8mb4_unicode_520_ci
+
+## Resources
+
+### Icons
+
+[Heroicons](https://heroicons.com/)
