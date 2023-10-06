@@ -3,11 +3,11 @@ import {fetchJson, storeLocalPersistent} from './Utils.mjs';
 export const get = async () => {
   if (!localStorage.deviceid) return false;
   if (!localStorage.password) return false;
-  const data = {password: localStorage.password};
+  const body = {password: localStorage.password};
   const result = await fetchJson(
     `./api/auth/${localStorage.deviceid}`,
     'POST',
-    data
+    body
   );
 
   if (+localStorage.deviceid !== result.deviceid) return false;
