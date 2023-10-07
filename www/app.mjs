@@ -42,7 +42,13 @@ const init = () => {
   });
 };
 
+const titlebarIsVisible = () =>
+  getComputedStyle(document.documentElement).getPropertyValue(
+    '--titlebar-area-height'
+  ) === '';
+
 const main = async () => {
+  if (titlebarIsVisible()) console.log('please hide titlebar');
   if (!Device.isRegistered()) return Sections.show('signup');
   if (!Device.isConfirmed() || !localStorage.token || Token.expiresSoon())
     await Token.get();
