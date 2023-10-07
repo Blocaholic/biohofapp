@@ -24,7 +24,9 @@
 <body>
   <div id="error" class="error"></div>
 <nav class="mainNav__nav">
-<div class="mainNav__home" id="mainNav__home" tabindex="0">Biohof App</div>
+<div class="mainNav__home" id="mainNav__home" tabindex="0">Biohof App
+  <img src="./icon/reload.svg" alt="" class="mainNav__reload">
+</div>
 <ul class="mainNav__ul">
       <li class="mainNav__li link" data-target="documentation">
         <span class="hidden">Dokumentation</span>

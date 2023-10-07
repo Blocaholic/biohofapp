@@ -379,7 +379,9 @@ input[type='radio'] {
   }
 
   .mainNav__home {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
     font-family: var(--system-ui);
     float: left;
     font-size: 1.3em;
@@ -397,9 +399,12 @@ input[type='radio'] {
   }
 
   .mainNav__svg {
-    width: 1.6em;
     height: 1.6em;
     app-region: no-drag;
+  }
+
+  .mainNav__reload {
+    height: 1.23em;
   }
 }
 
