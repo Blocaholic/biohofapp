@@ -22,7 +22,7 @@
         href="./manifest.webmanifest">
 </head>
 <body>
-  <div id="error" class="error"></div>
+  <div id="error" class="error" style="display:none;"></div>
 <nav class="mainNav__nav">
 <div class="mainNav__home" id="mainNav__home" tabindex="0">Biohof App
   <img src="./icon/reload.svg" alt="" class="mainNav__reload">
