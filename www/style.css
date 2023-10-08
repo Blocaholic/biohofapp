@@ -1,8 +1,6 @@
 @charset "utf-8";
 
 :root {
-  --titlebar-area-height: env(titlebar-area-height);
-
   --system-ui: system-ui, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
     'Noto Sans' Cantarell, 'Helvetica Neue', sans-serif;
 
@@ -108,14 +106,19 @@ html {
   font-size: 62.5%;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 main {
   font-size: 1.8em;
-  float: left;
   display: flex;
   width: 100%;
-  height: calc(100vh - env(titlebar-area-height, 33px));
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
 }
 
 h1,
@@ -326,7 +329,11 @@ input[type='radio'] {
 /* main navigation */
 
 .mainNav__nav {
-  float: right;
+  background-color: var(--primary);
+  padding: 0.4em 0.8em;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.3em;
 }
 
 .mainNav__ul {
@@ -344,25 +351,31 @@ input[type='radio'] {
 }
 
 .mainNav__svg {
-  width: 2.4em;
-  height: 2.4em;
+  width: 1.5em;
+  height: 1.5em;
 }
 
-.mainNav__li:hover,
-.mainNav__li:focus-visible,
-.mainNav__home:hover,
-.mainNav__home:focus-visible {
+.mainNav__svg:hover,
+.mainNav__svg:focus-visible,
+.mainNav__reload:hover,
+.mainNav__reload:focus-visible {
   transform: scale(1.15);
   outline: none;
 }
 
 .mainNav__home {
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-left: 0.5em;
+  cursor: pointer;
+  font-family: var(--system-ui);
 }
 
 @media (display-mode: window-controls-overlay) {
   body {
-    margin-top: env(titlebar-area-height, 33px);
+    margin-top: env(titlebar-area-height, 28px);
+    height: calc(100vh - env(titlebar-area-height, 28px));
   }
 
   .mainNav__nav {
@@ -370,28 +383,19 @@ input[type='radio'] {
     left: env(titlebar-area-x, 0);
     top: env(titlebar-area-y, 0);
     width: env(titlebar-area-width, 100%);
-    height: env(titlebar-area-height, 33px);
+    height: env(titlebar-area-height, 28px);
     app-region: drag;
     background-color: var(--primary);
     background-image: url(./icon.svg);
     background-repeat: no-repeat;
-    background-size: 2.4em 2.4em;
+    background-size: 1.85em 2em;
     background-position-x: 0.8em;
     color: var(--grey-8);
   }
 
   .mainNav__home {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    font-family: var(--system-ui);
-    float: left;
-    font-size: 1.3em;
-    height: 100%;
-    line-height: env(titlebar-area-height, 33px);
-    margin-left: calc(env(titlebar-area-height) + 1em);
+    margin-left: env(titlebar-area-height, 28px);
     app-region: no-drag;
-    cursor: default;
   }
 
   .mainNav__ul {
@@ -401,7 +405,7 @@ input[type='radio'] {
   }
 
   .mainNav__svg {
-    height: 1.6em;
+    height: 1.846em;
     app-region: no-drag;
   }
 

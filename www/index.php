@@ -6,7 +6,7 @@
         content="width=device-width, initial-scale=1.0">
   <meta name="theme-color"
         content="#52a230">
-  <title>Biohof App</title>
+  <title> </title>
   <style>
     @font-face {
       font-family: 'Inter';
@@ -23,11 +23,11 @@
 </head>
 <body>
   <div id="error" class="error" style="display:none;"></div>
-<nav class="mainNav__nav">
-<div class="mainNav__home" id="mainNav__home" tabindex="0">Biohof App
-  <img src="./icon/reload.svg" alt="" class="mainNav__reload">
-</div>
-<ul class="mainNav__ul">
+  <nav class="mainNav__nav">
+    <div class="mainNav__home" id="mainNav__home" tabindex="0">Biohof App
+      <img src="./icon/reload.svg" alt="" class="mainNav__svg">
+    </div>
+    <ul class="mainNav__ul">
       <li class="mainNav__li link" data-target="documentation">
         <span class="hidden">Dokumentation</span>
         <img src="./icon/documentation.svg" alt="" class="mainNav__svg">

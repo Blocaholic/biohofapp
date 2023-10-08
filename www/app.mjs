@@ -42,7 +42,7 @@ const init = () => {
   });
 };
 
-const titlebarIsVisible = !navigator.windowControlsOverlay.visible;
+const titlebarIsVisible = !navigator?.windowControlsOverlay?.visible;
 
 const main = async () => {
   if (titlebarIsVisible) console.log('please hide titlebar');
