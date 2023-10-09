@@ -289,6 +289,25 @@ input[type='radio'] {
   color: var(--grey-1);
 }
 
+.button--danger,
+.button--danger:link,
+.button--danger:visited {
+  background-color: var(--grey-1);
+  border-color: var(--red);
+  color: var(--red);
+  border-width: 0.17em;
+  font-weight: bold;
+}
+
+.button--danger:hover,
+.button--danger:active {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--grey-1);
+  border-width: 0.17em;
+  font-weight: bold;
+}
+
 .input--invalid {
   color: var(--red);
 }
