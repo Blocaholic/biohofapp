@@ -39,6 +39,11 @@ const debounce = (func, wait) => {
   };
 };
 
+const resetApp = () => {
+  localStorage.clear();
+  location.reload();
+};
+
 const init = () => {
   $('mainNav__homeText').style.display = titlebarIsVisible() ? 'none' : '';
   navigator?.windowControlsOverlay?.addEventListener(
@@ -65,6 +70,7 @@ const init = () => {
     $('addFarm__modal').style.display = 'none';
     $('addFarm__link').style.display = '';
   });
+  $('resetApp__button').addEventListener('click', resetApp);
 };
 
 const main = async () => {
