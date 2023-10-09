@@ -5,8 +5,7 @@
 ### Prio A
 
 - Navigationsmenü an Nutzerstatus anpassen
-- Inhalte für Settings anlegen
-- "Reset Button" in Settings (localStorage komplett löschen)
+- Betriebe in Settings dynamisch generieren
 
 #### Betriebe API
 
