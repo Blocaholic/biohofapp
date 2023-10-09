@@ -24,7 +24,8 @@ collation utf8mb4_unicode_520_ci
 
 #### Already used
 
-- chart-bar
-- pencil
-- wrench-screwdriver
-- user-group
+- chart-bar (reports.svg)
+- pencil (documentation.svg)
+- wrench-screwdriver (settings.svg)
+- user-group (planning.svg)
+- arrow-path (reload.svg)
