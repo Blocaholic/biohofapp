@@ -23,12 +23,30 @@ const handleInternalLinks = () => {
   );
 };
 
-const titlebarIsVisible =
+const titlebarIsVisible = _ =>
   !navigator?.windowControlsOverlay?.visible &&
   navigator?.userAgentData?.mobile === false;
 
+const debounce = (func, wait) => {
+  let timeout;
+  return function calledWhenEventFires(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
 const init = () => {
-  if (titlebarIsVisible) $('mainNav__homeText').style.display = 'none';
+  $('mainNav__homeText').style.display = titlebarIsVisible() ? 'none' : '';
+  navigator?.windowControlsOverlay?.addEventListener(
+    'geometrychange',
+    debounce(_ => {
+      $('mainNav__homeText').style.display = titlebarIsVisible() ? 'none' : '';
+    }, 100)
+  );
 
   makeLinksFocusable();
   handleInternalLinks();
