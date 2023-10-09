@@ -6,6 +6,7 @@
 
 - Navigationsmenü an Nutzerstatus anpassen
 - Inhalte für Settings anlegen
+- "Reset Button" in Settings (localStorage komplett löschen)
 
 #### Betriebe API
 
