@@ -23,9 +23,16 @@ const handleInternalLinks = () => {
   );
 };
 
+const titlebarIsVisible =
+  !navigator?.windowControlsOverlay?.visible &&
+  navigator?.userAgentData?.mobile === false;
+
 const init = () => {
+  if (titlebarIsVisible) $('mainNav__homeText').style.display = 'none';
+
   makeLinksFocusable();
   handleInternalLinks();
+
   $('signup__password').value = Utils.randomString(32);
   $('signup__button').addEventListener(
     'click',
@@ -42,10 +49,7 @@ const init = () => {
   });
 };
 
-const titlebarIsVisible = !navigator?.windowControlsOverlay?.visible;
-
 const main = async () => {
-  if (titlebarIsVisible) console.log('please hide titlebar');
   if (!Device.isRegistered()) return Sections.show('signup');
   if (!Device.isConfirmed() || !localStorage.token || Token.expiresSoon())
     await Token.get();
