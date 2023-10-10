@@ -213,6 +213,11 @@ input[type='radio'] {
   width: 1.37em;
 }
 
+strong {
+  font-weight: bold;
+  color: var(--red);
+}
+
 /* ########################################################################## */
 /* CLASSES */
 

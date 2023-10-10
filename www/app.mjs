@@ -70,7 +70,13 @@ const init = () => {
     $('addFarm__modal').style.display = 'none';
     $('addFarm__link').style.display = '';
   });
-  $('resetApp__button').addEventListener('click', resetApp);
+  $('resetApp__firstButton').addEventListener('click', _ => {
+    $('resetApp__modal').style.display = '';
+  });
+  $('resetApp__close').addEventListener('click', _ => {
+    $('resetApp__modal').style.display = 'none';
+  });
+  $('resetApp__finalButton').addEventListener('click', resetApp);
 };
 
 const main = async () => {
