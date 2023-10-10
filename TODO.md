@@ -4,7 +4,7 @@
 
 ### Prio A
 
-- Navigationsmenü an Nutzerstatus anpassen
+- Settings an Login-Status anpassen
 - Betriebe in Settings dynamisch generieren
 
 #### Betriebe API
