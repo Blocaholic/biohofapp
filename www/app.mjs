@@ -84,6 +84,7 @@ const main = async () => {
     await Token.get();
   if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
 
+  $$('.link--private').forEach($show);
   return Sections.show('welcome');
 };
 

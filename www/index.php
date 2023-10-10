@@ -29,15 +29,15 @@
       <img src="./icon/reload.svg" alt="" class="mainNav__svg">
     </div>
     <ul class="mainNav__ul">
-      <li class="mainNav__li link" data-target="documentation">
+      <li class="mainNav__li link link--private" style="display:none;" data-target="documentation">
         <span class="hidden">Dokumentation</span>
         <img src="./icon/documentation.svg" alt="" class="mainNav__svg">
       </li>
-      <li class="mainNav__li link" data-target="reports">
+      <li class="mainNav__li link link--private" style="display:none;" data-target="reports">
       <span class="hidden">Auswertungen</span>
         <img src="./icon/reports.svg" alt="" class="mainNav__svg">
       </li>
-      <li class="mainNav__li link" data-target="planning">
+      <li class="mainNav__li link link--private" style="display:none;" data-target="planning">
       <span class="hidden">Planung</span>
         <img src="./icon/planning.svg" alt="" class="mainNav__svg">
       </li>
