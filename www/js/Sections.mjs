@@ -1,13 +1,10 @@
-import {$, $$} from './$.mjs';
+import {$, $$, $hide, $show} from './$.mjs';
 
-const hideAll = () =>
-  $$('.mainSection').forEach(section => (section.style.display = 'none'));
+const hideAll = () => $$('.mainSection').forEach(section => $hide(section));
 
 const show = section => {
   hideAll();
-  $(section)
-    ? ($(section).style.display = '')
-    : ($('notFound').style.display = '');
+  $(section) ? $show(section) : $show('notFound');
 };
 
 export {hideAll, show};

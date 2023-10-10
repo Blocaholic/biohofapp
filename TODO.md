@@ -16,6 +16,7 @@
 
 ### Prio B
 
+- make "close symbol" accessible by keyboard (tab & enter)
 - delete all unconfirmed users and devices older than one week
 - show instructions to hide titlebar if it is visible
 - detect if pwa runs in chrome

@@ -1,7 +1,7 @@
-import {$} from './$.mjs';
+import {$, $show} from './$.mjs';
 
 export const show = message => {
   $('error').innerText = `Fehler: ${message}`;
-  $('error').style.display = '';
+  $show('error');
   console.log(`Error: ${message}`);
 };

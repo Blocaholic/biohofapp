@@ -1,4 +1,4 @@
-import {$, $$} from './js/$.mjs';
+import {$, $$, $show, $hide} from './js/$.mjs';
 import * as Sections from './js/Sections.mjs';
 import * as Device from './js/Device.mjs';
 import * as Utils from './js/Utils.mjs';
@@ -45,11 +45,12 @@ const resetApp = () => {
 };
 
 const init = () => {
-  $('mainNav__homeText').style.display = titlebarIsVisible() ? 'none' : '';
+  const appName = $('mainNav__homeText');
+  titlebarIsVisible() ? $hide(appName) : $show(appName);
   navigator?.windowControlsOverlay?.addEventListener(
     'geometrychange',
     debounce(_ => {
-      $('mainNav__homeText').style.display = titlebarIsVisible() ? 'none' : '';
+      titlebarIsVisible() ? $hide(appName) : $show(appName);
     }, 100)
   );
 
@@ -63,16 +64,16 @@ const init = () => {
   );
   $('signup__email').addEventListener('input', Device.handleEmailInput);
   $('addFarm__link').addEventListener('click', _ => {
-    $('addFarm__modal').style.display = '';
+    $show('addFarm__modal');
   });
   $('addFarm__close').addEventListener('click', _ => {
-    $('addFarm__modal').style.display = 'none';
+    $hide('addFarm__modal');
   });
   $('resetApp__firstButton').addEventListener('click', _ => {
-    $('resetApp__modal').style.display = '';
+    $show('resetApp__modal');
   });
   $('resetApp__close').addEventListener('click', _ => {
-    $('resetApp__modal').style.display = 'none';
+    $hide('resetApp__modal');
   });
   $('resetApp__finalButton').addEventListener('click', resetApp);
 };

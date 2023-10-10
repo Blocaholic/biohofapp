@@ -1,4 +1,4 @@
-import {$} from './$.mjs';
+import {$show} from './$.mjs';
 import * as Error from './Error.mjs';
 import {fetchJson} from './Utils.mjs';
 
@@ -27,7 +27,7 @@ const main = async () => {
   if (result.httpResponseCode !== 200)
     return Error.show(`Fehler: http_response_code: ${result.httpResponseCode}`);
 
-  $('success').style.display = '';
+  $show('success');
 };
 
 main();
