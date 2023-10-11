@@ -164,6 +164,10 @@ h5 {
   font-size: 1em;
 }
 
+p {
+  max-width: 40em;
+}
+
 button,
 button:link,
 button:visited,
