@@ -13,6 +13,7 @@ header("Content-type: application/json; charset=UTF-8");
 $valid_endpoints = [
   'devices' => ['PATCH', 'POST'],
   'auth' => ['POST'],
+  'farms' => ['POST', 'PATCH', 'GET'],
 ];
 
 $http_methods = [
