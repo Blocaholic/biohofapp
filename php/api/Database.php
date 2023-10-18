@@ -142,4 +142,16 @@ class Database {
     return true;
   }
 
+  public static function add_farm(
+    $owner,
+    $farmname = "",
+    $module_chicken = 0,
+    $module_marketgarden = 0,
+    $module_goats = 0,
+    $module_bees = 0
+  ) {
+    $pdo = self::connect();
+    return $farmid;
+  }
+
 }
