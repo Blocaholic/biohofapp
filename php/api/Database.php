@@ -28,7 +28,6 @@ class Database {
 
     $device = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $pdo = null;
     return $device;
   }
 
@@ -45,7 +44,6 @@ class Database {
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $pdo = null;
     return $user;
   }
 
@@ -61,7 +59,6 @@ class Database {
 
     $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-    $pdo = null;
     return $user['userid'];
   }
 
@@ -96,7 +93,6 @@ class Database {
       "Failed to create deviceid."
     );
 
-    $pdo = null;
     return (int) $deviceid;
   }
 
@@ -110,7 +106,6 @@ class Database {
       "Failed to create userid."
     );
 
-    $pdo = null;
     return (int) $userid;
   }
 
