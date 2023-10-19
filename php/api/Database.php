@@ -142,15 +142,28 @@ class Database {
     return true;
   }
 
-  public static function add_farm(
-    $owner,
-    $farmname = "",
-    $module_chicken = 0,
-    $module_marketgarden = 0,
-    $module_goats = 0,
-    $module_bees = 0
-  ) {
+  public static function add_farm($farm) {
     $pdo = self::connect();
+    $query = "INSERT INTO farms (
+      farmname,
+      owner,
+      module_chicken,
+      module_marketgarden,
+      module_goats,
+      module_bees
+    ) VALUES (
+      :farmname,
+      :owner,
+      :module_chicken,
+      :module_marketgarden,
+      :module_goats,
+      :module_bees
+    );";
+    $statement = $pdo->prepare($query);
+    $statement->execute($farm);
+    $farmid = $pdo->lastInsertId() ?: throw new Exception(
+      "Failed to create farmid."
+    );
     return $farmid;
   }
 
