@@ -27,13 +27,13 @@ class Token {
     $hashed = hash_hmac('SHA256', $base64header . $base64payload, $key);
 
     if ($signature != $hashed) {
-      return false;
+      return null;
     }
 
     $json = json_decode($payload, true);
 
     if (time() > $json['exp']) {
-      return false;
+      return null;
     }
 
     return $json;
