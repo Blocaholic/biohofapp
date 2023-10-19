@@ -3,7 +3,6 @@
 class Auth {
   public static function POST($_deviceid) {
     require_once __DIR__ . '/../Token.php';
-    require_once __DIR__ . '/../Config.php';
     require_once __DIR__ . '/../Database.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
@@ -44,7 +43,7 @@ class Auth {
       "deviceid" => $deviceid,
     ]);
 
-    $token = Token::sign($payload, Config::$token_key);
+    $token = Token::sign($payload);
 
     http_response_code(201);
     return [

@@ -16,14 +16,12 @@ class Farms {
 
   private static function validate_post_input($input) {
     require_once __DIR__ . '/../Token.php';
-    require_once __DIR__ . '/../Config.php';
-    $KEY = Config::$token_key;
 
     $token = $input['token'] ?? exit_with_error(401, [
       "message" => "Token is required.",
     ]);
 
-    $token_payload = Token::verify($token, $KEY) ?: exit_with_error(401, [
+    $token_payload = Token::verify($token) ?: exit_with_error(401, [
       "message" => "Invalid token.",
     ]);
 

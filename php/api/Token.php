@@ -1,8 +1,9 @@
 <?php
+require_once __DIR__ . '/Config.php';
 
 class Token {
 
-  public static function sign($payload, $key) {
+  public static function sign($payload) {
 
     $header = json_encode([
       "alg" => "HS256",
@@ -12,7 +13,11 @@ class Token {
     $base64header = base64_encode($header);
     $base64payload = base64_encode($payload);
 
-    $signature = hash_hmac('SHA256', $base64header . $base64payload, $key);
+    $signature = hash_hmac(
+      'SHA256',
+      $base64header . $base64payload,
+      Config::$token_key
+    );
 
     $base64signature = base64_encode($signature);
     $token = $base64header . "." . $base64payload . "." . $base64signature;
@@ -20,11 +25,17 @@ class Token {
     return $token;
   }
 
-  public static function verify($token, $key) {
+  public static function verify($token) {
+
     $token_parts = explode('.', $token);
     [$base64header, $base64payload, $base64signature] = $token_parts;
     [$header, $payload, $signature] = array_map('base64_decode', $token_parts);
-    $hashed = hash_hmac('SHA256', $base64header . $base64payload, $key);
+
+    $hashed = hash_hmac(
+      'SHA256',
+      $base64header . $base64payload,
+      Config::$token_key
+    );
 
     if ($signature != $hashed) {
       return null;
