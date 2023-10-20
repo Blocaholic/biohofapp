@@ -18,41 +18,29 @@ class Farms {
   private static function validate_post_input($input, $headers) {
     require_once __DIR__ . '/../Token.php';
 
-    if (!isset($input['farmname'])) {
-      exit_with_error(400, [
-        "message" => '"farmname" is required.',
-      ]);
-    }
+    $input['farmname'] ?? exit_with_error(400, [
+      "message" => '"farmname" is required.',
+    ]);
 
-    if (!isset($input['owner'])) {
-      exit_with_error(400, [
-        "message" => '"owner" is required.',
-      ]);
-    }
+    $input['owner'] ?? exit_with_error(400, [
+      "message" => '"owner" is required.',
+    ]);
 
-    if (!isset($input['module_chicken'])) {
-      exit_with_error(400, [
-        "message" => '"module_chicken" is required.',
-      ]);
-    }
+    $input['module_chicken'] ?? exit_with_error(400, [
+      "message" => '"module_chicken" is required.',
+    ]);
 
-    if (!isset($input['module_marketgarden'])) {
-      exit_with_error(400, [
-        "message" => '"module_marketgarden" is required.',
-      ]);
-    }
+    $input['module_marketgarden'] ?? exit_with_error(400, [
+      "message" => '"module_marketgarden" is required.',
+    ]);
 
-    if (!isset($input['module_goats'])) {
-      exit_with_error(400, [
-        "message" => '"module_goats" is required.',
-      ]);
-    }
+    $input['module_goats'] ?? exit_with_error(400, [
+      "message" => '"module_goats" is required.',
+    ]);
 
-    if (!isset($input['module_bees'])) {
-      exit_with_error(400, [
-        "message" => '"module_bees" is required.',
-      ]);
-    }
+    $input['module_bees'] ?? exit_with_error(400, [
+      "message" => '"module_bees" is required.',
+    ]);
 
     $token = $headers['Token'] ?? exit_with_error(401, [
       "message" => "Token is required.",
@@ -60,7 +48,6 @@ class Farms {
 
     $token_payload = Token::verify($token) ?: exit_with_error(401, [
       "message" => "Invalid token.",
-      "headers" => $headers,
     ]);
 
     if ($input['owner'] !== $token_payload['userid']) {
@@ -74,8 +61,6 @@ class Farms {
         "message" => "Farmname must be at least 3 characters.",
       ]);
     }
-
-    $userid = $token_payload['userid'];
 
     return [
       "farmname" => $input['farmname'],
