@@ -95,4 +95,26 @@ class Farms {
       "module_bees" => $input['module_bees'],
     ];
   }
+
+  public static function GET() {
+    require_once __DIR__ . '/../Token.php';
+    require_once __DIR__ . '/../Database.php';
+
+    $token = apache_request_headers()['Token'] ?? exit_with_error(401, [
+      "message" => "Token is required.",
+    ]);
+
+    $token_payload = Token::verify($token) ?: exit_with_error(401, [
+      "message" => "Invalid token.",
+    ]);
+
+    $userid = $token_payload['userid'];
+
+    // get all farms from database for userid
+
+    $farms = [];
+
+    http_response_code(200);
+    return $farms;
+  }
 }
