@@ -61,6 +61,30 @@ class Farms {
       ]);
     }
 
+    if ($input['module_chicken'] !== 0 && $input['module_chicken'] !== 1) {
+      exit_with_error(400, [
+        "message" => "module_chicken must be either, 0 or 1.",
+      ]);
+    }
+
+    if ($input['module_marketgarden'] !== 0 && $input['module_marketgarden'] !== 1) {
+      exit_with_error(400, [
+        "message" => "module_marketgarden must be either, 0 or 1.",
+      ]);
+    }
+
+    if ($input['module_goats'] !== 0 && $input['module_goats'] !== 1) {
+      exit_with_error(400, [
+        "message" => "module_goats must be either, 0 or 1.",
+      ]);
+    }
+
+    if ($input['module_bees'] !== 0 && $input['module_bees'] !== 1) {
+      exit_with_error(400, [
+        "message" => "module_bees must be either, 0 or 1.",
+      ]);
+    }
+
     return [
       "farmname" => $input['farmname'],
       "owner" => $input['owner'],
