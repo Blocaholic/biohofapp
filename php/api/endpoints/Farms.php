@@ -3,6 +3,7 @@
 class Farms {
   public static function POST() {
     require_once __DIR__ . '/../Token.php';
+    require_once __DIR__ . '/../Database.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
 
@@ -22,10 +23,10 @@ class Farms {
       ]);
     }
 
-    // $farmid = add_farm_to_database() or exit_with_error();
+    $farmid = Database::add_farm($farm);
 
     http_response_code(201);
-    return $farm;
+    return $farmid;
 
   }
 

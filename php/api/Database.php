@@ -157,7 +157,7 @@ class Database {
     $statement = $pdo->prepare($query);
     $statement->execute($farm);
     $farmid = $pdo->lastInsertId() ?: throw new Exception(
-      "Failed to create farmid."
+      "Failed to add farm to database."
     );
     return $farmid;
   }
