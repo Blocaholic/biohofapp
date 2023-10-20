@@ -201,6 +201,10 @@ form {
   border-radius: 1em;
 }
 
+form > *:first-child {
+  margin-right: 0.6em;
+}
+
 fieldset {
   border: 0;
 }
@@ -352,6 +356,12 @@ strong {
 
 .modal__box {
   background-color: rgb(240, 248, 236);
+}
+
+.label--block {
+  display: block;
+  text-align: left;
+  margin-bottom: 0.2em;
 }
 
 /* main navigation */

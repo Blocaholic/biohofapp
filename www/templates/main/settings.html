@@ -41,15 +41,32 @@
     <span id="addFarm__close"
           class="controlElement controlElement--close"
           title="Abbrechen">&#65291;</span>
-    <label for="name">Name des Betriebs</label>
+    <label for="name"
+           class="label--block">Name des Betriebs</label>
     <input type="text"
            name="name"
            id="addFarm__name">
     <h4>Module</h4>
-    <label for="chicken">Hühner</label>
-    <input type="checkbox"
-           name="chicken"
-           id="addFarm__moduleChicken">
+    <label class="label--block">
+      <input type="checkbox"
+             name="module_marketgarden">
+      Market Garden
+    </label>
+    <label class="label--block">
+      <input type="checkbox"
+             name="module_chicken">
+      Hühner
+    </label>
+    <label class="label--block">
+      <input type="checkbox"
+             name="module_goats">
+      Ziegen
+    </label>
+    <label class="label--block">
+      <input type="checkbox"
+             name="module_bees">
+      Bienen
+    </label>
     <button id="addFarm__button">Betrieb hinzufügen</button>
   </form>
 </div>
