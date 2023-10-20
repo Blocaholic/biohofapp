@@ -17,6 +17,42 @@ class Farms {
   private static function validate_post_input($input) {
     require_once __DIR__ . '/../Token.php';
 
+    if (!isset($input['farmname'])) {
+      exit_with_error(400, [
+        "message" => '"farmname" is required.',
+      ]);
+    }
+
+    if (!isset($input['owner'])) {
+      exit_with_error(400, [
+        "message" => '"owner" is required.',
+      ]);
+    }
+
+    if (!isset($input['module_chicken'])) {
+      exit_with_error(400, [
+        "message" => '"module_chicken" is required.',
+      ]);
+    }
+
+    if (!isset($input['module_marketgarden'])) {
+      exit_with_error(400, [
+        "message" => '"module_marketgarden" is required.',
+      ]);
+    }
+
+    if (!isset($input['module_goats'])) {
+      exit_with_error(400, [
+        "message" => '"module_goats" is required.',
+      ]);
+    }
+
+    if (!isset($input['module_bees'])) {
+      exit_with_error(400, [
+        "message" => '"module_bees" is required.',
+      ]);
+    }
+
     $token = $input['token'] ?? exit_with_error(401, [
       "message" => "Token is required.",
     ]);
