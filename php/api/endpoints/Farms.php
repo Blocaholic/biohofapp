@@ -4,8 +4,9 @@ class Farms {
   public static function POST() {
 
     $_POST = json_decode(file_get_contents('php://input'), true);
+    $headers = apache_request_headers();
 
-    $farm = self::validate_post_input($_POST);
+    $farm = self::validate_post_input($_POST, $headers);
 
     // $farmid = add_farm_to_database() or exit_with_error();
 
@@ -14,7 +15,7 @@ class Farms {
 
   }
 
-  private static function validate_post_input($input) {
+  private static function validate_post_input($input, $headers) {
     require_once __DIR__ . '/../Token.php';
 
     if (!isset($input['farmname'])) {
@@ -53,17 +54,18 @@ class Farms {
       ]);
     }
 
-    $token = $input['token'] ?? exit_with_error(401, [
+    $token = $headers['Token'] ?? exit_with_error(401, [
       "message" => "Token is required.",
     ]);
 
     $token_payload = Token::verify($token) ?: exit_with_error(401, [
       "message" => "Invalid token.",
+      "headers" => $headers,
     ]);
 
     if ($input['owner'] !== $token_payload['userid']) {
       exit_with_error(401, [
-        "message" => "Token does not belong to owner",
+        "message" => "Token does not belong to owner.",
       ]);
     }
 
