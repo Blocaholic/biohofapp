@@ -69,6 +69,9 @@ const init = () => {
   $('addFarm__close').addEventListener('click', _ => {
     $hide('addFarm__modal');
   });
+  $('addFarm__button').addEventListener('click', event => {
+    event.preventDefault();
+  });
   $('resetApp__firstButton').addEventListener('click', _ => {
     $show('resetApp__modal');
   });
