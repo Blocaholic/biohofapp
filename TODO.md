@@ -30,3 +30,5 @@
 ### on launch
 
 ## issues
+
+- make modal scrollable instead of background content
