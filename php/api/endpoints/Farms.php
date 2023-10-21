@@ -17,7 +17,7 @@ class Farms {
 
     $farm = self::validate_post_input($_POST);
 
-    if ($farm['owner'] !== $token_payload['userid']) {
+    if ((int) $farm['owner'] !== $token_payload['userid']) {
       exit_with_error(401, [
         "message" => "Token does not belong to owner.",
       ]);
@@ -26,7 +26,7 @@ class Farms {
     $farmid = Database::add_farm($farm);
 
     http_response_code(201);
-    return $farmid;
+    return ['farmid' => $farmid];
 
   }
 

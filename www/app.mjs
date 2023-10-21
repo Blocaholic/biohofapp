@@ -3,6 +3,7 @@ import * as Sections from './js/Sections.mjs';
 import * as Device from './js/Device.mjs';
 import * as Utils from './js/Utils.mjs';
 import * as Token from './js/Token.mjs';
+import * as Farm from './js/Farm.mjs';
 
 const makeLinksFocusable = () => {
   $$('.link').forEach(link => link.setAttribute('tabindex', '0'));
@@ -69,9 +70,7 @@ const init = () => {
   $('addFarm__close').addEventListener('click', _ => {
     $hide('addFarm__modal');
   });
-  $('addFarm__button').addEventListener('click', event => {
-    event.preventDefault();
-  });
+  $('addFarm__button').addEventListener('click', Farm.add);
   $('resetApp__firstButton').addEventListener('click', _ => {
     $show('resetApp__modal');
   });
