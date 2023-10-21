@@ -195,7 +195,7 @@ class Database {
       FROM farms
       LEFT JOIN farmmembers
       ON farms.farmid = farmmembers.farmid
-      WHERE farms.owner = :userid OR farmmembers.userid = :userid;";
+      WHERE farmmembers.userid = :userid;";
     $statement = $pdo->prepare($query);
     $statement->execute(["userid" => $userid]);
 
