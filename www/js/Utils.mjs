@@ -9,7 +9,7 @@ export const storeLocalPersistent = async items => {
   return false;
 };
 
-export const fetchJson = async (url, method, jsonBody, headers = {}) => {
+export const fetchJson = async (url, method, jsonBody = {}, headers = {}) => {
   const options = {
     method: method,
     headers: {
@@ -18,8 +18,10 @@ export const fetchJson = async (url, method, jsonBody, headers = {}) => {
       Token: localStorage.token || '',
       ...headers,
     },
-    body: JSON.stringify(jsonBody),
   };
+  if (method !== 'GET') {
+    options.body = JSON.stringify(jsonBody);
+  }
   const response = await fetch(url, options);
   const json = await response.json();
   json.httpResponseCode = response.status;

@@ -95,6 +95,15 @@ const main = async () => {
   if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
 
   $$('.link--private').forEach($show);
+  const farms = await Utils.fetchJson('./api/farms', 'GET');
+  $('settings__selectFarm').innerHTML = farms
+    .map(
+      farm => `<li>
+  <input type="radio" name="farm" id="${farm.farmid}">
+  <label for="${farm.farmid}">#${farm.farmid} "${farm.farmname}" (${farm.role})</label>
+  </li>`
+    )
+    .join('');
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
 };
