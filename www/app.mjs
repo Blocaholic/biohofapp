@@ -10,7 +10,15 @@ const makeLinksFocusable = () => {
 };
 
 const handleInternalLinks = () => {
-  $('mainNav__home').addEventListener('click', _ => location.reload());
+  $('mainNav__home').addEventListener('click', event => {
+    if (
+      event.target.id === 'mainNav__home' ||
+      event.target.id === 'mainNav__homeText'
+    ) {
+      localStorage.removeItem('lastPage');
+    }
+    location.reload();
+  });
   $('mainNav__home').addEventListener('keyup', event => {
     if (event.key === 'Enter') location.reload();
   });
@@ -87,6 +95,7 @@ const main = async () => {
   if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
 
   $$('.link--private').forEach($show);
+  if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
 };
 
