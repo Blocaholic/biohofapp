@@ -141,21 +141,25 @@ class Database {
     $pdo = self::connect();
     $query = "INSERT INTO farms (
       farmname,
-      owner,
       module_chicken,
       module_marketgarden,
       module_goats,
       module_bees
     ) VALUES (
       :farmname,
-      :owner,
       :module_chicken,
       :module_marketgarden,
       :module_goats,
       :module_bees
     );";
     $statement = $pdo->prepare($query);
-    $statement->execute($farm);
+    $statement->execute([
+      "farmname" => $farm['farmname'],
+      "module_chicken" => $farm['module_chicken'],
+      "module_marketgarden" => $farm['module_marketgarden'],
+      "module_goats" => $farm['module_goats'],
+      "module_bees" => $farm['module_bees'],
+    ]);
     $farmid = $pdo->lastInsertId() ?: throw new Exception(
       "Failed to add farm to database."
     );
