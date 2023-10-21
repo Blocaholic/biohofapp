@@ -9,14 +9,14 @@
 
 #### Betriebe API
 
-- farms POST anlegen (Name, ID, Boss, Module, Mitarbeiter)
-- farms/id PATCH ändern (Name, Boss, Module, Mitarbeiter)
-- farms/id DELETE löschen
-- farms/id POST get data
+- farms/id PATCH (Name ändern)
+- farms/id PATCH (Berechtigung hinzufügen / ändern / löschen)
+- farms/id PATCH (Owner ändern)
+- farms/id PATCH (Module ändern)
+- farms/id DELETE
 
 ### Prio B
 
-- make "close symbol" accessible by keyboard (tab & enter)
 - delete all unconfirmed users and devices older than one week
 - show instructions to hide titlebar if it is visible
 - detect if pwa runs in chrome
