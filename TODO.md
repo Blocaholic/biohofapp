@@ -30,5 +30,3 @@
 ### on launch
 
 ## issues
-
-- Anzeigefehler von modals beim scrollen ohne "window controls overlay"

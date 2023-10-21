@@ -367,11 +367,14 @@ strong {
 /* main navigation */
 
 .mainNav__nav {
+  position: fixed;
   background-color: var(--primary);
   padding: 0.4em 0.8em;
   display: flex;
   justify-content: space-between;
   font-size: 1.3em;
+  width: 100%;
+  z-index: 9;
 }
 
 .mainNav__ul {
@@ -417,7 +420,6 @@ strong {
   }
 
   .mainNav__nav {
-    position: fixed;
     left: env(titlebar-area-x, 0);
     top: env(titlebar-area-y, 0);
     width: env(titlebar-area-width, 100%);
