@@ -15,6 +15,7 @@ export const fetchJson = async (url, method, jsonBody, headers = {}) => {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Token: localStorage.token || '',
       ...headers,
     },
     body: JSON.stringify(jsonBody),
