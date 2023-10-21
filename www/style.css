@@ -343,7 +343,7 @@ strong {
 }
 
 .modal__background {
-  position: absolute;
+  position: fixed;
   top: calc(env(titlebar-area-height, 33px));
   left: 0;
   width: 100%;
