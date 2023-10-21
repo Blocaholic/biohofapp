@@ -159,7 +159,30 @@ class Database {
     $farmid = $pdo->lastInsertId() ?: throw new Exception(
       "Failed to add farm to database."
     );
+    self::add_farmmember($farmid, $farm['owner'], 'owner');
     return $farmid;
+  }
+
+  public static function add_farmmember($farmid, $userid, $role) {
+    $pdo = self::connect();
+    $query = "INSERT INTO farmmembers (
+      farmid,
+      userid,
+      role
+    ) VALUES (
+      :farmid,
+      :userid,
+      :role
+    );";
+    $statement = $pdo->prepare($query);
+    $statement->execute([
+      "farmid" => $farmid,
+      "userid" => $userid,
+      "role" => $role,
+    ]);
+    $row_count = $statement->rowCount();
+    if ($row_count !== 1) {throw new Exception("Could not set user role.");}
+    return true;
   }
 
   public static function get_farms($userid) {
