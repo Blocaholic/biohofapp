@@ -4,6 +4,7 @@
 
 ### Prio A
 
+- "pleaseConfirm" nicht als "lastPage" speichern
 - Settings an Login-Status anpassen
 - Betriebe in Settings dynamisch generieren
 
@@ -28,3 +29,5 @@
 ### on launch
 
 ## issues
+
+- Anzeigefehler von modals beim scrollen ohne "window controls overlay"
