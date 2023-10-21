@@ -110,9 +110,7 @@ class Farms {
 
     $userid = $token_payload['userid'];
 
-    // get all farms from database for userid
-
-    $farms = [];
+    $farms = Database::get_farms($userid);
 
     http_response_code(200);
     return $farms;

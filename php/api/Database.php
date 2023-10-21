@@ -162,4 +162,18 @@ class Database {
     return $farmid;
   }
 
+  public static function get_farms($userid) {
+    $pdo = self::connect();
+    $query = "SELECT farms.*, farmmembers.role
+      FROM farms
+      LEFT JOIN farmmembers
+      ON farms.farmid = farmmembers.farmid
+      WHERE farms.owner = :userid OR farmmembers.userid = :userid;";
+    $statement = $pdo->prepare($query);
+    $statement->execute(["userid" => $userid]);
+
+    $farms = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $farms;
+  }
+
 }
