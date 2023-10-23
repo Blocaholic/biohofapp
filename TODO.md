@@ -5,7 +5,6 @@
 ### Prio A
 
 - select first farm, if none selected (localStorage)
-- "pleaseConfirm" nicht als "lastPage" speichern
 - Settings an Login-Status anpassen
 - Betriebe in Settings dynamisch generieren
 
