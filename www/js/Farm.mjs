@@ -13,7 +13,9 @@ const add = async event => {
     owner: localStorage.userid,
   };
 
-  await fetchJson('./api/farms', 'POST', farm);
+  const {farmid} = await fetchJson('./api/farms', 'POST', farm);
+
+  if (!localStorage.selectedFarm) localStorage.selectedFarm = farmid;
 
   location.reload();
 };

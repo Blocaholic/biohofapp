@@ -99,8 +99,12 @@ const main = async () => {
   $('settings__selectFarm').innerHTML = farms
     .map(
       farm => `<li>
-  <input type="radio" name="farm" id="${farm.farmid}">
-  <label for="${farm.farmid}">#${farm.farmid} "${farm.farmname}" (${farm.role})</label>
+  <input type="radio" name="farm" id="${farm.farmid}" ${
+        parseInt(localStorage.selectedFarm) === farm.farmid ? 'checked' : ''
+      }>
+  <label for="${farm.farmid}">#${farm.farmid} "${farm.farmname}" (${
+        farm.role
+      })</label>
   </li>`
     )
     .join('');
