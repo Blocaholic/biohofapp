@@ -4,7 +4,6 @@
 
 ### Prio A
 
-- change localStorage.selectedFarm on click
 - Settings an Login-Status anpassen
 - Betriebe in Settings dynamisch generieren
 

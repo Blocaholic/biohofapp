@@ -108,6 +108,14 @@ const main = async () => {
   </li>`
     )
     .join('');
+  document
+    .querySelectorAll('#settings__selectFarm input[name="farm"]')
+    .forEach(radioButton =>
+      radioButton.addEventListener(
+        'change',
+        event => (localStorage.selectedFarm = event.target.id)
+      )
+    );
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
 };
