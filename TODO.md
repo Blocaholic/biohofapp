@@ -6,6 +6,7 @@
 
 - Settings an Login-Status anpassen
 - Betriebe in Settings dynamisch generieren
+- "Home-Symbol" zwischen "Biohof App" und "Reload-Symbol" zeigen (no window controls overlay)
 
 #### Betriebe API
 
