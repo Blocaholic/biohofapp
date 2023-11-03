@@ -95,6 +95,13 @@ const main = async () => {
   if (!Device.isConfirmed()) return Sections.show('pleaseConfirm');
 
   $$('.link--private').forEach($show);
+
+  $('settings__user').style.display = '';
+  $('userid').innerHTML += localStorage.userid;
+  $('email').innerHTML += localStorage.email;
+  $('deviceid').innerHTML += localStorage.deviceid;
+  $('devicename').innerHTML += localStorage.devicename;
+
   const farms = await Utils.fetchJson('./api/farms', 'GET');
   $('settings__selectFarm').innerHTML = farms
     .map(
@@ -108,6 +115,7 @@ const main = async () => {
   </li>`
     )
     .join('');
+
   document
     .querySelectorAll('#settings__selectFarm input[name="farm"]')
     .forEach(radioButton =>
@@ -116,6 +124,7 @@ const main = async () => {
         event => (localStorage.selectedFarm = event.target.id)
       )
     );
+
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
 };
