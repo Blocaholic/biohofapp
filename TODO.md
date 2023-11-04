@@ -31,3 +31,4 @@
 ## issues
 
 - make modal scrollable instead of background content
+- section-top teilweise unter navigationsmenü verdeckt (mobile)
