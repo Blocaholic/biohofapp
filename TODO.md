@@ -32,3 +32,4 @@
 
 - make modal scrollable instead of background content
 - section-top teilweise unter navigationsmenü verdeckt (mobile)
+- uneinheitliche margin-top bei h2 in settings (inside/outside divs)
