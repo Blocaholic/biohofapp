@@ -97,7 +97,7 @@ const main = async () => {
   $$('.link--private').forEach($show);
 
   $('settings__user').style.display = '';
-  $('userid').innerHTML += localStorage.userid;
+  $('userid').innerHTML += `#${localStorage.userid}`;
   $('email').innerHTML += localStorage.email;
   $('deviceid').innerHTML += localStorage.deviceid;
   $('devicename').innerHTML += localStorage.devicename;
