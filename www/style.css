@@ -348,6 +348,7 @@ strong {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.7);
+  margin-top: 0;
 }
 
 .modal__box {
