@@ -103,6 +103,10 @@ const main = async () => {
   $('devicename').innerHTML += localStorage.devicename;
 
   const farms = await Utils.fetchJson('./api/farms', 'GET');
+
+  if (!localStorage.selectedFarm && farms.length)
+    localStorage.selectedFarm = farms[0].farmid;
+
   $('settings__selectedFarm').innerText = farms.filter(
     farm => farm.farmid === parseInt(localStorage.selectedFarm)
   )[0].farmname;
