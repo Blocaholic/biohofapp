@@ -72,19 +72,29 @@ const init = () => {
     Device.handleRegistrationAttempt
   );
   $('signup__email').addEventListener('input', Device.handleEmailInput);
+
+  $('selectFarm__link').addEventListener('click', _ => {
+    $show('selectFarm__modal');
+  });
   $('addFarm__link').addEventListener('click', _ => {
     $show('addFarm__modal');
+  });
+
+  $('selectFarm__close').addEventListener('click', _ => {
+    $hide('selectFarm__modal');
   });
   $('addFarm__close').addEventListener('click', _ => {
     $hide('addFarm__modal');
   });
+  $('resetApp__close').addEventListener('click', _ => {
+    $hide('resetApp__modal');
+  });
+
   $('addFarm__button').addEventListener('click', Farm.add);
   $('resetApp__firstButton').addEventListener('click', _ => {
     $show('resetApp__modal');
   });
-  $('resetApp__close').addEventListener('click', _ => {
-    $hide('resetApp__modal');
-  });
+
   $('resetApp__finalButton').addEventListener('click', resetApp);
 };
 
@@ -126,10 +136,10 @@ const main = async () => {
   document
     .querySelectorAll('#settings__selectFarm input[name="farm"]')
     .forEach(radioButton =>
-      radioButton.addEventListener(
-        'change',
-        event => (localStorage.selectedFarm = event.target.id)
-      )
+      radioButton.addEventListener('change', event => {
+        localStorage.selectedFarm = event.target.id;
+        location.reload();
+      })
     );
 
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
