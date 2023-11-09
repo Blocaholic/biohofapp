@@ -32,20 +32,6 @@
             d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
     </svg>
   </h3>
-
-  <ul class="list--styleNone"
-      id="settings__selectFarm">
-  </ul>
-
-  <ul class="list--styleNone">
-    <li>
-      <span id="addFarm__link"
-            class="controlElement controlElement--open">
-        &#65291; Neuen Betrieb anlegen
-      </span>
-    </li>
-  </ul>
-
 </article>
 
 <article id="settings__reset">
@@ -55,6 +41,29 @@
     Die App kann danach mit den gleichen oder anderen Zugangsdaten erneut registriert werden.</p>
   <button id="resetApp__firstButton"
           class="button--danger">RESET APP</button>
+</article>
+
+<article id="selectFarm__modal"
+         class="modal__background"
+         style="display: none;">
+  <form id="selectFarm__form"
+        class="modal__box">
+    <h3>Betrieb wechseln</h3>
+    <span id="selectFarm__close"
+          class="controlElement controlElement--close"
+          title="Abbrechen">&#65291;</span>
+    <ul class="list--styleNone"
+        id="settings__selectFarm">
+    </ul>
+    <ul class="list--styleNone">
+      <li>
+        <span id="addFarm__link"
+              class="controlElement controlElement--open">
+          &#65291; Neuen Betrieb anlegen
+        </span>
+      </li>
+    </ul>
+  </form>
 </article>
 
 <article id="addFarm__modal"
