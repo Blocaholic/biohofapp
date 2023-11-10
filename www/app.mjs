@@ -96,6 +96,10 @@ const init = () => {
   });
 
   $('resetApp__finalButton').addEventListener('click', resetApp);
+
+  $$('[id^="selectedFarm__module"]').forEach(checkbox =>
+    checkbox.addEventListener('change', _ => alert('not implemented'))
+  );
 };
 
 const main = async () => {
