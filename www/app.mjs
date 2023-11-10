@@ -121,6 +121,15 @@ const main = async () => {
     farm => farm.farmid === parseInt(localStorage.selectedFarm)
   )[0];
 
+  const roles = {
+    owner: 'Eigentümer',
+    admin: 'Bevollmächtigter',
+    employee: 'Mitarbeiter',
+    visitor: 'Besucher',
+  };
+
+  $('selectedFarm__role').innerText = `Du bist ${roles[selectedFarm.role]}.`;
+
   $('selectedFarm__moduleBees').checked = !!selectedFarm.module_bees;
   $('selectedFarm__moduleChicken').checked = !!selectedFarm.module_chicken;
   $('selectedFarm__moduleGoats').checked = !!selectedFarm.module_goats;
