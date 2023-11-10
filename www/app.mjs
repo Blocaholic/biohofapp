@@ -97,6 +97,10 @@ const init = () => {
 
   $('resetApp__finalButton').addEventListener('click', resetApp);
 
+  $('settings__addFarmLinkButton').addEventListener('click', _ => {
+    $show('addFarm__modal');
+  });
+
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', _ => alert('not implemented'))
   );
@@ -121,6 +125,11 @@ const main = async () => {
   if (!localStorage.selectedFarm && farms.length)
     localStorage.selectedFarm = farms[0].farmid;
 
+  if (!farms.length) {
+    $('settings__farm').style.display = 'none';
+    $('settings__addFarmLinkButton').style.display = '';
+  }
+
   const selectedFarm = farms.filter(
     farm => farm.farmid === parseInt(localStorage.selectedFarm)
   )[0];
@@ -132,17 +141,17 @@ const main = async () => {
     visitor: 'Besucher',
   };
 
-  $('selectedFarm__role').innerText = `Du bist ${roles[selectedFarm.role]}.`;
+  $('selectedFarm__role').innerText = `Du bist ${roles[selectedFarm?.role]}.`;
 
-  $('selectedFarm__moduleBees').checked = !!selectedFarm.module_bees;
-  $('selectedFarm__moduleChicken').checked = !!selectedFarm.module_chicken;
-  $('selectedFarm__moduleGoats').checked = !!selectedFarm.module_goats;
+  $('selectedFarm__moduleBees').checked = !!selectedFarm?.module_bees;
+  $('selectedFarm__moduleChicken').checked = !!selectedFarm?.module_chicken;
+  $('selectedFarm__moduleGoats').checked = !!selectedFarm?.module_goats;
   $('selectedFarm__moduleMarketgarden').checked =
-    !!selectedFarm.module_marketgarden;
+    !!selectedFarm?.module_marketgarden;
 
   $(
     'settings__selectedFarm'
-  ).innerText = `${selectedFarm.farmname} (#${selectedFarm.farmid})`;
+  ).innerText = `${selectedFarm?.farmname} (#${selectedFarm?.farmid})`;
   $('settings__selectFarm').innerHTML = farms
     .map(
       farm => `<li>
