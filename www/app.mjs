@@ -125,10 +125,9 @@ const main = async () => {
   if (!localStorage.selectedFarm && farms.length)
     localStorage.selectedFarm = farms[0].farmid;
 
-  if (!farms.length) {
-    $('settings__farm').style.display = 'none';
-    $('settings__addFarmLinkButton').style.display = '';
-  }
+  farms.length
+    ? ($('settings__farm').style.display = '')
+    : ($('settings__addFarmLinkButton').style.display = '');
 
   const selectedFarm = farms.filter(
     farm => farm.farmid === parseInt(localStorage.selectedFarm)
