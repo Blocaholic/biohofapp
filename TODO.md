@@ -4,8 +4,7 @@
 
 ### Prio A
 
-- Betrieb->Module: set event listener
-- Settings an Login-Status anpassen
+- Betrieb->Module: set event listener (api anpassen / erweitern)
 - "Home-Symbol" zwischen "Biohof App" und "Reload-Symbol" zeigen (no window controls overlay)
 
 #### Betriebe API
