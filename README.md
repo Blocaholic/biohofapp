@@ -29,3 +29,4 @@ collation utf8mb4_unicode_520_ci
 - wrench-screwdriver (settings.svg)
 - user-group (planning.svg)
 - arrow-path (reload.svg)
+- arrows-right-left (arrowLeftRight.svg)
