@@ -159,7 +159,7 @@ const main = async () => {
         parseInt(localStorage.selectedFarm) === farm.farmid ? 'checked' : ''
       }>
   <label for="${farm.farmid}">#${farm.farmid} "${farm.farmname}" (${
-        farm.role
+        roles[farm.role]
       })</label>
   </li>`
     )
