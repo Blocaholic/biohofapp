@@ -189,6 +189,21 @@ class Database {
     return true;
   }
 
+  public static function get_farm_role($farmid, $userid) {
+    $pdo = self::connect();
+    $query = "SELECT role
+      FROM farmmembers
+      WHERE farmid = :farmid
+      AND userid = :userid;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([
+      "farmid" => $farmid,
+      "userid" => $userid,
+    ]);
+    $role = $statement->fetchColumn();
+    return $role;
+  }
+
   public static function get_farms($userid) {
     $pdo = self::connect();
     $query = "SELECT farms.*, farmmembers.role
@@ -198,9 +213,27 @@ class Database {
       WHERE farmmembers.userid = :userid;";
     $statement = $pdo->prepare($query);
     $statement->execute(["userid" => $userid]);
-
     $farms = $statement->fetchAll(PDO::FETCH_ASSOC);
     return $farms;
+  }
+
+  public static function update_farm_modules($farm) {
+    $pdo = self::connect();
+    $query = "UPDATE farms
+      SET
+        module_chicken = :module_chicken,
+        module_marketgarden = :module_marketgarden,
+        module_goats = :module_goats,
+        module_bees = :module_bees
+      WHERE farmid = :farmid;";
+    $statement = $pdo->prepare($query);
+    return $statement->execute([
+      "farmid" => $farm['farmid'],
+      "module_chicken" => $farm['module_chicken'],
+      "module_marketgarden" => $farm['module_marketgarden'],
+      "module_goats" => $farm['module_goats'],
+      "module_bees" => $farm['module_bees'],
+    ]);
   }
 
 }
