@@ -102,7 +102,7 @@ const init = () => {
   });
 
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
-    checkbox.addEventListener('change', _ => alert('not implemented'))
+    checkbox.addEventListener('change', event => Farm.updateModules(event))
   );
 };
 

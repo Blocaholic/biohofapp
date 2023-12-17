@@ -19,4 +19,26 @@ const add = async event => {
   location.reload();
 };
 
-export {add};
+const updateModules = async event => {
+  event.preventDefault();
+
+  const farm = {
+    operation: 'update_modules',
+    farmid: document.querySelector('input[name="farm"]:checked').id,
+    module_marketgarden: $('selectedFarm__moduleMarketgarden').checked ? 1 : 0,
+    module_chicken: $('selectedFarm__moduleChicken').checked ? 1 : 0,
+    module_goats: $('selectedFarm__moduleGoats').checked ? 1 : 0,
+    module_bees: $('selectedFarm__moduleBees').checked ? 1 : 0,
+  };
+
+  farm[`module_${event.target.id.slice(20).toLowerCase()}`] = event.target
+    .checked
+    ? 1
+    : 0;
+
+  await fetchJson('./api/farms', 'PATCH', farm);
+
+  location.reload();
+};
+
+export {add, updateModules};

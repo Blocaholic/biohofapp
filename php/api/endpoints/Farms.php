@@ -181,7 +181,7 @@ class Farms {
     : exit_with_error(405, ["message" => "Invalid operation."]);
 
     http_response_code(200);
-    return $farmid;
+    return [];
 
   }
 }
