@@ -31,11 +31,6 @@ const updateModules = async event => {
     module_bees: $('selectedFarm__moduleBees').checked ? 1 : 0,
   };
 
-  farm[`module_${event.target.id.slice(20).toLowerCase()}`] = event.target
-    .checked
-    ? 1
-    : 0;
-
   await fetchJson('./api/farms', 'PATCH', farm);
 
   location.reload();
