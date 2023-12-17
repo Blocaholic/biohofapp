@@ -263,6 +263,10 @@ strong {
   top: 0.1em;
 }
 
+.link {
+  cursor: pointer;
+}
+
 .link--inline,
 .link--inline:link,
 .link--inline:visited,
@@ -464,4 +468,18 @@ strong {
 
 .list--styleNone {
   list-style: none;
+}
+
+/* card */
+
+.card {
+  background-color: hsl(102, 55%, 80%);
+  box-shadow: 0 2rem 3rem 0 hsl(0, 0%, 85%);
+  border-radius: 0.8rem;
+  padding: 1.6rem;
+  list-style: none;
+}
+
+.card h2 {
+  margin-top: 0;
 }
