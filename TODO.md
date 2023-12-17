@@ -12,7 +12,6 @@
 - farms/id PATCH (Name ändern)
 - farms/id PATCH (Berechtigung hinzufügen / ändern / löschen)
 - farms/id PATCH (Owner ändern)
-- farms/id PATCH (Module ändern)
 - farms/id DELETE
 
 ### Prio B
