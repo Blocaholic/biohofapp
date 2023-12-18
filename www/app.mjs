@@ -173,6 +173,35 @@ const main = async () => {
       })
     );
 
+  const marketgardenVisibility = JSON.parse(localStorage.modules)
+    .module_marketgarden
+    ? ''
+    : 'none';
+  $$('[data-module="marketgarden"]').forEach(element => {
+    element.style.display = marketgardenVisibility;
+  });
+
+  const chickenVisibility = JSON.parse(localStorage.modules).module_chicken
+    ? ''
+    : 'none';
+  $$('[data-module="chicken"]').forEach(element => {
+    element.style.display = chickenVisibility;
+  });
+
+  const goatsVisibility = JSON.parse(localStorage.modules).module_goats
+    ? ''
+    : 'none';
+  $$('[data-module="goats"]').forEach(element => {
+    element.style.display = goatsVisibility;
+  });
+
+  const beesVisibility = JSON.parse(localStorage.modules).module_bees
+    ? ''
+    : 'none';
+  $$('[data-module="bees"]').forEach(element => {
+    element.style.display = beesVisibility;
+  });
+
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
 };
