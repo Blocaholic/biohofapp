@@ -5,6 +5,8 @@ import * as Utils from './js/Utils.mjs';
 import * as Token from './js/Token.mjs';
 import * as Farm from './js/Farm.mjs';
 
+import './js/pages/planCrops.mjs';
+
 const makeLinksFocusable = () => {
   $$('.link').forEach(link => link.setAttribute('tabindex', '0'));
 };
