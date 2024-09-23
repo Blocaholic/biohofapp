@@ -26,7 +26,8 @@
   <nav class="mainNav__nav">
     <div class="mainNav__home" id="mainNav__home" tabindex="0">
       <span id="mainNav__homeText">Biohof App</span>
-      <img src="./icon/reload.svg" alt="" class="mainNav__svg">
+      <img src="./icon/home.svg" alt="" class="mainNav__svg" id="mainNav__homeHome">
+      <img src="./icon/reload.svg" alt="" class="mainNav__svg" id="mainNav__homeReload">
     </div>
     <ul class="mainNav__ul">
       <li class="mainNav__li link link--private" style="display:none;" data-target="documentation">

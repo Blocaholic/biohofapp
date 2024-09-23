@@ -15,7 +15,8 @@ const handleInternalLinks = () => {
   $('mainNav__home').addEventListener('click', event => {
     if (
       event.target.id === 'mainNav__home' ||
-      event.target.id === 'mainNav__homeText'
+      event.target.id === 'mainNav__homeText' ||
+      event.target.id === 'mainNav__homeHome'
     ) {
       localStorage.removeItem('lastPage');
     }

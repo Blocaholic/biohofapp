@@ -4,8 +4,6 @@
 
 ### Prio A
 
-- "Home-Symbol" zwischen "Biohof App" und "Reload-Symbol" zeigen (no window controls overlay)
-
 #### Betriebe API
 
 - farms/id PATCH (Name ändern)
