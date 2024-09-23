@@ -24,3 +24,6 @@
 ### on launch
 
 ## issues
+
+- overscroll behavior does not work on mobile (android chrome)
+- scroll position gets lost if modules are checked/unchecked
