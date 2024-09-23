@@ -56,6 +56,31 @@ const resetApp = () => {
   location.reload();
 };
 
+const setScrollBehaviorForModals = () => {
+  const targetNodes = $$('.modal__background');
+  const anyModalIsVisible = () =>
+    targetNodes.some(targetNode => targetNode.style.display === '');
+  const callback = mutations => {
+    if (anyModalIsVisible()) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
+  };
+  const observer = new MutationObserver(callback);
+  targetNodes.forEach(targetNode =>
+    observer.observe(targetNode, {
+      attributes: true,
+      attributeFilter: ['style'],
+    })
+  );
+};
+
 const init = () => {
   const appName = $('mainNav__homeText');
   titlebarIsVisible() ? $hide(appName) : $show(appName);
@@ -68,6 +93,7 @@ const init = () => {
 
   makeLinksFocusable();
   handleInternalLinks();
+  setScrollBehaviorForModals();
 
   $('signup__password').value = Utils.randomString(32);
   $('signup__button').addEventListener(
