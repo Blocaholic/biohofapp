@@ -48,6 +48,8 @@
     </svg>
   </h4>
   <p id="selectedFarm__role"></p>
+  <ul id="settings__farmRoles"
+      class="list--styleNone"></ul>
   <h4>Module</h4>
   <label class="label--block">
     <input type="checkbox"
@@ -73,9 +75,6 @@
            id="selectedFarm__moduleBees">
     Bienen
   </label>
-  <!-- <h4>Weitere Mitglieder</h4>
-  <ul id="settings__farmRoles"
-      class="list--styleNone"></ul> -->
 </article>
 
 <button id="settings__addFarmLinkButton"
@@ -171,5 +170,49 @@
           title="Abbrechen">&#65291;</span>
     <button id="resetApp__finalButton"
             class="button--danger">Daten löschen</button>
+  </form>
+</article>
+
+<article id="addUser__modal"
+         class="modal__background"
+         style="display: none;">
+  <form id="addUser__form"
+        class="modal__box">
+    <h3>Benutzer hinzufügen</h3>
+    <span id="addUser__close"
+          class="controlElement controlElement--close"
+          title="Abbrechen">&#65291;</span>
+    <label for="addUser__email"
+           class="label--block">
+      <input type="email"
+             name="addUser__email"
+             id="addUser__email">
+      E-Mail-Adresse des Benutzers
+    </label>
+    <label for="addUser__admin"
+           class="label--block">
+      <input type="radio"
+             name="addUser__role"
+             id="addUser__admin"
+             value="admin">
+      Administrator
+    </label>
+    <label for="addUser__employee"
+           class="label--block">
+      <input type="radio"
+             name="addUser__role"
+             id="addUser__employee"
+             value="employee">
+      Mitarbeiter
+    </label>
+    <label for="addUser__visitor"
+           class="label--block">
+      <input type="radio"
+             name="addUser__role"
+             id="addUser__visitor"
+             value="visitor">
+      Besucher
+    </label>
+    <button id="addUser__button">Benutzerrechte speichern</button>
   </form>
 </article>

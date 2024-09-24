@@ -102,33 +102,29 @@ const init = () => {
   );
   $('signup__email').addEventListener('input', Device.handleEmailInput);
 
-  $('selectFarm__link').addEventListener('click', _ => {
-    $show('selectFarm__modal');
-  });
-  $('addFarm__link').addEventListener('click', _ => {
-    $show('addFarm__modal');
-  });
+  $('selectFarm__link').addEventListener('click', _ =>
+    $show('selectFarm__modal')
+  );
+  $('addFarm__link').addEventListener('click', _ => $show('addFarm__modal'));
+  $('addUser__link').addEventListener('click', _ => $show('addUser__modal'));
 
-  $('selectFarm__close').addEventListener('click', _ => {
-    $hide('selectFarm__modal');
-  });
-  $('addFarm__close').addEventListener('click', _ => {
-    $hide('addFarm__modal');
-  });
-  $('resetApp__close').addEventListener('click', _ => {
-    $hide('resetApp__modal');
-  });
+  $('selectFarm__close').addEventListener('click', _ =>
+    $hide('selectFarm__modal')
+  );
+  $('addFarm__close').addEventListener('click', _ => $hide('addFarm__modal'));
+  $('addUser__close').addEventListener('click', _ => $hide('addUser__modal'));
+  $('resetApp__close').addEventListener('click', _ => $hide('resetApp__modal'));
 
   $('addFarm__button').addEventListener('click', Farm.add);
-  $('resetApp__firstButton').addEventListener('click', _ => {
-    $show('resetApp__modal');
-  });
+  $('resetApp__firstButton').addEventListener('click', _ =>
+    $show('resetApp__modal')
+  );
 
   $('resetApp__finalButton').addEventListener('click', resetApp);
 
-  $('settings__addFarmLinkButton').addEventListener('click', _ => {
-    $show('addFarm__modal');
-  });
+  $('settings__addFarmLinkButton').addEventListener('click', _ =>
+    $show('addFarm__modal')
+  );
 
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))
