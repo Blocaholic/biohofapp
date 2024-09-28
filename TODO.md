@@ -4,6 +4,8 @@
 
 ### Prio A
 
+- add service worker to update token
+
 #### Betriebe API
 
 - farms/id PATCH (Name ändern)
