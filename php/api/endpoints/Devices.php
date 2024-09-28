@@ -4,6 +4,7 @@ class Devices {
   public static function POST() {
     require_once __DIR__ . '/../Database.php';
     require_once __DIR__ . '/../Utils.php';
+    require_once __DIR__ . '/../ValidateInput.php';
 
     $_POST = json_decode(file_get_contents('php://input'), true);
     $validated = self::validate_post_input($_POST);
@@ -60,19 +61,7 @@ class Devices {
 
   private static function validate_post_input($input) {
 
-    $email = $input['email'] ?? exit_with_error(400, [
-      "message" => "Email is required.",
-    ]);
-
-    if ($email === "") {
-      exit_with_error(400, [
-        "message" => "Email is required.",
-      ]);
-    }
-
-    filter_var($email, FILTER_VALIDATE_EMAIL) || exit_with_error(400, [
-      "message" => "Invalid email.",
-    ]);
+    $email = ValidateInput::email($input);
 
     $devicename = $input['devicename'] ?? '';
 
