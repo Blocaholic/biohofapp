@@ -24,6 +24,30 @@ const add = async event => {
   location.reload();
 };
 
+const addUser = async event => {
+  event.preventDefault();
+  const email = $('addUser__email').value;
+  const role = [...document.getElementsByName('addUser__role')].filter(
+    node => node.checked
+  )[0].value;
+
+  const patchData = {
+    email,
+    role,
+    operation: 'add_member',
+    farmid: localStorage.selectedFarm,
+  };
+
+  console.log(patchData);
+
+  await fetchJson('./api/farms', 'PATCH', patchData);
+
+  // add user
+  // if user dont exist: return 'user must first register'
+
+  // location.reload();
+};
+
 const updateModules = async event => {
   event.preventDefault();
 
@@ -46,4 +70,4 @@ const updateModules = async event => {
   location.reload();
 };
 
-export {add, updateModules};
+export {add, addUser, updateModules};

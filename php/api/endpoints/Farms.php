@@ -1,21 +1,21 @@
 <?php
 
+require_once __DIR__ . '/../ValidateInput.php';
+require_once __DIR__ . '/../Token.php';
+require_once __DIR__ . '/../Database.php';
+
 class Farms {
   public static function POST() {
-    require_once __DIR__ . '/../Token.php';
-    require_once __DIR__ . '/../Database.php';
-
+    $token_payload = Token::verify_payload_from_header();
     $_POST = json_decode(file_get_contents('php://input'), true);
 
-    $token = apache_request_headers()['Token'] ?? exit_with_error(401, [
-      "message" => "Token is required.",
-    ]);
-
-    $token_payload = Token::verify($token) ?: exit_with_error(401, [
-      "message" => "Invalid token.",
-    ]);
-
-    $farm = self::validate_post_input($_POST);
+    $farm = array_merge(
+      [
+        "farmname" => ValidateInput::farmname($_POST),
+        "owner" => ValidateInput::owner($_POST),
+      ],
+      ValidateInput::modules($_POST)
+    );
 
     if ((int) $farm['owner'] !== $token_payload['userid']) {
       exit_with_error(401, [
@@ -30,107 +30,28 @@ class Farms {
 
   }
 
-  private static function validate_post_input($input) {
-
-    $input['farmname'] ?? exit_with_error(400, [
-      "message" => '"farmname" is required.',
-    ]);
-
-    $input['owner'] ?? exit_with_error(400, [
-      "message" => '"owner" is required.',
-    ]);
-
-    if ($input['farmname'] < 3) {
-      exit_with_error(400, [
-        "message" => "Farmname must be at least 3 characters.",
-      ]);
-    }
-
-    $modules = self::validate_modules_input($input);
-
-    return array_merge(
-      [
-        "farmname" => $input['farmname'],
-        "owner" => $input['owner'],
-      ],
-      $modules);
-  }
-
-  private static function validate_modules_input($input) {
-
-    $input['module_chicken'] ?? exit_with_error(400, [
-      "message" => '"module_chicken" is required.',
-    ]);
-
-    $input['module_marketgarden'] ?? exit_with_error(400, [
-      "message" => '"module_marketgarden" is required.',
-    ]);
-
-    $input['module_goats'] ?? exit_with_error(400, [
-      "message" => '"module_goats" is required.',
-    ]);
-
-    $input['module_bees'] ?? exit_with_error(400, [
-      "message" => '"module_bees" is required.',
-    ]);
-
-    if ($input['module_chicken'] !== 0 && $input['module_chicken'] !== 1) {
-      exit_with_error(400, [
-        "message" => "module_chicken must be either, 0 or 1.",
-      ]);
-    }
-
-    if ($input['module_marketgarden'] !== 0 && $input['module_marketgarden'] !== 1) {
-      exit_with_error(400, [
-        "message" => "module_marketgarden must be either, 0 or 1.",
-      ]);
-    }
-
-    if ($input['module_goats'] !== 0 && $input['module_goats'] !== 1) {
-      exit_with_error(400, [
-        "message" => "module_goats must be either, 0 or 1.",
-      ]);
-    }
-
-    if ($input['module_bees'] !== 0 && $input['module_bees'] !== 1) {
-      exit_with_error(400, [
-        "message" => "module_bees must be either, 0 or 1.",
-      ]);
-    }
-
-    return [
-      "module_chicken" => $input['module_chicken'],
-      "module_marketgarden" => $input['module_marketgarden'],
-      "module_goats" => $input['module_goats'],
-      "module_bees" => $input['module_bees'],
-    ];
-  }
-
   private static function validate_update_modules_input($input) {
-    $modules = self::validate_modules_input($input);
-
-    $farmid = $input['farmid'] ?? exit_with_error(400, [
-      "message" => '"farmid" is required.',
-    ]);
-
-    if (!is_numeric($farmid) || $farmid < 1 || $farmid != round($farmid)) {
-      exit_with_error(400, ["message" => '"farmid" must be an integer greater than 0']);
-    }
+    $farmid = ValidateInput::farmid($input);
+    $modules = ValidateInput::modules($input);
 
     return array_merge(["farmid" => $farmid], $modules);
   }
 
+  private static function validate_add_member_input($input) {
+    $email = ValidateInput::email($input);
+    $farmid = ValidateInput::farmid($input);
+    $role = ValidateInput::role($input);
+    if ($role === "owner") {
+      exit_with_error(400, [
+        "message" => 'Role "owner" can not be added.',
+      ]);
+    }
+
+    return compact('email', 'farmid', 'role');
+  }
+
   public static function GET() {
-    require_once __DIR__ . '/../Token.php';
-    require_once __DIR__ . '/../Database.php';
-
-    $token = apache_request_headers()['Token'] ?? exit_with_error(401, [
-      "message" => "Token is required.",
-    ]);
-
-    $token_payload = Token::verify($token) ?: exit_with_error(401, [
-      "message" => "Invalid token.",
-    ]);
+    $token_payload = Token::verify_payload_from_header();
 
     $userid = $token_payload['userid'];
 
@@ -141,28 +62,20 @@ class Farms {
   }
 
   public static function PATCH() {
-    require_once __DIR__ . '/../Token.php';
-    require_once __DIR__ . '/../Database.php';
+    $token_payload = Token::verify_payload_from_header();
+    $_POST = json_decode(file_get_contents('php://input'), true);
 
     $validations = [
       "update_modules" => [__CLASS__, 'validate_update_modules_input'],
+      "add_member" => [__CLASS__, 'validate_add_member_input'],
     ];
 
     $operations = [
       "update_modules" => ['Database', 'update_farm_modules'],
+      "add_member" => ['Database', 'add_farm_member'],
     ];
 
-    $_POST = json_decode(file_get_contents('php://input'), true);
-
     $operation = $_POST['operation'];
-
-    $token = apache_request_headers()['Token'] ?? exit_with_error(401, [
-      "message" => "Token is required.",
-    ]);
-
-    $token_payload = Token::verify($token) ?: exit_with_error(401, [
-      "message" => "Invalid token.",
-    ]);
 
     $valid_input = (isset($validations[$operation]))
     ? $validations[$operation]($_POST)
@@ -171,7 +84,7 @@ class Farms {
     $userid = $token_payload['userid'];
     $farmid = $valid_input['farmid'];
     $role = Database::get_farm_role($farmid, $userid);
-    $allowed_roles = ["owner"];
+    $allowed_roles = ["owner", "admin"];
     if (!in_array($role, $allowed_roles)) {
       exit_with_error(401, ["message" => "No permission to change modules."]);
     }

@@ -116,6 +116,7 @@ const init = () => {
   $('resetApp__close').addEventListener('click', _ => $hide('resetApp__modal'));
 
   $('addFarm__button').addEventListener('click', Farm.add);
+  $('addUser__button').addEventListener('click', Farm.addUser);
   $('resetApp__firstButton').addEventListener('click', _ =>
     $show('resetApp__modal')
   );
