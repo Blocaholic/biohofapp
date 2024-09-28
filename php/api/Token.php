@@ -50,4 +50,16 @@ class Token {
     return $json;
   }
 
+  public static function verify_payload_from_header() {
+    $token = apache_request_headers()['Token'] ?? exit_with_error(401, [
+      "message" => "Token is required.",
+    ]);
+
+    $token_payload = self::verify($token) ?: exit_with_error(401, [
+      "message" => "Invalid token.",
+    ]);
+
+    return $token_payload;
+  }
+
 }
