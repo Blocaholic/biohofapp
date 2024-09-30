@@ -357,6 +357,11 @@ td {
   text-align: center;
 }
 
+.modal__error {
+  font-weight: bold;
+  color: var(--red);
+}
+
 .modal__background {
   position: fixed;
   top: calc(env(titlebar-area-height, 33px));

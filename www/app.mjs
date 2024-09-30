@@ -187,7 +187,7 @@ const main = async () => {
         }</td></tr>`
     );
 
-  $('settings__farmRoles').innerHTML = farmmembersHtmlRows.join('');
+  $('settings__farmRoles').innerHTML = farmmembersHtmlRows?.join('');
 
   $('selectedFarm__moduleBees').checked = !!selectedFarm?.module_bees;
   $('selectedFarm__moduleChicken').checked = !!selectedFarm?.module_chicken;
