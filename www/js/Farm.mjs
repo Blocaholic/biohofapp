@@ -18,8 +18,11 @@ const add = async event => {
     owner: localStorage.userid,
   };
 
-  const {farmid} = await fetchJson('./api/farms', 'POST', farm);
-  localStorage.selectedFarm = farmid;
+  const result = await fetchJson('./api/farms', 'POST', farm);
+
+  if (result.message) return Error.show(result.message);
+
+  localStorage.selectedFarm = result.farmid;
   localStorage.modules = JSON.stringify(modules);
 
   location.reload();
