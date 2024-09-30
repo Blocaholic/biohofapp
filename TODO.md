@@ -4,17 +4,19 @@
 
 ### Prio A
 
-- add service worker to update token
+Fehlermeldungen in Modal, falls geöffnet
 
 #### Betriebe API
 
 - farms/id PATCH (Name ändern)
-- farms/id PATCH (Berechtigung hinzufügen / ändern / löschen)
+- farms/id PATCH (Berechtigung ändern / löschen)
 - farms/id PATCH (Owner ändern)
 - farms/id DELETE
 
 ### Prio B
 
+- alle Fehlermeldungen auf Deutsch
+- add service worker to update token
 - delete all unconfirmed users and devices older than one week
 - show instructions to hide titlebar if it is visible
 - detect if pwa runs in chrome
