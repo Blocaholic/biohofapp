@@ -21,12 +21,3 @@ collation utf8mb4_unicode_520_ci
 ### Icons
 
 [Heroicons](https://heroicons.com/)
-
-#### Already used
-
-- chart-bar (reports.svg)
-- pencil (documentation.svg)
-- wrench-screwdriver (settings.svg)
-- user-group (planning.svg)
-- arrow-path (reload.svg)
-- arrows-right-left (arrowLeftRight.svg)

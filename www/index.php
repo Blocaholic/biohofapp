@@ -27,24 +27,24 @@
     <div class="mainNav__home" id="mainNav__home" tabindex="0">
       <span id="mainNav__homeText">Biohof App</span>
       <img src="./icon/home.svg" alt="" class="mainNav__svg" id="mainNav__homeHome">
-      <img src="./icon/reload.svg" alt="" class="mainNav__svg" id="mainNav__homeReload">
+      <img src="./icon/arrow-path.svg" alt="" class="mainNav__svg" id="mainNav__homeReload">
     </div>
     <ul class="mainNav__ul">
       <li class="mainNav__li link link--private" style="display:none;" data-target="documentation">
         <span class="hidden">Dokumentation</span>
-        <img src="./icon/documentation.svg" alt="" class="mainNav__svg">
+        <img src="./icon/pencil-square.svg" alt="" class="mainNav__svg">
       </li>
       <li class="mainNav__li link link--private" style="display:none;" data-target="reports">
       <span class="hidden">Auswertungen</span>
-        <img src="./icon/reports.svg" alt="" class="mainNav__svg">
+        <img src="./icon/chart-bar.svg" alt="" class="mainNav__svg">
       </li>
       <li class="mainNav__li link link--private" style="display:none;" data-target="planning">
       <span class="hidden">Planung</span>
-        <img src="./icon/planning.svg" alt="" class="mainNav__svg">
+        <img src="./icon/user-group.svg" alt="" class="mainNav__svg">
       </li>
       <li class="mainNav__li link" data-target="settings">
       <span class="hidden">Einstellungen</span>
-        <img src="./icon/settings.svg" alt="" class="mainNav__svg">
+        <img src="./icon/wrench-screwdriver.svg" alt="" class="mainNav__svg">
       </li>
     </ul>
   </nav>
