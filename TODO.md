@@ -4,8 +4,6 @@
 
 ### Prio A
 
-Fehlermeldungen in Modal, falls geöffnet
-
 #### Betriebe API
 
 - farms/id PATCH (Name ändern)
