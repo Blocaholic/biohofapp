@@ -102,12 +102,20 @@ const init = () => {
   );
   $('signup__email').addEventListener('input', Device.handleEmailInput);
 
+  $('editFarm__link').addEventListener('click', _ => $show('editFarm__modal'));
+  $('deleteFarm__link').addEventListener('click', _ =>
+    $show('deleteFarm__modal')
+  );
   $('selectFarm__link').addEventListener('click', _ =>
     $show('selectFarm__modal')
   );
   $('addFarm__link').addEventListener('click', _ => $show('addFarm__modal'));
   $('addUser__link').addEventListener('click', _ => $show('addUser__modal'));
 
+  $('editFarm__close').addEventListener('click', _ => $hide('editFarm__modal'));
+  $('deleteFarm__close').addEventListener('click', _ =>
+    $hide('deleteFarm__modal')
+  );
   $('selectFarm__close').addEventListener('click', _ =>
     $hide('selectFarm__modal')
   );
@@ -115,12 +123,14 @@ const init = () => {
   $('addUser__close').addEventListener('click', _ => $hide('addUser__modal'));
   $('resetApp__close').addEventListener('click', _ => $hide('resetApp__modal'));
 
+  $('editFarm__button').addEventListener('click', Farm.rename);
   $('addFarm__button').addEventListener('click', Farm.add);
   $('addUser__button').addEventListener('click', Farm.addUser);
   $('resetApp__firstButton').addEventListener('click', _ =>
     $show('resetApp__modal')
   );
 
+  $('deleteFarm__finalButton').addEventListener('click', Farm.erase);
   $('resetApp__finalButton').addEventListener('click', resetApp);
 
   $('settings__addFarmLinkButton').addEventListener('click', _ =>

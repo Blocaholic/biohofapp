@@ -7,9 +7,9 @@
 #### Betriebe API
 
 - farms/id PATCH (Name ändern)
+- farms/id DELETE
 - farms/id PATCH (Berechtigung ändern / löschen)
 - farms/id PATCH (Owner ändern)
-- farms/id DELETE
 
 ### Prio B
 

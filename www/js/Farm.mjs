@@ -69,4 +69,16 @@ const updateModules = async event => {
   location.reload();
 };
 
-export {add, addUser, updateModules};
+const edit = async event => {
+  event.preventDefault();
+
+  location.reload();
+};
+
+const erase = async event => {
+  event.preventDefault();
+
+  location.reload();
+};
+
+export {add, addUser, updateModules, edit, erase};
