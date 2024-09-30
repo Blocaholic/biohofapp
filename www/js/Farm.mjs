@@ -1,5 +1,6 @@
 import {$} from './$.mjs';
 import {fetchJson} from './Utils.mjs';
+import * as Error from './Error.mjs';
 
 const add = async event => {
   event.preventDefault();
@@ -38,14 +39,9 @@ const addUser = async event => {
     farmid: localStorage.selectedFarm,
   };
 
-  console.log(patchData);
+  const result = await fetchJson('./api/farms', 'PATCH', patchData);
 
-  await fetchJson('./api/farms', 'PATCH', patchData);
-
-  // add user
-  // if user dont exist: return 'user must first register'
-
-  // location.reload();
+  result.error?.message ? Error.show(result.error.message) : location.reload();
 };
 
 const updateModules = async event => {

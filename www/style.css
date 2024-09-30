@@ -222,6 +222,16 @@ strong {
   color: var(--red);
 }
 
+table {
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.1em 1em 0.1em 0;
+}
+
 /* ########################################################################## */
 /* CLASSES */
 
@@ -232,6 +242,11 @@ strong {
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+.highlightedRow {
+  color: var(--green-8);
+  font-weight: 500;
 }
 
 .controlElement {

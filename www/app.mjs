@@ -166,7 +166,28 @@ const main = async () => {
     visitor: 'Besucher',
   };
 
-  $('selectedFarm__role').innerText = `Du bist ${roles[selectedFarm?.role]}.`;
+  const membersByRolePriority = (a, b) => {
+    const rolePriority = {
+      owner: 1,
+      admin: 2,
+      employee: 3,
+      visitor: 4,
+    };
+    return rolePriority[a.role] - rolePriority[b.role];
+  };
+
+  const farmmembersHtmlRows = selectedFarm?.members
+    .sort(membersByRolePriority)
+    .map(
+      member =>
+        `<tr ${
+          localStorage.userid == member.userid ? 'class="highlightedRow"' : ''
+        }><td>${member.userid}</td><td>${member.email}</td><td>${
+          roles[member.role]
+        }</td></tr>`
+    );
+
+  $('settings__farmRoles').innerHTML = farmmembersHtmlRows.join('');
 
   $('selectedFarm__moduleBees').checked = !!selectedFarm?.module_bees;
   $('selectedFarm__moduleChicken').checked = !!selectedFarm?.module_chicken;

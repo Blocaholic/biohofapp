@@ -47,7 +47,17 @@ class Farms {
       ]);
     }
 
-    return compact('email', 'farmid', 'role');
+    $userid = Database::get_userid($email) ?? throw new Exception("No user found with this email adress.");
+
+    $farms = Database::get_farms($userid);
+
+    foreach ($farms as $farm) {
+      if ($farm['farmid'] == $farmid) {
+        throw new Exception("User is already member.");
+      }
+    }
+
+    return compact('userid', 'farmid', 'role');
   }
 
   public static function GET() {
@@ -72,7 +82,7 @@ class Farms {
 
     $operations = [
       "update_modules" => ['Database', 'update_farm_modules'],
-      "add_member" => ['Database', 'add_farm_member'],
+      "add_member" => ['Database', 'add_farmmember'],
     ];
 
     $operation = $_POST['operation'];
@@ -86,7 +96,7 @@ class Farms {
     $role = Database::get_farm_role($farmid, $userid);
     $allowed_roles = ["owner", "admin"];
     if (!in_array($role, $allowed_roles)) {
-      exit_with_error(401, ["message" => "No permission to change modules."]);
+      exit_with_error(401, ["message" => "No permission to change settings."]);
     }
 
     $success = isset($operations[$operation])

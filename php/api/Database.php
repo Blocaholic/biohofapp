@@ -163,11 +163,16 @@ class Database {
     $farmid = $pdo->lastInsertId() ?: throw new Exception(
       "Failed to add farm to database."
     );
-    self::add_farmmember($farmid, $farm['owner'], 'owner');
+    $farmmember = [
+      "farmid" => $farmid,
+      "userid" => $farm['owner'],
+      "role" => "owner",
+    ];
+    self::add_farmmember($farmmember);
     return $farmid;
   }
 
-  public static function add_farmmember($farmid, $userid, $role) {
+  public static function add_farmmember($member) {
     $pdo = self::connect();
     $query = "INSERT INTO farmmembers (
       farmid,
@@ -180,9 +185,9 @@ class Database {
     );";
     $statement = $pdo->prepare($query);
     $statement->execute([
-      "farmid" => $farmid,
-      "userid" => $userid,
-      "role" => $role,
+      "farmid" => $member['farmid'],
+      "userid" => $member['userid'],
+      "role" => $member['role'],
     ]);
     $row_count = $statement->rowCount();
     if ($row_count !== 1) {throw new Exception("Could not set user role.");}
@@ -214,7 +219,23 @@ class Database {
     $statement = $pdo->prepare($query);
     $statement->execute(["userid" => $userid]);
     $farms = $statement->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($farms as $key => $farm) {
+      $farms[$key]["members"] = self::get_farmmembers($farm["farmid"]);
+    }
     return $farms;
+  }
+
+  private static function get_farmmembers($farmid) {
+    $pdo = self::connect();
+    $query = "SELECT farmmembers.userid, farmmembers.role, users.email
+      FROM farmmembers
+      LEFT JOIN users
+      ON farmmembers.userid = users.userid
+      WHERE farmmembers.farmid = :farmid;";
+    $statement = $pdo->prepare($query);
+    $statement->execute(["farmid" => $farmid]);
+    $farmmembers = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $farmmembers;
   }
 
   public static function update_farm_modules($farm) {
