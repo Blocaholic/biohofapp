@@ -60,6 +60,12 @@ class Farms {
     return compact('userid', 'farmid', 'role');
   }
 
+  private static function validate_rename_farm_input($input) {
+    $farmname = ValidateInput::farmname($input);
+    $farmid = ValidateInput::farmid($input);
+    return compact('farmname', 'farmid');
+  }
+
   public static function GET() {
     $token_payload = Token::verify_payload_from_header();
 
@@ -78,11 +84,13 @@ class Farms {
     $validations = [
       "update_modules" => [__CLASS__, 'validate_update_modules_input'],
       "add_member" => [__CLASS__, 'validate_add_member_input'],
+      "rename" => [__CLASS__, 'validate_rename_farm_input'],
     ];
 
     $operations = [
       "update_modules" => ['Database', 'update_farm_modules'],
       "add_member" => ['Database', 'add_farmmember'],
+      "rename" => ['Database', 'rename_farm'],
     ];
 
     $operation = $_POST['operation'];
@@ -106,5 +114,18 @@ class Farms {
     http_response_code(200);
     return [];
 
+  }
+
+  public static function DELETE($farmid) {
+    $token_payload = Token::verify_payload_from_header();
+    $userid = $token_payload['userid'];
+    $role = Database::get_farm_role($farmid, $userid);
+    $allowed_roles = ["owner"];
+    if (!in_array($role, $allowed_roles)) {
+      exit_with_error(401, ["message" => "No permission to delete farm."]);
+    }
+    Database::remove_all_farmmembers($farmid);
+    http_response_code(200);
+    return [];
   }
 }

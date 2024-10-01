@@ -89,7 +89,9 @@ const erase = async event => {
   const result = await fetchJson(`./api/farms/${farmid}`, 'DELETE');
   localStorage.selectedFarm = '';
 
-  result.message ? Error.show(result.message) : location.reload();
+  result.message || result.error?.message
+    ? Error.show(result.message || result.error?.message)
+    : location.reload();
 };
 
 export {add, addUser, updateModules, rename, erase};

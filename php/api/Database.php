@@ -257,4 +257,27 @@ class Database {
     ]);
   }
 
+  public static function rename_farm($farm) {
+    $pdo = self::connect();
+    $query = "UPDATE farms
+      SET
+        farmname = :farmname
+      WHERE farmid = :farmid;";
+    $statement = $pdo->prepare($query);
+    return $statement->execute([
+      "farmid" => $farm['farmid'],
+      "farmname" => $farm['farmname'],
+    ]);
+  }
+
+  public static function remove_all_farmmembers($farmid) {
+    $pdo = self::connect();
+    $query = "DELETE FROM farmmembers
+      WHERE farmid = :farmid;";
+    $statement = $pdo->prepare($query);
+    return $statement->execute([
+      "farmid" => $farmid,
+    ]);
+  }
+
 }
