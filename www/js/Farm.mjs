@@ -69,16 +69,27 @@ const updateModules = async event => {
   location.reload();
 };
 
-const edit = async event => {
+const rename = async event => {
   event.preventDefault();
 
-  location.reload();
+  const farm = {
+    operation: 'rename',
+    farmid: localStorage.selectedFarm,
+    farmname: $('editFarm__name').value,
+  };
+  const result = await fetchJson('./api/farms', 'PATCH', farm);
+
+  result.message ? Error.show(result.message) : location.reload();
 };
 
 const erase = async event => {
   event.preventDefault();
 
-  location.reload();
+  const farmid = localStorage.selectedFarm;
+  const result = await fetchJson(`./api/farms/${farmid}`, 'DELETE');
+  localStorage.selectedFarm = '';
+
+  result.message ? Error.show(result.message) : location.reload();
 };
 
-export {add, addUser, updateModules, edit, erase};
+export {add, addUser, updateModules, rename, erase};
