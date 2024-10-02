@@ -21,3 +21,10 @@ collation utf8mb4_unicode_520_ci
 ### Icons
 
 [Heroicons](https://heroicons.com/)
+
+## Permissions
+
+- owner: everything
+- admin: everything, except to delete farm
+- employee: like admin, except planning (just documentation)
+- visitor: read only
