@@ -186,15 +186,18 @@ const main = async () => {
     return rolePriority[a.role] - rolePriority[b.role];
   };
 
+  const highlightOwnRow = member =>
+    localStorage.userid == member.userid ? 'class="highlightedRow"' : '';
+
   const farmmembersHtmlRows = selectedFarm?.members
     .sort(membersByRolePriority)
     .map(
       member =>
-        `<tr ${
-          localStorage.userid == member.userid ? 'class="highlightedRow"' : ''
-        }><td>${member.userid}</td><td>${member.email}</td><td>${
-          roles[member.role]
-        }</td></tr>`
+        `<div ${highlightOwnRow(member)}>ID: ${
+          member.userid
+        }</div><div ${highlightOwnRow(member)}>${
+          member.email
+        }</div><div ${highlightOwnRow(member)}>${roles[member.role]}</div>`
     );
 
   $('settings__farmRoles').innerHTML = farmmembersHtmlRows?.join('');

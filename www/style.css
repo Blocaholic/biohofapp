@@ -226,12 +226,6 @@ table {
   border-collapse: collapse;
 }
 
-th,
-td {
-  text-align: left;
-  padding: 0.1em 1em 0.1em 0;
-}
-
 /* ########################################################################## */
 /* CLASSES */
 
@@ -488,6 +482,26 @@ td {
 
 .list--styleNone {
   list-style: none;
+}
+
+.settings__farmRoles {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+}
+
+.settings__farmRoles div {
+  padding: 0.1em 1em 0.1em 0;
+}
+
+@media all and (max-width: 720px) {
+  .settings__farmRoles {
+    grid-template-columns: repeat(1, auto);
+  }
+
+  .settings__farmRoles div:nth-child(3n) {
+    margin-bottom: 1em;
+  }
 }
 
 /* card */
