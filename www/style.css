@@ -243,6 +243,10 @@ table {
   font-weight: 500;
 }
 
+.noLineBreak {
+  white-space: nowrap;
+}
+
 .controlElement {
   cursor: pointer;
   color: var(--grey-5);
