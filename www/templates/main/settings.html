@@ -276,3 +276,51 @@
     <button id="addUser__button">Benutzerrechte speichern</button>
   </form>
 </article>
+
+<article id="updateUserPermissions__modal"
+         class="modal__background"
+         style="display: none;">
+  <form id="updateUserPermissions__form"
+        class="modal__box">
+    <h3>Benutzerrechte ändern</h3>
+    <span id="updateUserPermissions__close"
+          class="controlElement controlElement--close"
+          title="Abbrechen">&#65291;</span>
+    <p id="updateUserPermissions__userid"></p>
+    <p class="updateUserPermissions__email"
+       id="updateUserPermissions__email"></p>
+    <label for="updateUserPermissions__owner"
+           class="label--block">
+      <input type="radio"
+             name="updateUserPermissions__role"
+             id="updateUserPermissions__owner"
+             value="owner">
+      Eigentümer
+    </label>
+    <label for="updateUserPermissions__admin"
+           class="label--block">
+      <input type="radio"
+             name="updateUserPermissions__role"
+             id="updateUserPermissions__admin"
+             value="admin">
+      Bevollmächtigter
+    </label>
+    <label for="updateUserPermissions__employee"
+           class="label--block">
+      <input type="radio"
+             name="updateUserPermissions__role"
+             id="updateUserPermissions__employee"
+             value="employee">
+      Mitarbeiter
+    </label>
+    <label for="updateUserPermissions__visitor"
+           class="label--block">
+      <input type="radio"
+             name="updateUserPermissions__role"
+             id="updateUserPermissions__visitor"
+             value="visitor">
+      Besucher
+    </label>
+    <button id="updateUserPermissions__button">Benutzerrechte speichern</button>
+  </form>
+</article>

@@ -30,21 +30,41 @@ const add = async event => {
 
 const addUser = async event => {
   event.preventDefault();
-  const email = $('addUser__email').value;
+
   const role = [...document.getElementsByName('addUser__role')].filter(
     node => node.checked
   )[0].value;
 
   const patchData = {
-    email,
-    role,
     operation: 'add_member',
+    email: $('addUser__email').value,
+    role,
     farmid: localStorage.selectedFarm,
   };
 
   const result = await fetchJson('./api/farms', 'PATCH', patchData);
 
   result.error?.message ? Error.show(result.error.message) : location.reload();
+};
+
+const updateUserPermissions = async event => {
+  event.preventDefault();
+
+  const role = [
+    ...document.getElementsByName('updateUserPermissions__role'),
+  ].filter(node => node.checked)[0].value;
+
+  const patchData = {
+    operation: 'update_member',
+    email: $('updateUserPermissions__email').innerText,
+    userid: $('updateUserPermissions__userid').innerText.slice(),
+    role,
+    farmid: localStorage.selectedFarm,
+  };
+
+  const result = await fetchJson('./api/farms', 'PATCH', patchData);
+
+  result.message ? Error.show(result.message) : location.reload();
 };
 
 const updateModules = async event => {
@@ -94,4 +114,4 @@ const erase = async event => {
     : location.reload();
 };
 
-export {add, addUser, updateModules, rename, erase};
+export {add, addUser, updateUserPermissions, updateModules, rename, erase};

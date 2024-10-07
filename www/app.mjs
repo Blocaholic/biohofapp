@@ -122,12 +122,19 @@ const init = () => {
   $('addFarm__close').addEventListener('click', _ => $hide('addFarm__modal'));
   $('addUser__close').addEventListener('click', _ => $hide('addUser__modal'));
   $('resetApp__close').addEventListener('click', _ => $hide('resetApp__modal'));
+  $('updateUserPermissions__close').addEventListener('click', _ =>
+    $hide('updateUserPermissions__modal')
+  );
 
   $('editFarm__button').addEventListener('click', Farm.rename);
   $('addFarm__button').addEventListener('click', Farm.add);
   $('addUser__button').addEventListener('click', Farm.addUser);
   $('resetApp__firstButton').addEventListener('click', _ =>
     $show('resetApp__modal')
+  );
+  $('updateUserPermissions__button').addEventListener(
+    'click',
+    Farm.updateUserPermissions
   );
 
   $('deleteFarm__finalButton').addEventListener('click', Farm.erase);
@@ -139,6 +146,17 @@ const init = () => {
 
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))
+  );
+
+  $$('.settings__updateUserPermissionLink').forEach(link =>
+    link.addEventListener('click', event => {
+      $(
+        'updateUserPermissions__userid'
+      ).innerText = `User-ID: ${event.target.dataset.userid}`;
+      $('updateUserPermissions__email').innerText = event.target.dataset.email;
+      $(`updateUserPermissions__${event.target.dataset.role}`).checked = true;
+      $show('updateUserPermissions__modal');
+    })
   );
 };
 
@@ -169,6 +187,11 @@ const main = async () => {
     farm => farm.farmid === parseInt(localStorage.selectedFarm)
   )[0];
 
+  if (selectedFarm.role !== 'owner') {
+    $('updateUserPermissions__admin').disabled = true;
+    $('updateUserPermissions__owner').disabled = true;
+  }
+
   const roles = {
     owner: 'Eigentümer',
     admin: 'Bevollmächtigter',
@@ -186,21 +209,40 @@ const main = async () => {
     return rolePriority[a.role] - rolePriority[b.role];
   };
 
-  const highlightOwnRow = member =>
-    localStorage.userid == member.userid ? 'class="highlightedRow"' : '';
+  const createFarmmemberHtmlRow = member => {
+    const id = document.createElement('div');
+    id.innerText = `ID: ${member.userid}`;
+    const email = document.createElement('div');
+    email.innerText = member.email;
+    const role = document.createElement('div');
+    role.innerText = roles[member.role];
+    role.innerText += ' ';
+    if (
+      selectedFarm.role === 'owner' ||
+      (selectedFarm.role === 'admin' && member.role !== 'owner')
+    ) {
+      const icon = document.createElement('img');
+      icon.src = './icon/pencil.svg';
+      icon.alt = '';
+      icon.classList.add('icon--inline');
+      icon.classList.add('settings__updateUserPermissionLink');
+      icon.dataset.userid = member.userid;
+      icon.dataset.email = member.email;
+      icon.dataset.role = member.role;
+      role.appendChild(icon);
+    }
+    if (localStorage.userid == member.userid) {
+      id.classList.add('highlightedRow');
+      email.classList.add('highlightedRow');
+      role.classList.add('highlightedRow');
+    }
+    return [id, email, role];
+  };
 
-  const farmmembersHtmlRows = selectedFarm?.members
+  selectedFarm?.members
     .sort(membersByRolePriority)
-    .map(
-      member =>
-        `<div ${highlightOwnRow(member)}>ID: ${
-          member.userid
-        }</div><div ${highlightOwnRow(member)}>${
-          member.email
-        }</div><div ${highlightOwnRow(member)}>${roles[member.role]}</div>`
-    );
-
-  $('settings__farmRoles').innerHTML = farmmembersHtmlRows?.join('');
+    .flatMap(member => createFarmmemberHtmlRow(member))
+    .forEach(element => $('settings__farmRoles').appendChild(element));
 
   $('selectedFarm__moduleBees').checked = !!selectedFarm?.module_bees;
   $('selectedFarm__moduleChicken').checked = !!selectedFarm?.module_chicken;
@@ -266,5 +308,5 @@ const main = async () => {
   return Sections.show('welcome');
 };
 
-init();
 main();
+setTimeout(init, 100);

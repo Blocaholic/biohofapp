@@ -498,6 +498,10 @@ table {
   padding: 0.1em 1em 0.1em 0;
 }
 
+.updateUserPermissions__email {
+  margin-bottom: 0.7em;
+}
+
 @media all and (max-width: 720px) {
   .settings__farmRoles {
     grid-template-columns: repeat(1, auto);
