@@ -188,7 +188,6 @@ const main = async () => {
   )[0];
 
   if (selectedFarm.role !== 'owner') {
-    $('updateUserPermissions__admin').disabled = true;
     $('updateUserPermissions__owner').disabled = true;
   }
 
@@ -209,6 +208,10 @@ const main = async () => {
     return rolePriority[a.role] - rolePriority[b.role];
   };
 
+  if (!['owner', 'admin'].includes(selectedFarm.role)) {
+    $hide('addUser__link');
+  }
+
   const createFarmmemberHtmlRow = member => {
     const id = document.createElement('div');
     id.innerText = `ID: ${member.userid}`;
@@ -219,7 +222,10 @@ const main = async () => {
     role.innerText += ' ';
     if (
       selectedFarm.role === 'owner' ||
-      (selectedFarm.role === 'admin' && member.role !== 'owner')
+      (selectedFarm.role === 'admin' &&
+        !['owner', 'admin'].includes(member.role)) ||
+      (selectedFarm.role === 'admin' &&
+        Number(localStorage.userid) === Number(member.userid))
     ) {
       const icon = document.createElement('img');
       icon.src = './icon/pencil.svg';
