@@ -57,7 +57,7 @@ const updateUserPermissions = async event => {
   const patchData = {
     operation: 'update_member',
     email: $('updateUserPermissions__email').innerText,
-    userid: $('updateUserPermissions__userid').innerText.slice(),
+    userid: $('updateUserPermissions__userid').innerText.slice(9),
     role,
     farmid: localStorage.selectedFarm,
   };

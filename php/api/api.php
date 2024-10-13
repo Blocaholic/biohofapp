@@ -1,14 +1,17 @@
 <?php
-
 require_once __DIR__ . '/Utils.php';
+require_once __DIR__ . '/endpoints/Auth.php';
+require_once __DIR__ . '/endpoints/Devices.php';
+require_once __DIR__ . '/endpoints/Farms.php';
 
 Utils::configure_error_handling();
 
-spl_autoload_register(function ($class) {
-  require __DIR__ . "/endpoints/$class.php";
-});
-
 header("Content-type: application/json; charset=UTF-8");
+
+function exit_with_error($code, $body) {
+  http_response_code($code);
+  exit(json_encode($body));
+}
 
 $valid_endpoints = [
   'devices' => ['PATCH', 'POST'],
@@ -54,9 +57,12 @@ if (!in_array($method, $valid_endpoints[$endpoint])) {
   ]);
 }
 
-echo json_encode($class::$method($parts[3] ?? null));
-
-function exit_with_error($code, $body) {
-  http_response_code($code);
-  exit(json_encode($body));
+try {
+  $result = $class::$method($parts[3] ?? null);
+  if (!$result) {
+    exit_with_error(500, ["message" => "Something went wrong."]);
+  }
+  echo json_encode($result);
+} catch (\Throwable $e) {
+  exit_with_error(500, ["message" => json_encode(["message" => $e->getMessage(), "code" => $e->getCode(), "file" => $e->getFile(), "line" => $e->getLine(), "trace" => $e->getTrace()])]);
 }

@@ -172,7 +172,7 @@ class Database {
     return $farmid;
   }
 
-  public static function add_farmmember($member) {
+  public static function farm_add_member($member) {
     $pdo = self::connect();
     $query = "INSERT INTO farmmembers (
       farmid,
@@ -238,7 +238,7 @@ class Database {
     return $farmmembers;
   }
 
-  public static function update_farm_modules($farm) {
+  public static function farm_update_modules($farm) {
     $pdo = self::connect();
     $query = "UPDATE farms
       SET
@@ -257,7 +257,7 @@ class Database {
     ]);
   }
 
-  public static function rename_farm($farm) {
+  public static function farm_rename($farm) {
     $pdo = self::connect();
     $query = "UPDATE farms
       SET
@@ -277,6 +277,34 @@ class Database {
     $statement = $pdo->prepare($query);
     return $statement->execute([
       "farmid" => $farmid,
+    ]);
+  }
+
+  public static function farm_update_member($member) {
+    $pdo = self::connect();
+    if ($member['role'] === 'owner') {
+      $query = "UPDATE farmmembers
+        SET
+          role = :new_role
+        WHERE farmid = :farmid
+          AND role = :old_role";
+      $statement = $pdo->prepare($query);
+      $statement->execute([
+        "old_role" => "owner",
+        "new_role" => "admin",
+        "farmid" => $member['farmid'],
+      ]);
+    }
+    $query = "UPDATE farmmembers
+      SET
+        role = :role
+      WHERE farmid = :farmid
+        AND userid = :userid";
+    $statement = $pdo->prepare($query);
+    return $statement->execute([
+      "role" => $member['role'],
+      "farmid" => $member['farmid'],
+      "userid" => $member['userid'],
     ]);
   }
 

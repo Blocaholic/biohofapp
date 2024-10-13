@@ -175,6 +175,7 @@ const main = async () => {
   $('devicename').innerHTML += localStorage.devicename;
 
   const farms = await Utils.fetchJson('./api/farms', 'GET');
+  if (farms?.error?.message) return Error.show(farms.error.message);
 
   if (!localStorage.selectedFarm && farms.length)
     localStorage.selectedFarm = farms[0].farmid;
@@ -183,7 +184,7 @@ const main = async () => {
     ? ($('settings__farm').style.display = '')
     : ($('settings__addFarmLinkButton').style.display = '');
 
-  const selectedFarm = farms.filter(
+  const selectedFarm = farms?.filter(
     farm => farm.farmid === parseInt(localStorage.selectedFarm)
   )[0];
 
