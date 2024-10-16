@@ -6,6 +6,7 @@ import {testBaseURL} from './tests/baseURL.mjs';
 import {testApiBasics} from './tests/apiBasics.mjs';
 import {testDevicesRegister} from './tests/devicesRegister.mjs';
 import {testDevicesConfirm} from './tests/devicesConfirm.mjs';
+import {testAuthCreateToken} from './tests/authCreateToken.mjs';
 
 const user1 = {
   email: 'testbot1@reinwiese.de',
@@ -49,15 +50,19 @@ const baseURLTestResult = await testBaseURL();
 const apiFailureTestResult = await testApiBasics();
 const devicesRegisterTestResult = await testDevicesRegister();
 const devicesConfirmTestResult = await testDevicesConfirm(user1);
+const authCreateTokenTestResult = await testAuthCreateToken(user1);
 
 // const unconfirmedUser = {...devicesRegisterTestResult};
 // console.log({unconfirmedUser});
+// user1.token = {...authCreateTokenTestResult};
+// console.log(user1);
 
 Promise.all([
   baseURLTestResult,
   apiFailureTestResult,
   devicesRegisterTestResult,
   devicesConfirmTestResult,
+  authCreateTokenTestResult,
 ]).then(printFooterToConsole);
 
 function printHeaderToConsole() {
