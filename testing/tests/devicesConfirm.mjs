@@ -108,6 +108,24 @@ export const testDevicesConfirm = async function (user) {
     });
 
   console.log('#### id not found');
+  await fetch(`https://biohofapp.de/api/devices/7`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      operation: 'confirm',
+      confirmationpassword: user.confirmationpassword,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "404"', () =>
+        assert(response.status === 404));
+      return response.json();
+    })
+    .then(json => {
+      it('Error message should include "could not find deviceid"', () =>
+        assert.match(json.message.toLowerCase(), /could not find deviceid/));
+      it('deviceid should be sent back', () =>
+        assert.match(json.deviceid.toString(), /7/));
+    });
 
   console.log('#### wrong password');
 
