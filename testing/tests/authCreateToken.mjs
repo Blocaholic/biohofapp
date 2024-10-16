@@ -121,4 +121,21 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
     });
 
   console.log('\n### Auth::create_token (Success)');
+  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      password: user.password,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "201"', () =>
+        assert(response.status === 201));
+      return response.json();
+    })
+    .then(json => {
+      it('deviceid should be sent back', () =>
+        assert.strictEqual(json.deviceid, user.deviceid));
+      it('token should include correct header', () =>
+        assert.match(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/));
+    });
 };
