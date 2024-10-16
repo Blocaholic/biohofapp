@@ -128,6 +128,25 @@ export const testDevicesConfirm = async function (user) {
     });
 
   console.log('#### wrong password');
+  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      operation: 'confirm',
+      confirmationpassword: user.confirmationpassword.slice(1) + 'x',
+    }),
+  })
+    .then(response => {
+      it('http response code should be "401"', () =>
+        assert(response.status === 401));
+      return response.json();
+    })
+    .then(json => {
+      it('Error message should include "confirmationpassword not accepted"', () =>
+        assert.match(
+          json.message.toLowerCase(),
+          /confirmationpassword not accepted/
+        ));
+    });
 
   console.log('\n### Devices::Confirm (Success)');
 };
