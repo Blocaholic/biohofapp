@@ -1,7 +1,7 @@
 import {strict as assert} from 'assert';
 import {it} from '../it.mjs';
 
-export const testAuthCreateToken = async function (user) {
+export const testAuthCreateToken = async function (user, unconfirmedUser) {
   console.log('\n### Auth::create_token (Failure)');
 
   console.log('#### wrong password');
@@ -22,8 +22,40 @@ export const testAuthCreateToken = async function (user) {
     });
 
   console.log('#### deviceid not found');
+  await fetch(`https://biohofapp.de/api/auth/7`, {
+    method: 'POST',
+    body: JSON.stringify({
+      password: user.password,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "404"', () =>
+        assert(response.status === 404));
+      return response.json();
+    })
+    .then(json => {
+      it('deviceid should be sent back', () =>
+        assert.match(json.deviceid.toString(), /7/));
+      it('Error message should include "could not find deviceid"', () =>
+        assert.match(json.message.toLowerCase(), /could not find deviceid/));
+    });
 
   console.log('#### unconfirmed device');
+  await fetch(`https://biohofapp.de/api/auth/${unconfirmedUser.deviceid}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      password: unconfirmedUser.password,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "401"', () =>
+        assert(response.status === 401));
+      return response.json();
+    })
+    .then(json => {
+      it('Error message should include "device is not confirmed"', () =>
+        assert.match(json.message.toLowerCase(), /device is not confirmed/));
+    });
 
   console.log('#### invalid deviceid');
 

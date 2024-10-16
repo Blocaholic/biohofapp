@@ -50,9 +50,12 @@ const baseURLTestResult = await testBaseURL();
 const apiFailureTestResult = await testApiBasics();
 const devicesRegisterTestResult = await testDevicesRegister();
 const devicesConfirmTestResult = await testDevicesConfirm(user1);
-const authCreateTokenTestResult = await testAuthCreateToken(user1);
+const unconfirmedUser = {...devicesRegisterTestResult};
+const authCreateTokenTestResult = await testAuthCreateToken(
+  user1,
+  unconfirmedUser
+);
 
-// const unconfirmedUser = {...devicesRegisterTestResult};
 // console.log({unconfirmedUser});
 // user1.token = {...authCreateTokenTestResult};
 // console.log(user1);
