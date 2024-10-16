@@ -28,3 +28,7 @@ collation utf8mb4_unicode_520_ci
 - admin: everything, except to delete farm
 - employee: like admin, except planning (just documentation)
 - visitor: read only
+
+## Testing
+
+- for API-Tests run ./testing/api-tests.mjs
