@@ -149,4 +149,23 @@ export const testDevicesConfirm = async function (user) {
     });
 
   console.log('\n### Devices::Confirm (Success)');
+  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      operation: 'confirm',
+      confirmationpassword: user.confirmationpassword,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "200"', () =>
+        assert(response.status === 200));
+      return response.json();
+    })
+    .then(json => {
+      it('deviceid should be sent back', () => assert(json.deviceid));
+      it('deviceid should be an integer', () =>
+        assert(Number.isInteger(json.deviceid)));
+      it('response deviceid should equal sent deviceid', () =>
+        assert.strictEqual(json.deviceid, user.deviceid));
+    });
 };
