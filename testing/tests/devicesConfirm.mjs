@@ -85,6 +85,27 @@ export const testDevicesConfirm = async function (user) {
     });
 
   console.log('#### password "= 32 chars');
+  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      operation: 'confirm',
+      confirmationpassword: user.confirmationpassword + 'x',
+    }),
+  })
+    .then(response => {
+      it('http response code should be "400"', () =>
+        assert(response.status === 400));
+      return response.json();
+    })
+    .then(json => {
+      it('Error message should include "confirmationpassword must be 32 characters"', () =>
+        assert.match(
+          json.message.toLowerCase(),
+          /confirmationpassword must be 32 characters/
+        ));
+      it('password length should be sent back', () =>
+        assert.match(json.passwordLength.toString(), /33/));
+    });
 
   console.log('#### id not found');
 
