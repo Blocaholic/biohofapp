@@ -58,6 +58,28 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
     });
 
   console.log('#### invalid deviceid');
+  await fetch(`https://biohofapp.de/api/auth/1b3`, {
+    method: 'POST',
+    body: JSON.stringify({
+      password: user.password,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "400"', () =>
+        assert(response.status === 400));
+      return response.json();
+    })
+    .then(json => {
+      it('deviceid should be sent back', () =>
+        assert.match(json.deviceid.toString(), /1b3/));
+      it('Error message should include "deviceid must be an integer greater than 0"', () =>
+        assert.match(
+          json.message.toLowerCase(),
+          /deviceid must be an integer greater than 0/
+        ));
+      it('json property "syntax" should exist', () => assert(json.syntax));
+      it('json property "example" should exist', () => assert(json.example));
+    });
 
   console.log('#### missing password');
 
