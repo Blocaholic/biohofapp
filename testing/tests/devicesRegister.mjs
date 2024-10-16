@@ -8,7 +8,7 @@ export const testDevicesRegister = async function () {
   await fetch('https://biohofapp.de/api/devices', {
     method: 'POST',
     body: JSON.stringify({
-      emil: 'trash@rocklands.de',
+      emil: 'testbotfailure@reinwiese.de',
       password: '12345678901234567890123456789012',
       devicename: 'My Computer',
     }),
@@ -27,7 +27,7 @@ export const testDevicesRegister = async function () {
   await fetch('https://biohofapp.de/api/devices', {
     method: 'POST',
     body: JSON.stringify({
-      email: 'trashrocklands.de',
+      email: 'testbotfailurereinwiese.de',
       password: '12345678901234567890123456789012',
       devicename: 'My Computer',
     }),
@@ -46,7 +46,7 @@ export const testDevicesRegister = async function () {
   await fetch('https://biohofapp.de/api/devices', {
     method: 'POST',
     body: JSON.stringify({
-      email: 'trash@rocklands.de',
+      email: 'testbotfailure@reinwiese.de',
       passwort: '12345678901234567890123456789012',
       devicename: 'My Computer',
     }),
@@ -65,7 +65,7 @@ export const testDevicesRegister = async function () {
   await fetch('https://biohofapp.de/api/devices', {
     method: 'POST',
     body: JSON.stringify({
-      email: 'trash@rocklands.de',
+      email: 'testbotfailure@reinwiese.de',
       password: '123456789012345678901234567890123',
       devicename: 'My Computer',
     }),
@@ -89,7 +89,7 @@ export const testDevicesRegister = async function () {
   await fetch('https://biohofapp.de/api/devices', {
     method: 'POST',
     body: JSON.stringify({
-      email: 'trash@rocklands.de',
+      email: 'testbotfailure@reinwiese.de',
       password: '12345678901234567890123456789012',
       devicename: "'My' & <Computer>",
     }),
@@ -113,7 +113,7 @@ export const testDevicesRegister = async function () {
 
   console.log('\n### Devices::Register (Success)');
   const newUser = {
-    email: 'postman1@reinwiese.de',
+    email: 'testbot5@reinwiese.de',
     password: '12345678901234567890123456789012',
     devicename: 'Computer',
   };
