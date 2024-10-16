@@ -99,6 +99,26 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
     });
 
   console.log('#### password != 32 chars');
+  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      password: user.password + '3',
+    }),
+  })
+    .then(response => {
+      it('http response code should be "400"', () =>
+        assert(response.status === 400));
+      return response.json();
+    })
+    .then(json => {
+      it('password length should be sent back', () =>
+        assert.match(json.passwordLength.toString(), /33/));
+      it('error message should include "password must be 32 characters"', () =>
+        assert.match(
+          json.message.toLowerCase(),
+          /password must be 32 characters/
+        ));
+    });
 
   console.log('\n### Auth::create_token (Success)');
 };
