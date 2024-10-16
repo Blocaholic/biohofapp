@@ -82,6 +82,21 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
     });
 
   console.log('#### missing password');
+  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      passwort: user.password,
+    }),
+  })
+    .then(response => {
+      it('http response code should be "400"', () =>
+        assert(response.status === 400));
+      return response.json();
+    })
+    .then(json => {
+      it('Error message should include "password is required"', () =>
+        assert.match(json.message.toLowerCase(), /password is required/));
+    });
 
   console.log('#### password != 32 chars');
 
