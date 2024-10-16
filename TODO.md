@@ -4,10 +4,10 @@
 
 ### Prio A
 
-#### Betriebe API
+#### API
 
-- farms/id PATCH (Berechtigung ändern / löschen)
-- farms/id PATCH (Owner ändern)
+- delete device
+- delete user
 
 ### Prio B
 
