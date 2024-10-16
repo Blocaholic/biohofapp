@@ -4,13 +4,22 @@
 import {it} from './it.mjs';
 import {testBaseURL} from './tests/baseURL.mjs';
 import {testApiBasics} from './tests/apiBasics.mjs';
+import {testDevicesRegister} from './tests/devicesRegister.mjs';
 
 printHeaderToConsole();
 
 const baseURLTestResult = await testBaseURL();
 const apiFailureTestResult = await testApiBasics();
+const devicesRegisterTestResult = await testDevicesRegister();
 
-Promise.all([baseURLTestResult]).then(printFooterToConsole);
+// const unconfirmedUser = {...devicesRegisterTestResult};
+// console.log({unconfirmedUser});
+
+Promise.all([
+  baseURLTestResult,
+  apiFailureTestResult,
+  devicesRegisterTestResult,
+]).then(printFooterToConsole);
 
 function printHeaderToConsole() {
   console.log('\n# Testing biohofapp.de');

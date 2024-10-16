@@ -16,7 +16,7 @@ export const testApiBasics = async function () {
     .then(json => {
       it('Error message should include "Unknown endpoint" (case insensitive)', () =>
         assert.match(json.message.toLowerCase(), /unknown endpoint/));
-      it('Error message should include requested endpoint"', () =>
+      it('Error message should include requested endpoint', () =>
         assert.match(json.message.toLowerCase(), /invalid/));
       it('List of valid endpoints should exist', () =>
         assert(json.validEndpoints));
