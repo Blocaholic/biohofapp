@@ -6,7 +6,7 @@ const internalCounter = {
   },
 };
 
-function it(testDescription, testFunction) {
+function test(testDescription, testFunction) {
   try {
     testFunction();
     console.log('\x1b[32m%s\x1b[0m', `\u2714 ${testDescription}`);
@@ -18,8 +18,8 @@ function it(testDescription, testFunction) {
   }
 }
 
-it.counter = function () {
+test.count = function () {
   return internalCounter;
 };
 
-export {it};
+export {test};

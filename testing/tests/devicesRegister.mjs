@@ -1,140 +1,146 @@
-import {strict as assert} from 'assert';
-import {it} from '../it.mjs';
+import {test} from '../test.mjs';
+import {expect} from '../expect.mjs';
+import {httpRequest, getJson} from '../utils.mjs';
 
-export const testDevicesRegister = async function () {
+export const testDevicesRegister = async function (user) {
   console.log('\n### Devices::Register (Failure)');
 
   console.log('#### missing email');
-  await fetch('https://biohofapp.de/api/devices', {
-    method: 'POST',
-    body: JSON.stringify({
-      emil: 'testbotfailure@reinwiese.de',
-      password: '12345678901234567890123456789012',
-      devicename: 'My Computer',
-    }),
+  await httpRequest({
+    url: `devices`,
+    method: `POST`,
+    body: {
+      emil: user.email,
+      password: user.password,
+      devicename: user.devicename,
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "email is required"', () =>
-        assert.match(json.message.toLowerCase(), /email is required/));
+      test(
+        'Error message should include "email is required"',
+        expect.toMatch(json.message.toLowerCase(), /email is required/)
+      );
     });
 
   console.log('#### invalid email');
-  await fetch('https://biohofapp.de/api/devices', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: 'testbotfailurereinwiese.de',
-      password: '12345678901234567890123456789012',
-      devicename: 'My Computer',
-    }),
+  await httpRequest({
+    url: `devices`,
+    method: `POST`,
+    body: {
+      email: 'invalidemailatreinwiese.de',
+      password: user.password,
+      devicename: user.devicename,
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "invalid email"', () =>
-        assert.match(json.message.toLowerCase(), /invalid email/));
-    });
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "invalid email"',
+        expect.toMatch(json?.message?.toLowerCase(), /invalid email/)
+      )
+    );
 
   console.log('#### missing password');
-  await fetch('https://biohofapp.de/api/devices', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: 'testbotfailure@reinwiese.de',
-      passwort: '12345678901234567890123456789012',
-      devicename: 'My Computer',
-    }),
+  await httpRequest({
+    url: `devices`,
+    method: `POST`,
+    body: {
+      email: user.email,
+      passwort: user.password,
+      devicename: user.devicename,
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "password is required"', () =>
-        assert.match(json.message.toLowerCase(), /password is required/));
-    });
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "password is required"',
+        expect.toMatch(json.message.toLowerCase(), /password is required/)
+      )
+    );
 
   console.log('#### password != 32 chars');
-  await fetch('https://biohofapp.de/api/devices', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: 'testbotfailure@reinwiese.de',
-      password: '123456789012345678901234567890123',
-      devicename: 'My Computer',
-    }),
+  await httpRequest({
+    url: `devices`,
+    method: `POST`,
+    body: {
+      email: user.email,
+      password: user.password + '3',
+      devicename: user.devicename,
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "password must be 32 characters"', () =>
-        assert.match(
+      test(
+        'Error message should include "password must be 32 characters"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /password must be 32 characters/
-        ));
-      it('Password length is sent back', () =>
-        assert.strictEqual(json.passwordLength, 33));
+        )
+      );
+      test(
+        'Password length is sent back',
+        expect.toEqual(json.passwordLength, 33)
+      );
     });
 
   console.log('#### invalid devicename');
-  await fetch('https://biohofapp.de/api/devices', {
-    method: 'POST',
-    body: JSON.stringify({
-      email: 'testbotfailure@reinwiese.de',
-      password: '12345678901234567890123456789012',
+  await httpRequest({
+    url: `devices`,
+    method: `POST`,
+    body: {
+      email: user.email,
+      password: user.password,
       devicename: "'My' & <Computer>",
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "invalid characters in devicename"', () =>
-        assert.match(
+      test(
+        'Error message should include "invalid characters in devicename"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /invalid characters in devicename/
-        ));
-      it('Invalid characters should include "\'<>&', () =>
-        assert.match(json.invalidCharacters, /"'<>&/));
-      it("Devicename should equal \"'My' & <Computer>", () =>
-        assert.match(json.devicename, /'My' & <Computer>/));
+        )
+      );
+      test(
+        'Invalid characters should include "\'<>&',
+        expect.toMatch(json.invalidCharacters, /"'<>&/)
+      );
+      test(
+        "Devicename should equal \"'My' & <Computer>",
+        expect.toMatch(json.devicename, /'My' & <Computer>/)
+      );
     });
 
   console.log('\n### Devices::Register (Success)');
-  const newUser = {
-    email: 'testbot5@reinwiese.de',
-    password: '12345678901234567890123456789012',
-    devicename: 'Computer',
-  };
-  const registrationData = await fetch('https://biohofapp.de/api/devices', {
-    method: 'POST',
-    body: JSON.stringify(newUser),
+  return await httpRequest({
+    url: `devices`,
+    method: `POST`,
+    body: {
+      email: user.email,
+      password: user.password,
+      devicename: user.devicename,
+    },
   })
-    .then(response => {
-      it('http response code should be "201"', () =>
-        assert(response.status === 201));
-      return response.json();
-    })
+    .then(expect.responseCode(201))
+    .then(getJson)
     .then(json => {
-      it('Deviceid should be sent back', () => assert(json.deviceid));
-      it('Deviceid should be an integer', () =>
-        assert(Number.isInteger(json.deviceid)));
-      it('Userid should be sent back', () => assert(json.userid));
-      it('Userid should be an integer', () =>
-        assert(Number.isInteger(json.userid)));
+      test('Deviceid should be sent back', expect.toBeTruthy(json.deviceid));
+      test(
+        'Deviceid should be an integer',
+        expect.toBeTruthy(Number.isInteger(json.deviceid))
+      );
+      test('Userid should be sent back', expect.toBeTruthy(json.userid));
+      test(
+        'Userid should be an integer',
+        expect.toBeTruthy(Number.isInteger(json.userid))
+      );
       return json;
     });
-
-  return {...newUser, ...registrationData};
 };

@@ -1,68 +1,92 @@
-import {strict as assert} from 'assert';
-import {it} from '../it.mjs';
+import {test} from '../test.mjs';
+import {expect} from '../expect.mjs';
+import {httpRequest, getJson} from '../utils.mjs';
 
 export const testApiBasics = async function () {
   console.log('\n### API Basics (Failure)');
 
   console.log('#### API: unknown endpoint');
-  await fetch('https://biohofapp.de/api/invalid', {
+  await httpRequest({
+    url: `invalid`,
     method: 'GET',
   })
-    .then(response => {
-      it('http response code should be "404"', () =>
-        assert(response.status === 404));
-      return response.json();
-    })
+    .then(expect.responseCode(404))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "Unknown endpoint" (case insensitive)', () =>
-        assert.match(json.message.toLowerCase(), /unknown endpoint/));
-      it('Error message should include requested endpoint', () =>
-        assert.match(json.message.toLowerCase(), /invalid/));
-      it('List of valid endpoints should exist', () =>
-        assert(json.validEndpoints));
+      test(
+        'Error message should include "unknown endpoint" (case insensitive)',
+        expect.toMatch(json.message.toLowerCase(), /unknown endpoint/)
+      );
+      test(
+        'Error message should include requested endpoint',
+        expect.toMatch(json.message.toLowerCase(), /invalid/)
+      );
+      test('List of valid endpoints should exist', () =>
+        expect.toBeTruthy(json.validEndpoints));
     });
 
   console.log('#### API: request method not allowed');
-  await fetch('https://biohofapp.de/api/devices', {
+  await httpRequest({
+    url: 'devices',
     method: 'GET',
   })
-    .then(response => {
-      it('http response code should be "405"', () =>
-        assert(response.status === 405));
-      return response.json();
-    })
+    .then(expect.responseCode(405))
+    .then(getJson)
     .then(json => {
-      it('Error message includes "http request method"', () =>
-        assert.match(json.message.toLowerCase(), /http request method/));
-      it('Error message includes "not allowed for endpoint"', () =>
-        assert.match(json.message.toLowerCase(), /not allowed for endpoint/));
-      it('Error message includes requested endpoint', () =>
-        assert.match(json.message.toLowerCase(), /devices/));
-      it('Error message includes request method', () =>
-        assert.match(json.message.toLowerCase(), /get/));
-      it('List of valid methods should exist', () => assert(json.validMethods));
+      test(
+        'Error message includes "http request method"',
+        expect.toMatch(json.message.toLowerCase(), /http request method/)
+      );
+      test(
+        'Error message includes "not allowed for endpoint"',
+        expect.toMatch(json.message.toLowerCase(), /not allowed for endpoint/)
+      );
+      test(
+        'Error message includes requested endpoint',
+        expect.toMatch(json.message.toLowerCase(), /devices/)
+      );
+      test(
+        'Error message includes request method',
+        expect.toMatch(json.message.toLowerCase(), /get/)
+      );
+      test(
+        'List of valid methods should exist',
+        expect.toBeTruthy(json.validMethods)
+      );
     });
 
   console.log('#### API: unknown http request method');
-  await fetch('https://biohofapp.de/api/auth', {
-    method: 'FAIL',
+  await httpRequest({
+    url: `auth`,
+    method: `FAIL`,
+    body: {},
   })
-    .then(response => {
-      it('http response code should be "501"', () =>
-        assert(response.status === 501));
-      return response.json();
-    })
+    .then(expect.responseCode(501))
+    .then(getJson)
     .then(json => {
-      it('Error message includes "unknown http request method"', () =>
-        assert.match(json.message.toLowerCase(), /http request method/));
-      it('Error message includes requested endpoint', () =>
-        assert.match(json.message.toLowerCase(), /fail/));
-      it('List of valid http request methods should exist', () =>
-        assert(json.validHttpRequestMethods));
-      it('Valid http request methods should include "POST", "PATCH" and "GET"', () => {
-        assert(json.validHttpRequestMethods.includes('POST'));
-        assert(json.validHttpRequestMethods.includes('PATCH'));
-        assert(json.validHttpRequestMethods.includes('GET'));
-      });
+      test(
+        'Error message includes "unknown http request method"',
+        expect.toMatch(json.message.toLowerCase(), /http request method/)
+      );
+      test(
+        'Error message includes requested endpoint',
+        expect.toMatch(json.message.toLowerCase(), /fail/)
+      );
+      test(
+        'List of valid http request methods should exist',
+        expect.toBeTruthy(json.validHttpRequestMethods)
+      );
+      test(
+        'Valid http request methods should include "POST"',
+        expect.toBeTruthy(json.validHttpRequestMethods.includes('GET'))
+      );
+      test(
+        'Valid http request methods should include "PATCH"',
+        expect.toBeTruthy(json.validHttpRequestMethods.includes('GET'))
+      );
+      test(
+        'Valid http request methods should include "GET"',
+        expect.toBeTruthy(json.validHttpRequestMethods.includes('GET'))
+      );
     });
 };

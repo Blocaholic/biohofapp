@@ -1,171 +1,186 @@
-import {strict as assert} from 'assert';
-import {it} from '../it.mjs';
+import {test} from '../test.mjs';
+import {expect} from '../expect.mjs';
+import {httpRequest, getJson} from '../utils.mjs';
 
 export const testDevicesConfirm = async function (user) {
   console.log('\n### Devices::Confirm (Failure)');
 
   console.log('#### undefined operation');
-  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/${user.deviceid}`,
+    method: `PATCH`,
+    body: {
       operations: 'confirm',
       confirmationpassword: user.confirmationpassword,
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "operation must be defined"', () =>
-        assert.match(json.message.toLowerCase(), /operation must be defined/));
-    });
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "operation must be defined"',
+        expect.toMatch(json.message.toLowerCase(), /operation must be defined/)
+      )
+    );
 
   console.log('#### unknown operation');
-  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/${user.deviceid}`,
+    method: `PATCH`,
+    body: {
       operation: 'konfirm',
       confirmationpassword: user.confirmationpassword,
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "unknown operation"', () =>
-        assert.match(json.message.toLowerCase(), /unknown operation/));
-      it('Operation should be sent back', () =>
-        assert.match(json.operation, /konfirm/));
+      test(
+        'Error message should include "unknown operation"',
+        expect.toMatch(json.message.toLowerCase(), /unknown operation/)
+      );
+      test(
+        'Operation should be sent back',
+        expect.toMatch(json.operation, /konfirm/)
+      );
     });
 
   console.log('#### invalid id');
-  await fetch(`https://biohofapp.de/api/devices/1b3`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/1b3`,
+    method: `PATCH`,
+    body: {
       operation: 'confirm',
       confirmationpassword: user.confirmationpassword,
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "id must be an integer greater than 0"', () =>
-        assert.match(
+      test(
+        'Error message should include "id must be an integer greater than 0"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /id must be an integer greater than 0/
-        ));
-      it('ID should be sent back', () => assert.match(json.id, /1b3/));
-      it('json property "syntax" should exist', () => assert(json.syntax));
-      it('json property "example" should exist', () => assert(json.example));
+        )
+      );
+      test('ID should be sent back', expect.toMatch(json.id, /1b3/));
+      test(
+        'json property "syntax" should exist',
+        expect.toBeTruthy(json.syntax)
+      );
+      test(
+        'json property "example" should exist',
+        expect.toBeTruthy(json.example)
+      );
     });
 
   console.log('#### missing password');
-  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/${user.deviceid}`,
+    method: `PATCH`,
+    body: {
       operation: 'confirm',
       confirmationpasswort: user.confirmationpassword,
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "password is required"', () =>
-        assert.match(json.message.toLowerCase(), /password is required/));
-    });
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "password is required"',
+        expect.toMatch(json.message.toLowerCase(), /password is required/)
+      )
+    );
 
   console.log('#### password "= 32 chars');
-  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/${user.deviceid}`,
+    method: `PATCH`,
+    body: {
       operation: 'confirm',
       confirmationpassword: user.confirmationpassword + 'x',
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "confirmationpassword must be 32 characters"', () =>
-        assert.match(
+      test(
+        'Error message should include "confirmationpassword must be 32 characters"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /confirmationpassword must be 32 characters/
-        ));
-      it('password length should be sent back', () =>
-        assert.match(json.passwordLength.toString(), /33/));
+        )
+      );
+      test(
+        'password length should be sent back',
+        expect.toMatch(json.passwordLength.toString(), /33/)
+      );
     });
 
   console.log('#### id not found');
-  await fetch(`https://biohofapp.de/api/devices/7`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/7`,
+    method: `PATCH`,
+    body: {
       operation: 'confirm',
       confirmationpassword: user.confirmationpassword,
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "404"', () =>
-        assert(response.status === 404));
-      return response.json();
-    })
+    .then(expect.responseCode(404))
+    .then(getJson)
     .then(json => {
-      it('Error message should include "could not find deviceid"', () =>
-        assert.match(json.message.toLowerCase(), /could not find deviceid/));
-      it('deviceid should be sent back', () =>
-        assert.match(json.deviceid.toString(), /7/));
+      test(
+        'Error message should include "could not find deviceid"',
+        expect.toMatch(json.message.toLowerCase(), /could not find deviceid/)
+      );
+      test(
+        'deviceid should be sent back',
+        expect.toMatch(json.deviceid.toString(), /7/)
+      );
     });
 
   console.log('#### wrong password');
-  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/${user.deviceid}`,
+    method: `PATCH`,
+    body: {
       operation: 'confirm',
       confirmationpassword: user.confirmationpassword.slice(1) + 'x',
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "401"', () =>
-        assert(response.status === 401));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "confirmationpassword not accepted"', () =>
-        assert.match(
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "confirmationpassword not accepted"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /confirmationpassword not accepted/
-        ));
-    });
+        )
+      )
+    );
 
   console.log('\n### Devices::Confirm (Success)');
-  await fetch(`https://biohofapp.de/api/devices/${user.deviceid}`, {
-    method: 'PATCH',
-    body: JSON.stringify({
+  await httpRequest({
+    url: `devices/${user.deviceid}`,
+    method: `PATCH`,
+    body: {
       operation: 'confirm',
       confirmationpassword: user.confirmationpassword,
-    }),
+    },
   })
-    .then(response => {
-      it('http response code should be "200"', () =>
-        assert(response.status === 200));
-      return response.json();
-    })
+    .then(expect.responseCode(200))
+    .then(getJson)
     .then(json => {
-      it('deviceid should be sent back', () => assert(json.deviceid));
-      it('deviceid should be an integer', () =>
-        assert(Number.isInteger(json.deviceid)));
-      it('response deviceid should equal sent deviceid', () =>
-        assert.strictEqual(json.deviceid, user.deviceid));
+      test('deviceid should be sent back', expect.toBeTruthy(json.deviceid));
+      test(
+        'deviceid should be an integer',
+        expect.toBeTruthy(Number.isInteger(json.deviceid))
+      );
+      test(
+        'response deviceid should equal sent deviceid',
+        expect.toEqual(json.deviceid, user.deviceid)
+      );
     });
 };

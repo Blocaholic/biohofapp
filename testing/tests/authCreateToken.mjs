@@ -1,141 +1,144 @@
-import {strict as assert} from 'assert';
-import {it} from '../it.mjs';
+import {test} from '../test.mjs';
+import {expect} from '../expect.mjs';
+import {httpRequest, getJson} from '../utils.mjs';
+import exp from 'constants';
 
 export const testAuthCreateToken = async function (user, unconfirmedUser) {
   console.log('\n### Auth::create_token (Failure)');
 
   console.log('#### wrong password');
-  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      password: user.password.slice(0, -1) + '3',
-    }),
+  await httpRequest({
+    url: `auth/${user.deviceid}`,
+    method: `POST`,
+    body: {password: user.password.slice(0, -1) + '3'},
   })
-    .then(response => {
-      it('http response code should be "401"', () =>
-        assert(response.status === 401));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "password not accepted"', () =>
-        assert.match(json.message.toLowerCase(), /password not accepted/));
-    });
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "password not accepted"',
+        expect.toMatch(json.message.toLowerCase(), /password not accepted/)
+      )
+    );
 
   console.log('#### deviceid not found');
-  await fetch(`https://biohofapp.de/api/auth/7`, {
-    method: 'POST',
-    body: JSON.stringify({
-      password: user.password,
-    }),
+  await httpRequest({
+    url: `auth/7`,
+    method: `POST`,
+    body: {password: user.password},
   })
-    .then(response => {
-      it('http response code should be "404"', () =>
-        assert(response.status === 404));
-      return response.json();
-    })
+    .then(expect.responseCode(404))
+    .then(getJson)
     .then(json => {
-      it('deviceid should be sent back', () =>
-        assert.match(json.deviceid.toString(), /7/));
-      it('Error message should include "could not find deviceid"', () =>
-        assert.match(json.message.toLowerCase(), /could not find deviceid/));
+      test(
+        'deviceid should be sent back',
+        expect.toMatch(json.deviceid.toString(), /7/)
+      );
+      test(
+        'Error message should include "could not find deviceid"',
+        expect.toMatch(json.message.toLowerCase(), /could not find deviceid/)
+      );
     });
 
   console.log('#### unconfirmed device');
-  await fetch(`https://biohofapp.de/api/auth/${unconfirmedUser.deviceid}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      password: unconfirmedUser.password,
-    }),
+  await httpRequest({
+    url: `auth/${unconfirmedUser.deviceid}`,
+    method: `POST`,
+    body: {password: unconfirmedUser.password},
   })
-    .then(response => {
-      it('http response code should be "401"', () =>
-        assert(response.status === 401));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "device is not confirmed"', () =>
-        assert.match(json.message.toLowerCase(), /device is not confirmed/));
-    });
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "device is not confirmed"',
+        expect.toMatch(json.message.toLowerCase(), /device is not confirmed/)
+      )
+    );
 
   console.log('#### invalid deviceid');
-  await fetch(`https://biohofapp.de/api/auth/1b3`, {
-    method: 'POST',
-    body: JSON.stringify({
-      password: user.password,
-    }),
+  await httpRequest({
+    url: `auth/1b3`,
+    method: `POST`,
+    body: {password: user.password},
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('deviceid should be sent back', () =>
-        assert.match(json.deviceid.toString(), /1b3/));
-      it('Error message should include "deviceid must be an integer greater than 0"', () =>
-        assert.match(
+      test(
+        'deviceid should be sent back',
+        expect.toMatch(json.deviceid.toString(), /1b3/)
+      );
+      test(
+        'Error message should include "deviceid must be an integer greater than 0"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /deviceid must be an integer greater than 0/
-        ));
-      it('json property "syntax" should exist', () => assert(json.syntax));
-      it('json property "example" should exist', () => assert(json.example));
+        )
+      );
+      test(
+        'json property "syntax" should exist',
+        expect.toBeTruthy(json.syntax)
+      );
+      test(
+        'json property "example" should exist',
+        expect.toBeTruthy(json.example)
+      );
     });
 
   console.log('#### missing password');
-  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      passwort: user.password,
-    }),
+  await httpRequest({
+    url: `auth/${user.deviceid}`,
+    method: `POST`,
+    body: {passwort: user.password},
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
-    .then(json => {
-      it('Error message should include "password is required"', () =>
-        assert.match(json.message.toLowerCase(), /password is required/));
-    });
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json =>
+      test(
+        'Error message should include "password is required"',
+        expect.toMatch(json.message.toLowerCase(), /password is required/)
+      )
+    );
 
   console.log('#### password != 32 chars');
-  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      password: user.password + '3',
-    }),
+  await httpRequest({
+    url: `auth/${user.deviceid}`,
+    method: `POST`,
+    body: {password: user.password + '3'},
   })
-    .then(response => {
-      it('http response code should be "400"', () =>
-        assert(response.status === 400));
-      return response.json();
-    })
+    .then(expect.responseCode(400))
+    .then(getJson)
     .then(json => {
-      it('password length should be sent back', () =>
-        assert.match(json.passwordLength.toString(), /33/));
-      it('error message should include "password must be 32 characters"', () =>
-        assert.match(
+      test(
+        'password length should be sent back',
+        expect.toMatch(json.passwordLength.toString(), /33/)
+      );
+      test(
+        'error message should include "password must be 32 characters"',
+        expect.toMatch(
           json.message.toLowerCase(),
           /password must be 32 characters/
-        ));
+        )
+      );
     });
 
   console.log('\n### Auth::create_token (Success)');
-  await fetch(`https://biohofapp.de/api/auth/${user.deviceid}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      password: user.password,
-    }),
+  return await httpRequest({
+    url: `auth/${user.deviceid}`,
+    method: `POST`,
+    body: {password: user.password},
   })
-    .then(response => {
-      it('http response code should be "201"', () =>
-        assert(response.status === 201));
-      return response.json();
-    })
+    .then(expect.responseCode(201))
+    .then(getJson)
     .then(json => {
-      it('deviceid should be sent back', () =>
-        assert.strictEqual(json.deviceid, user.deviceid));
-      it('token should include correct header', () =>
-        assert.match(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/));
+      test(
+        'deviceid should be sent back',
+        expect.toEqual(json.deviceid, user.deviceid)
+      );
+      test(
+        'token should include correct header',
+        expect.toMatch(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/)
+      );
+      return json;
     });
 };

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-import {it} from './it.mjs';
+import {test} from './test.mjs';
 import {testBaseURL} from './tests/baseURL.mjs';
 import {testApiBasics} from './tests/apiBasics.mjs';
 import {testDevicesRegister} from './tests/devicesRegister.mjs';
@@ -44,21 +44,28 @@ const user4 = {
   confirmationpassword: 'SjYVv8A8BEd3fW0xd7fAgK2luvC3sftU',
 };
 
+const unconfirmedUser = {
+  email: 'testbot5@reinwiese.de',
+  password: '12345678901234567890123456789012',
+  devicename: 'Computer',
+};
+
 printHeaderToConsole();
 
 const baseURLTestResult = await testBaseURL();
 const apiFailureTestResult = await testApiBasics();
-const devicesRegisterTestResult = await testDevicesRegister();
+const devicesRegisterTestResult = await testDevicesRegister(unconfirmedUser);
 const devicesConfirmTestResult = await testDevicesConfirm(user1);
-const unconfirmedUser = {...devicesRegisterTestResult};
+
+unconfirmedUser.userid = devicesRegisterTestResult.userid;
+unconfirmedUser.deviceid = devicesRegisterTestResult.deviceid;
+
 const authCreateTokenTestResult = await testAuthCreateToken(
   user1,
   unconfirmedUser
 );
 
-// console.log({unconfirmedUser});
-// user1.token = {...authCreateTokenTestResult};
-// console.log(user1);
+user1.token = authCreateTokenTestResult.token;
 
 Promise.all([
   baseURLTestResult,
@@ -76,13 +83,13 @@ function printHeaderToConsole() {
 function printFooterToConsole() {
   console.log('\n## SUMMARY');
   console.log(
-    it.counter().success > 0 ? '\x1b[32m%s\x1b[0m' : '\x1b[37m%s\x1b[0m',
-    `${it.counter().success} Tests erfolgreich`
+    test.count().success > 0 ? '\x1b[32m%s\x1b[0m' : '\x1b[37m%s\x1b[0m',
+    `${test.count().success} Tests erfolgreich`
   );
   console.log(
-    it.counter().failure > 0 ? '\x1b[31m%s\x1b[0m' : '\x1b[37m%s\x1b[0m',
-    `${it.counter().failure} Tests fehlgeschlagen`
+    test.count().failure > 0 ? '\x1b[31m%s\x1b[0m' : '\x1b[37m%s\x1b[0m',
+    `${test.count().failure} Tests fehlgeschlagen`
   );
-  console.log(`${it.counter().total} Tests gesamt`);
+  console.log(`${test.count().total} Tests gesamt`);
   console.log('\n## DONE Testing biohofapp.de\n');
 }
