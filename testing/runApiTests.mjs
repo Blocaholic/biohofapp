@@ -7,6 +7,15 @@ import {testApiBasics} from './tests/apiBasics.mjs';
 import {testDevicesRegister} from './tests/devicesRegister.mjs';
 import {testDevicesConfirm} from './tests/devicesConfirm.mjs';
 import {testAuthCreateToken} from './tests/authCreateToken.mjs';
+import {testDevicesRename} from './tests/devicesRename.mjs';
+
+import {testFarmsAdd} from './tests/farmsAdd.mjs';
+import {testFarmsGet} from './tests/farmsGet.mjs';
+import {testFarmsRename} from './tests/farmsRename.mjs';
+import {testFarmsUpdateModules} from './tests/farmsUpdateModules.mjs';
+import {testFarmsAddMember} from './tests/farmsAddMember.mjs';
+import {testFarmsUpdateMember} from './tests/farmsUpdateMember.mjs';
+import {testFarmsDelete} from './tests/farmsDelete.mjs';
 
 const user1 = {
   email: 'testbot1@reinwiese.de',
@@ -67,12 +76,32 @@ const authCreateTokenTestResult = await testAuthCreateToken(
 
 user1.token = authCreateTokenTestResult.token;
 
+const devicesRenameTestResult = await testDevicesRename(user1, unconfirmedUser);
+
+const users = {user1, user2, user3, user4, unconfirmedUser};
+
+const FarmsAddTestResult = testFarmsAdd(users);
+const FarmsGetTestResult = testFarmsGet(users);
+const FarmsRenameTestResult = testFarmsRename(users);
+const FarmsUpdateModulesTestResult = testFarmsUpdateModules(users);
+const FarmsAddMemberTestResult = testFarmsAddMember(users);
+const FarmsUpdateMemberTestResult = testFarmsUpdateMember(users);
+const FarmsDeleteTestResult = testFarmsDelete(users);
+
 Promise.all([
   baseURLTestResult,
   apiFailureTestResult,
   devicesRegisterTestResult,
   devicesConfirmTestResult,
   authCreateTokenTestResult,
+  devicesRenameTestResult,
+  FarmsAddTestResult,
+  FarmsGetTestResult,
+  FarmsRenameTestResult,
+  FarmsUpdateModulesTestResult,
+  FarmsAddMemberTestResult,
+  FarmsUpdateMemberTestResult,
+  FarmsDeleteTestResult,
 ]).then(printFooterToConsole);
 
 function printHeaderToConsole() {
