@@ -4,8 +4,10 @@ import {test} from './test.mjs';
 export const expect = {
   responseCode: function (responseCode) {
     return response => {
-      test(`http response code should be "${responseCode}"`, () =>
-        this.toBeTruthy(response.status === responseCode));
+      test(
+        `http response code should be "${responseCode}"`,
+        this.toEqual(response.status, responseCode)
+      );
       return response;
     };
   },

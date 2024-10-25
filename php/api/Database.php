@@ -168,7 +168,7 @@ class Database {
       "userid" => $farm['owner'],
       "role" => "owner",
     ];
-    self::add_farmmember($farmmember);
+    self::farm_add_member($farmmember);
     return $farmid;
   }
 

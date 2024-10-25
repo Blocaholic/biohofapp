@@ -80,13 +80,16 @@ const devicesRenameTestResult = await testDevicesRename(user1, unconfirmedUser);
 
 const users = {user1, user2, user3, user4, unconfirmedUser};
 
-const FarmsAddTestResult = testFarmsAdd(users);
-const FarmsGetTestResult = testFarmsGet(users);
-const FarmsRenameTestResult = testFarmsRename(users);
-const FarmsUpdateModulesTestResult = testFarmsUpdateModules(users);
-const FarmsAddMemberTestResult = testFarmsAddMember(users);
-const FarmsUpdateMemberTestResult = testFarmsUpdateMember(users);
-const FarmsDeleteTestResult = testFarmsDelete(users);
+const FarmsAddTestResult = await testFarmsAdd(users);
+const testfarmid = FarmsAddTestResult.farmid;
+console.log({testfarmid});
+
+const FarmsGetTestResult = await testFarmsGet(users);
+const FarmsRenameTestResult = await testFarmsRename(users);
+const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(users);
+const FarmsAddMemberTestResult = await testFarmsAddMember(users);
+const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(users);
+const FarmsDeleteTestResult = await testFarmsDelete(users);
 
 Promise.all([
   baseURLTestResult,
