@@ -89,7 +89,8 @@ const FarmsRenameTestResult = await testFarmsRename(users);
 const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(users);
 const FarmsAddMemberTestResult = await testFarmsAddMember(users);
 const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(users);
-const FarmsDeleteTestResult = await testFarmsDelete(users);
+// delete member
+const FarmsDeleteTestResult = await testFarmsDelete(users, testfarmid);
 
 Promise.all([
   baseURLTestResult,
