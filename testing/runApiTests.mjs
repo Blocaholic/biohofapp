@@ -82,7 +82,7 @@ const FarmsAddTestResult = await testFarmsAdd(users);
 const testfarmid = FarmsAddTestResult.farmid;
 const FarmsGetTestResult = await testFarmsGet(users);
 
-const FarmsRenameTestResult = await testFarmsRename(users);
+const FarmsRenameTestResult = await testFarmsRename(users, testfarmid);
 const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(users);
 const FarmsAddMemberTestResult = await testFarmsAddMember(users);
 const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(users);
