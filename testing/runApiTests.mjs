@@ -59,32 +59,29 @@ const unconfirmedUser = {
   devicename: 'Computer',
 };
 
+const users = {user1, user2, user3, user4, unconfirmedUser};
+
 printHeaderToConsole();
 
 const baseURLTestResult = await testBaseURL();
 const apiFailureTestResult = await testApiBasics();
-const devicesRegisterTestResult = await testDevicesRegister(unconfirmedUser);
-const devicesConfirmTestResult = await testDevicesConfirm(user1);
+const devicesRegisterTestResult = await testDevicesRegister(users);
+const devicesConfirmTestResult = await testDevicesConfirm(users);
 
-unconfirmedUser.userid = devicesRegisterTestResult.userid;
-unconfirmedUser.deviceid = devicesRegisterTestResult.deviceid;
+users.unconfirmedUser.userid = devicesRegisterTestResult.userid;
+users.unconfirmedUser.deviceid = devicesRegisterTestResult.deviceid;
 
-const authCreateTokenTestResult = await testAuthCreateToken(
-  user1,
-  unconfirmedUser
-);
+const authCreateTokenTestResult = await testAuthCreateToken(users);
 
-user1.token = authCreateTokenTestResult.token;
+users.user1.token = authCreateTokenTestResult.user1.token;
+users.user2.token = authCreateTokenTestResult.user2.token;
 
-const devicesRenameTestResult = await testDevicesRename(user1, unconfirmedUser);
-
-const users = {user1, user2, user3, user4, unconfirmedUser};
+const devicesRenameTestResult = await testDevicesRename(users);
 
 const FarmsAddTestResult = await testFarmsAdd(users);
 const testfarmid = FarmsAddTestResult.farmid;
-console.log({testfarmid});
-
 const FarmsGetTestResult = await testFarmsGet(users);
+
 const FarmsRenameTestResult = await testFarmsRename(users);
 const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(users);
 const FarmsAddMemberTestResult = await testFarmsAddMember(users);

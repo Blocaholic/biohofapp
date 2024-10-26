@@ -3,14 +3,14 @@ import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
 import exp from 'constants';
 
-export const testAuthCreateToken = async function (user, unconfirmedUser) {
+export const testAuthCreateToken = async function (users) {
   console.log('\n### Auth::create_token (Failure)');
 
   console.log('#### wrong password');
   await httpRequest({
-    url: `auth/${user.deviceid}`,
+    url: `auth/${users.user1.deviceid}`,
     method: `POST`,
-    body: {password: user.password.slice(0, -1) + '3'},
+    body: {password: users.user1.password.slice(0, -1) + '3'},
   })
     .then(expect.responseCode(401))
     .then(getJson)
@@ -25,7 +25,7 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
   await httpRequest({
     url: `auth/7`,
     method: `POST`,
-    body: {password: user.password},
+    body: {password: users.user1.password},
   })
     .then(expect.responseCode(404))
     .then(getJson)
@@ -42,9 +42,9 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
 
   console.log('#### unconfirmed device');
   await httpRequest({
-    url: `auth/${unconfirmedUser.deviceid}`,
+    url: `auth/${users.unconfirmedUser.deviceid}`,
     method: `POST`,
-    body: {password: unconfirmedUser.password},
+    body: {password: users.unconfirmedUser.password},
   })
     .then(expect.responseCode(401))
     .then(getJson)
@@ -59,7 +59,7 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
   await httpRequest({
     url: `auth/1b3`,
     method: `POST`,
-    body: {password: user.password},
+    body: {password: users.user1.password},
   })
     .then(expect.responseCode(400))
     .then(getJson)
@@ -87,9 +87,9 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
 
   console.log('#### missing password');
   await httpRequest({
-    url: `auth/${user.deviceid}`,
+    url: `auth/${users.user1.deviceid}`,
     method: `POST`,
-    body: {passwort: user.password},
+    body: {passwort: users.user1.password},
   })
     .then(expect.responseCode(400))
     .then(getJson)
@@ -102,9 +102,9 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
 
   console.log('#### password != 32 chars');
   await httpRequest({
-    url: `auth/${user.deviceid}`,
+    url: `auth/${users.user1.deviceid}`,
     method: `POST`,
-    body: {password: user.password + '3'},
+    body: {password: users.user1.password + '3'},
   })
     .then(expect.responseCode(400))
     .then(getJson)
@@ -123,22 +123,42 @@ export const testAuthCreateToken = async function (user, unconfirmedUser) {
     });
 
   console.log('\n### Auth::create_token (Success)');
-  return await httpRequest({
-    url: `auth/${user.deviceid}`,
-    method: `POST`,
-    body: {password: user.password},
-  })
-    .then(expect.responseCode(201))
-    .then(getJson)
-    .then(json => {
-      test(
-        'deviceid should be sent back',
-        expect.toEqual(json.deviceid, user.deviceid)
-      );
-      test(
-        'token should include correct header',
-        expect.toMatch(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/)
-      );
-      return json;
-    });
+  return {
+    user1: await httpRequest({
+      url: `auth/${users.user1.deviceid}`,
+      method: `POST`,
+      body: {password: users.user1.password},
+    })
+      .then(expect.responseCode(201))
+      .then(getJson)
+      .then(json => {
+        test(
+          'deviceid should be sent back',
+          expect.toEqual(json.deviceid, users.user1.deviceid)
+        );
+        test(
+          'token should include correct header',
+          expect.toMatch(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/)
+        );
+        return json;
+      }),
+    user2: await httpRequest({
+      url: `auth/${users.user2.deviceid}`,
+      method: `POST`,
+      body: {password: users.user2.password},
+    })
+      .then(expect.responseCode(201))
+      .then(getJson)
+      .then(json => {
+        test(
+          'deviceid should be sent back',
+          expect.toEqual(json.deviceid, users.user2.deviceid)
+        );
+        test(
+          'token should include correct header',
+          expect.toMatch(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/)
+        );
+        return json;
+      }),
+  };
 };

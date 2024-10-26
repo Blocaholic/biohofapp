@@ -2,7 +2,9 @@ import {test} from '../test.mjs';
 import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
 
-export const testDevicesRegister = async function (user) {
+export const testDevicesRegister = async function (users) {
+  const user = users.unconfirmedUser;
+
   console.log('\n### Devices::Register (Failure)');
 
   console.log('#### missing email');

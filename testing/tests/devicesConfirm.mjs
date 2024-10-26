@@ -2,7 +2,9 @@ import {test} from '../test.mjs';
 import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
 
-export const testDevicesConfirm = async function (user) {
+export const testDevicesConfirm = async function (users) {
+  const user = users.user1;
+
   console.log('\n### Devices::Confirm (Failure)');
 
   console.log('#### undefined operation');
