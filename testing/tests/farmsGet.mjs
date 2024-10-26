@@ -3,7 +3,22 @@ import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
 
 export const testFarmsGet = async function (users) {
-  console.log('\n### Farms::Get (not yet implemented)');
+  console.log('\n### Farms::Get (Failure)');
+
+  console.log('#### invalid token');
+  await httpRequest({
+    url: `farms`,
+    method: `GET`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "invalid token"',
+        expect.toMatch(json.message.toLowerCase(), /invalid token/)
+      );
+    });
 
   console.log('\n### Farms::Get (Success)');
   return await httpRequest({
