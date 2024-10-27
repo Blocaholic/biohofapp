@@ -3,7 +3,7 @@ import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
 
 export const testFarmsRename = async function (users, testfarmid) {
-  console.log('\n### Farms::rename (not yet implemented)');
+  console.log('\n### Farms::rename (Failure)');
 
   console.log('### missing farmname');
   await httpRequest({

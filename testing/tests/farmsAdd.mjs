@@ -13,10 +13,10 @@ export const testFarmsAdd = async function (users) {
     body: {
       farmname: `Testfarm`,
       owner: users.user2.userid,
-      module_chicken: 0,
+      module_chicken: 1,
       module_marketgarden: 0,
-      module_goats: 0,
-      module_bees: 0,
+      module_goats: 1,
+      module_bees: 1,
     },
   })
     .then(expect.responseCode(401))

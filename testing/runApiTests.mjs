@@ -75,6 +75,8 @@ const authCreateTokenTestResult = await testAuthCreateToken(users);
 
 users.user1.token = authCreateTokenTestResult.user1.token;
 users.user2.token = authCreateTokenTestResult.user2.token;
+users.user3.token = authCreateTokenTestResult.user3.token;
+users.user4.token = authCreateTokenTestResult.user4.token;
 
 const devicesRenameTestResult = await testDevicesRename(users);
 
@@ -83,7 +85,10 @@ const testfarmid = FarmsAddTestResult.farmid;
 const FarmsGetTestResult = await testFarmsGet(users);
 
 const FarmsRenameTestResult = await testFarmsRename(users, testfarmid);
-const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(users);
+const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(
+  users,
+  testfarmid
+);
 const FarmsAddMemberTestResult = await testFarmsAddMember(users);
 const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(users);
 // delete member

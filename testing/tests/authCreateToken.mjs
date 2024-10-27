@@ -1,7 +1,6 @@
 import {test} from '../test.mjs';
 import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
-import exp from 'constants';
 
 export const testAuthCreateToken = async function (users) {
   console.log('\n### Auth::create_token (Failure)');
@@ -153,6 +152,42 @@ export const testAuthCreateToken = async function (users) {
         test(
           'deviceid should be sent back',
           expect.toEqual(json.deviceid, users.user2.deviceid)
+        );
+        test(
+          'token should include correct header',
+          expect.toMatch(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/)
+        );
+        return json;
+      }),
+    user3: await httpRequest({
+      url: `auth/${users.user3.deviceid}`,
+      method: `POST`,
+      body: {password: users.user3.password},
+    })
+      .then(expect.responseCode(201))
+      .then(getJson)
+      .then(json => {
+        test(
+          'deviceid should be sent back',
+          expect.toEqual(json.deviceid, users.user3.deviceid)
+        );
+        test(
+          'token should include correct header',
+          expect.toMatch(json.token, /eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9/)
+        );
+        return json;
+      }),
+    user4: await httpRequest({
+      url: `auth/${users.user4.deviceid}`,
+      method: `POST`,
+      body: {password: users.user4.password},
+    })
+      .then(expect.responseCode(201))
+      .then(getJson)
+      .then(json => {
+        test(
+          'deviceid should be sent back',
+          expect.toEqual(json.deviceid, users.user4.deviceid)
         );
         test(
           'token should include correct header',
