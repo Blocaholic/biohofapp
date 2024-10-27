@@ -85,12 +85,15 @@ const testfarmid = FarmsAddTestResult.farmid;
 const FarmsGetTestResult = await testFarmsGet(users);
 
 const FarmsRenameTestResult = await testFarmsRename(users, testfarmid);
+const FarmsAddMemberTestResult = await testFarmsAddMember(users, testfarmid);
+const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(
+  users,
+  testfarmid
+);
 const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(
   users,
   testfarmid
 );
-const FarmsAddMemberTestResult = await testFarmsAddMember(users);
-const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(users);
 // delete member
 const FarmsDeleteTestResult = await testFarmsDelete(users, testfarmid);
 
