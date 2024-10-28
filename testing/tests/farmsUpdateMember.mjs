@@ -96,6 +96,83 @@ const succeedToUpdateMember = async ({from, to, by, users, testfarmid}) => {
   }
 };
 
+const failToUpdateMember = async ({
+  from,
+  to,
+  by,
+  users,
+  testfarmid,
+  message,
+}) => {
+  console.log(`#### from "${from}" to "${to}" by "${by}"`);
+  const farmMembersBeforeTest = await httpRequest({
+    url: 'farms',
+    method: 'GET',
+    headers: [['token', users.user1.token]],
+  })
+    .then(getJson)
+    .then(json => json[0].members);
+
+  const areFarmRolesUnchanged = async users => {
+    const roles = {
+      'testbot1@reinwiese.de': 'owner',
+      'testbot2@reinwiese.de': 'admin',
+      'testbot3@reinwiese.de': 'employee',
+      'testbot4@reinwiese.de': 'visitor',
+    };
+
+    const farmMembersAfterTest = await httpRequest({
+      url: 'farms',
+      method: 'GET',
+      headers: [['token', users.user1.token]],
+    })
+      .then(getJson)
+      .then(json => json[0].members);
+
+    for (const member of farmMembersAfterTest) {
+      if (roles[member.email] !== member.role) return false;
+    }
+
+    if (farmMembersAfterTest.length !== 4) return false;
+
+    return true;
+  };
+
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [
+      [
+        'token',
+        Object.values(users).find(
+          user =>
+            user.email ===
+            farmMembersBeforeTest.find(member => member.role === by).email
+        ).token,
+      ],
+    ],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: farmMembersBeforeTest.find(member => member.role === from).email,
+      role: to,
+      userid: farmMembersBeforeTest.find(member => member.role === from).userid,
+    },
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "${message}"`,
+        expect.toMatch(json.message.toLowerCase(), new RegExp(message))
+      );
+      test(
+        'Farm roles should be unchanged',
+        expect.toBeTruthy(areFarmRolesUnchanged())
+      );
+    });
+};
+
 export const testFarmsUpdateMember = async function (users, testfarmid) {
   console.log('\n### Farms::update_member (Failure)');
   console.log('#### unknown email');
@@ -105,6 +182,14 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
   console.log('#### invalid role');
   console.log('#### invalid farmid');
   console.log('#### no permission (only owner/admin)');
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'employee',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
   // visitor -> owner
   // visitor -> admin
   // visitor -> employee
@@ -188,7 +273,6 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
     users,
     testfarmid,
   });
-  // Sonderfälle : Wechsel des Owners
   await succeedToUpdateMember({
     from: 'admin',
     to: 'owner',
