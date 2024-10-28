@@ -17,6 +17,8 @@ import {testFarmsAddMember} from './tests/farmsAddMember.mjs';
 import {testFarmsUpdateMember} from './tests/farmsUpdateMember.mjs';
 import {testFarmsDelete} from './tests/farmsDelete.mjs';
 
+const starttime = Date.now();
+
 const user1 = {
   email: 'testbot1@reinwiese.de',
   password: '12345678901234567890123456789012',
@@ -114,7 +116,7 @@ Promise.all([
 ]).then(printFooterToConsole);
 
 function printHeaderToConsole() {
-  console.log('\n# Testing biohofapp.de');
+  console.log('\n# Testing biohofapp.de API');
   console.log('## START');
 }
 
@@ -129,5 +131,11 @@ function printFooterToConsole() {
     `${test.count().failure} Tests fehlgeschlagen`
   );
   console.log(`${test.count().total} Tests gesamt`);
-  console.log('\n## DONE Testing biohofapp.de\n');
+  const endtime = Date.now();
+  const duration = (endtime - starttime) / 1000;
+  console.log(
+    `\n## DONE Testing biohofapp.de API (in ${
+      Math.round(duration * 10) / 10
+    } s)\n`
+  );
 }
