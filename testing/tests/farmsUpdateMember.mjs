@@ -181,6 +181,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
   console.log('#### missing farmid');
   console.log('#### invalid role');
   console.log('#### invalid farmid');
+
   console.log('#### no permission (only owner/admin)');
   await failToUpdateMember({
     from: 'visitor',
@@ -190,18 +191,407 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
     testfarmid,
     message: 'no permission',
   });
-  // visitor -> owner
-  // visitor -> admin
-  // visitor -> employee
-  // visitor -> visitor
-  // employee -> owner
-  // employee -> admin
-  // employee -> employee
-  // employee -> visitor
-  console.log('#### no permission (admin not admin)');
-  // admin -> admin
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'admin',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'owner',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'visitor',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'admin',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'owner',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'visitor',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'employee',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'owner',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'visitor',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'employee',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'admin',
+    by: 'visitor',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'employee',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'admin',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'owner',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'visitor',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'admin',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'owner',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'visitor',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'employee',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'owner',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'visitor',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'employee',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'admin',
+    by: 'employee',
+    users,
+    testfarmid,
+    message: 'no permission',
+  });
+
   console.log('#### no permission (only owner can set new owner)');
-  // admin -> owner
+  await failToUpdateMember({
+    from: 'admin',
+    to: 'owner',
+    by: 'admin',
+    users,
+    testfarmid,
+    message: 'only owner can set another owner',
+  });
+  await failToUpdateMember({
+    from: 'employee',
+    to: 'owner',
+    by: 'admin',
+    users,
+    testfarmid,
+    message: 'only owner can set another owner',
+  });
+  await failToUpdateMember({
+    from: 'visitor',
+    to: 'owner',
+    by: 'admin',
+    users,
+    testfarmid,
+    message: 'only owner can set another owner',
+  });
+
+  console.log('#### no permission (set new owner)');
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'visitor',
+    by: 'owner',
+    users,
+    testfarmid,
+    message: 'set new owner',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'employee',
+    by: 'owner',
+    users,
+    testfarmid,
+    message: 'set new owner',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'admin',
+    by: 'owner',
+    users,
+    testfarmid,
+    message: 'set new owner',
+  });
+
+  console.log('#### no permission (admin not owner)');
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'visitor',
+    by: 'admin',
+    users,
+    testfarmid,
+    message: 'admin cannot change owner',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'employee',
+    by: 'admin',
+    users,
+    testfarmid,
+    message: 'admin cannot change owner',
+  });
+  await failToUpdateMember({
+    from: 'owner',
+    to: 'admin',
+    by: 'admin',
+    users,
+    testfarmid,
+    message: 'admin cannot change owner',
+  });
+
+  console.log('#### no permission (admin not other admin)');
+  // weiteren admin erstellen
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'admin',
+      userid: users.user4.userid,
+    },
+  }).then(expect.responseCode(200));
+
+  // define helper function
+  const areFarmRolesUnchangedWithTwoAdmins = async users => {
+    const roles = {
+      'testbot1@reinwiese.de': 'owner',
+      'testbot2@reinwiese.de': 'admin',
+      'testbot3@reinwiese.de': 'employee',
+      'testbot4@reinwiese.de': 'admin',
+    };
+
+    const farmMembersAfterTest = await httpRequest({
+      url: 'farms',
+      method: 'GET',
+      headers: [['token', users.user1.token]],
+    })
+      .then(getJson)
+      .then(json => json[0].members);
+
+    for (const member of farmMembersAfterTest) {
+      if (roles[member.email] !== member.role) return false;
+    }
+
+    if (farmMembersAfterTest.length !== 4) return false;
+
+    return true;
+  };
+
+  // sonderfall admin anderen admin (failure)
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user2.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'visitor',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "admin cannot change other admins"`,
+        expect.toMatch(
+          json.message.toLowerCase(),
+          /admin cannot change other admins/
+        )
+      );
+      test(
+        'Farm roles should be unchanged',
+        expect.toBeTruthy(areFarmRolesUnchangedWithTwoAdmins(users))
+      );
+    });
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user2.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'employee',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "admin cannot change other admins"`,
+        expect.toMatch(
+          json.message.toLowerCase(),
+          /admin cannot change other admins/
+        )
+      );
+      test(
+        'Farm roles should be unchanged',
+        expect.toBeTruthy(areFarmRolesUnchangedWithTwoAdmins(users))
+      );
+    });
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user2.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'owner',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "admin cannot change other admins"`,
+        expect.toMatch(
+          json.message.toLowerCase(),
+          /admin cannot change other admins/
+        )
+      );
+      test(
+        'Farm roles should be unchanged',
+        expect.toBeTruthy(areFarmRolesUnchangedWithTwoAdmins(users))
+      );
+    });
+
+  // weiteren admin wieder auf visitor zurücksetzen
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'visitor',
+      userid: users.user4.userid,
+    },
+  }).then(expect.responseCode(200));
+
   console.log('\n### Farms::update_member (Success)');
   await succeedToUpdateMember({
     from: 'visitor',

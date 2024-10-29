@@ -72,7 +72,7 @@ namespace Farms\PATCH\authorizations {
       $userrole === 'admin'
       && $member_role_old === 'owner'
     ) {
-      exit_with_error(401, ["message" => "Admin may not change owner."]);
+      exit_with_error(401, ["message" => "Admin cannot change owner."]);
     }
 
     if ($member_role_old === 'owner') {
@@ -87,7 +87,7 @@ namespace Farms\PATCH\authorizations {
       && $member_role_old === 'admin'
       && $userid !== $member_id
     ) {
-      exit_with_error(401, ["message" => "Admin may not change other admins role."]);
+      exit_with_error(401, ["message" => "Admin cannot change other admins role."]);
     }
 
     if (
