@@ -175,12 +175,147 @@ const failToUpdateMember = async ({
 
 export const testFarmsUpdateMember = async function (users, testfarmid) {
   console.log('\n### Farms::update_member (Failure)');
+
   console.log('#### unknown email');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: 'testbot99@reinwiese.de',
+      role: 'employee',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "no user found with this email adress"`,
+        expect.toMatch(
+          json.message.toLowerCase(),
+          /no user found with this email adress/
+        )
+      );
+    });
+
   console.log('#### userid does not fit email');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'employee',
+      userid: users.user4.userid + 1,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "userid does not fit email adress"`,
+        expect.toMatch(
+          json.message.toLowerCase(),
+          /userid does not fit email adress/
+        )
+      );
+    });
+
   console.log('#### missing role');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      rol: 'employee',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include ""role" is required"`,
+        expect.toMatch(json.message.toLowerCase(), /"role" is required/)
+      );
+    });
+
   console.log('#### missing farmid');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      famid: testfarmid,
+      email: users.user4.email,
+      role: 'employee',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include ""farmid" is required"`,
+        expect.toMatch(json.message.toLowerCase(), /"farmid" is required/)
+      );
+    });
+
   console.log('#### invalid role');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'employe',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include "role "employe" not excepted"`,
+        expect.toMatch(
+          json.message.toLowerCase(),
+          /role "employe" not excepted/
+        )
+      );
+    });
+
   console.log('#### invalid farmid');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: '1a3',
+      email: users.user4.email,
+      role: 'employee',
+      userid: users.user4.userid,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        `Error message should include ""farmid" must be numeric"`,
+        expect.toMatch(json.message.toLowerCase(), /"farmid" must be numeric/)
+      );
+    });
 
   console.log('#### no permission (only owner/admin)');
   await failToUpdateMember({

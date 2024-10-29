@@ -3,8 +3,8 @@ import {expect} from '../expect.mjs';
 import {httpRequest, getJson} from '../utils.mjs';
 
 export const testDevicesRename = async function (users) {
-  console.log('\n### Devices::Register (not yet implemented)');
-  /* console.log('\n### Devices::Register (Failure)');
+  console.log('\n### Devices::Rename (not yet implemented)');
+  /* console.log('\n### Devices::Rename (Failure)');
 
   console.log('#### invalid token');
 
@@ -14,7 +14,7 @@ export const testDevicesRename = async function (users) {
 
   console.log('#### deviceid not found');
 
-  console.log('\n### Devices::Register (Success)');
+  console.log('\n### Devices::Rename (Success)');
   // 2x umbenennen: 1. "Ei Ö Tßätt" 2. zurück zu "Bottis Laptop"
   */
 };
