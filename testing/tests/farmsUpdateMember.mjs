@@ -168,7 +168,7 @@ const failToUpdateMember = async ({
       );
       test(
         'Farm roles should be unchanged',
-        expect.toBeTruthy(areFarmRolesUnchanged())
+        expect.toBeTruthy(areFarmRolesUnchanged(users))
       );
     });
 };
@@ -227,6 +227,20 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
   await succeedToUpdateMember({
     from: 'employee',
     to: 'admin',
+    by: 'admin',
+    users,
+    testfarmid,
+  });
+  await succeedToUpdateMember({
+    from: 'admin',
+    to: 'employee',
+    by: 'admin',
+    users,
+    testfarmid,
+  });
+  await succeedToUpdateMember({
+    from: 'admin',
+    to: 'visitor',
     by: 'admin',
     users,
     testfarmid,
