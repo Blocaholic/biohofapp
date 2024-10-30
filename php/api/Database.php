@@ -15,6 +15,15 @@ class Database {
     return $pdo;
   }
 
+  public static function is_confirmed_user($userid) {
+    $pdo = self::connect();
+
+    $query = "SELECT * FROM users WHERE userid = ? AND confirmed IS NOT NULL;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$userid]);
+    return boolval($statement->fetchAll());
+  }
+
   public static function get_device($deviceid) {
 
     $pdo = self::connect();

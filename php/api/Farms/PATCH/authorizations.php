@@ -16,6 +16,12 @@ namespace Farms\PATCH\authorizations {
     $member_id = \Database::get_userid($member_email) ?? exit_with_error(400, ["message" => "No user found with this email adress."]);
     $member_farms = \Database::get_farms($member_id);
 
+    if (!\Database::is_confirmed_user($member_id)) {
+      exit_with_error(400, [
+        "message" => "Cannot add unconfirmed user to farm.",
+      ]);
+    }
+
     if (!user_has_role_of(["owner", "admin"], $farmid)) {
       exit_with_error(401, ["message" => "No permission to change settings."]);
     }
