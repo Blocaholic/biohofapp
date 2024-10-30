@@ -16,7 +16,7 @@ export const testFarmsDelete = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "invalid token"',
-        expect.toMatch(json.message.toLowerCase(), /invalid token/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid token/)
       );
     });
 
@@ -32,7 +32,7 @@ export const testFarmsDelete = async function (users, testfarmid) {
       test(
         'error message should include "no permission to delete farm"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /no permission to delete farm/
         )
       );

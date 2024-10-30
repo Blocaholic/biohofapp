@@ -15,11 +15,11 @@ export const testApiBasics = async function () {
     .then(json => {
       test(
         'Error message should include "unknown endpoint" (case insensitive)',
-        expect.toMatch(json.message.toLowerCase(), /unknown endpoint/)
+        expect.toMatch(json.message?.toLowerCase(), /unknown endpoint/)
       );
       test(
         'Error message should include requested endpoint',
-        expect.toMatch(json.message.toLowerCase(), /invalid/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid/)
       );
       test('List of valid endpoints should exist', () =>
         expect.toBeTruthy(json.validEndpoints));
@@ -35,19 +35,19 @@ export const testApiBasics = async function () {
     .then(json => {
       test(
         'Error message includes "http request method"',
-        expect.toMatch(json.message.toLowerCase(), /http request method/)
+        expect.toMatch(json.message?.toLowerCase(), /http request method/)
       );
       test(
         'Error message includes "not allowed for endpoint"',
-        expect.toMatch(json.message.toLowerCase(), /not allowed for endpoint/)
+        expect.toMatch(json.message?.toLowerCase(), /not allowed for endpoint/)
       );
       test(
         'Error message includes requested endpoint',
-        expect.toMatch(json.message.toLowerCase(), /devices/)
+        expect.toMatch(json.message?.toLowerCase(), /devices/)
       );
       test(
         'Error message includes request method',
-        expect.toMatch(json.message.toLowerCase(), /get/)
+        expect.toMatch(json.message?.toLowerCase(), /get/)
       );
       test(
         'List of valid methods should exist',
@@ -66,11 +66,11 @@ export const testApiBasics = async function () {
     .then(json => {
       test(
         'Error message includes "unknown http request method"',
-        expect.toMatch(json.message.toLowerCase(), /http request method/)
+        expect.toMatch(json.message?.toLowerCase(), /http request method/)
       );
       test(
         'Error message includes requested endpoint',
-        expect.toMatch(json.message.toLowerCase(), /fail/)
+        expect.toMatch(json.message?.toLowerCase(), /fail/)
       );
       test(
         'List of valid http request methods should exist',

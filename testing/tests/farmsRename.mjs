@@ -21,7 +21,7 @@ export const testFarmsRename = async function (users, testfarmid) {
     .then(json => {
       test(
         'error message should include ""farmname" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"farmname" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmname" is required/)
       );
     });
 
@@ -42,7 +42,7 @@ export const testFarmsRename = async function (users, testfarmid) {
       test(
         'error message should include "farmname must be at least 3 characters"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /farmname must be at least 3 characters/
         )
       );
@@ -64,7 +64,7 @@ export const testFarmsRename = async function (users, testfarmid) {
     .then(json => {
       test(
         'error message should include ""farmid" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"farmid" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmid" is required/)
       );
     });
 
@@ -84,7 +84,7 @@ export const testFarmsRename = async function (users, testfarmid) {
     .then(json => {
       test(
         'error message should include ""farmid" must be numeric"',
-        expect.toMatch(json.message.toLowerCase(), /"farmid" must be numeric/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmid" must be numeric/)
       );
     });
 
@@ -105,7 +105,7 @@ export const testFarmsRename = async function (users, testfarmid) {
       test(
         'error message should include ""farmid" must be greater than 0"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"farmid" must be greater than 0/
         )
       );
@@ -128,7 +128,7 @@ export const testFarmsRename = async function (users, testfarmid) {
       test(
         'error message should include ""farmid" must be an integer"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"farmid" must be an integer/
         )
       );
@@ -150,7 +150,7 @@ export const testFarmsRename = async function (users, testfarmid) {
     .then(json => {
       test(
         'error message should include "no permission"',
-        expect.toMatch(json.message.toLowerCase(), /no permission/)
+        expect.toMatch(json.message?.toLowerCase(), /no permission/)
       );
     });
 

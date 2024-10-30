@@ -25,7 +25,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include "token does not belong to owner"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /token does not belong to owner/
         )
       );
@@ -50,7 +50,7 @@ export const testFarmsAdd = async function (users) {
     .then(json => {
       test(
         'Error message should include "invalid token"',
-        expect.toMatch(json.message.toLowerCase(), /invalid token/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid token/)
       );
     });
 
@@ -73,7 +73,7 @@ export const testFarmsAdd = async function (users) {
     .then(json => {
       test(
         'Error message should include ""farmname" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"farmname" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmname" is required/)
       );
     });
 
@@ -97,7 +97,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include "farmname must be at least 3 characters"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /farmname must be at least 3 characters/
         )
       );
@@ -122,7 +122,7 @@ export const testFarmsAdd = async function (users) {
     .then(json => {
       test(
         'Error message should include ""owner" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"owner" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"owner" is required/)
       );
     });
 
@@ -146,7 +146,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include ""owner" must be greater than 0"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"owner" must be greater than 0/
         )
       );
@@ -172,7 +172,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include ""module_marketgarden" is required"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"module_marketgarden" is required/
         )
       );
@@ -198,7 +198,7 @@ export const testFarmsAdd = async function (users) {
       test(
         '"module_chicken" is required',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"module_chicken" is required/
         )
       );
@@ -223,7 +223,7 @@ export const testFarmsAdd = async function (users) {
     .then(json => {
       test(
         'Error message should include ""module_goats" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"module_goats" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"module_goats" is required/)
       );
     });
 
@@ -246,7 +246,7 @@ export const testFarmsAdd = async function (users) {
     .then(json => {
       test(
         'Error message should include ""module_bees" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"module_bees" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"module_bees" is required/)
       );
     });
 
@@ -270,7 +270,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include "module_marketgarden must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_marketgarden must be either, 0 or 1/
         )
       );
@@ -296,7 +296,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include "module_chicken must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_chicken must be either, 0 or 1/
         )
       );
@@ -322,7 +322,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include "module_goats must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_goats must be either, 0 or 1/
         )
       );
@@ -348,7 +348,7 @@ export const testFarmsAdd = async function (users) {
       test(
         'Error message should include "module_bees must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_bees must be either, 0 or 1/
         )
       );

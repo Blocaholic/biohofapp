@@ -21,16 +21,17 @@ const succeedToUpdateMember = async ({from, to, by, users, testfarmid}) => {
         Object.values(users).find(
           user =>
             user.email ===
-            farmMembersBeforeTest.find(member => member.role === by).email
-        ).token,
+            farmMembersBeforeTest.find(member => member.role === by)?.email
+        )?.token,
       ],
     ],
     body: {
       operation: 'update_member',
       farmid: testfarmid,
-      email: farmMembersBeforeTest.find(member => member.role === from).email,
+      email: farmMembersBeforeTest.find(member => member.role === from)?.email,
       role: to,
-      userid: farmMembersBeforeTest.find(member => member.role === from).userid,
+      userid: farmMembersBeforeTest.find(member => member.role === from)
+        ?.userid,
     },
   })
     .then(expect.responseCode(200))
@@ -81,8 +82,8 @@ const succeedToUpdateMember = async ({from, to, by, users, testfarmid}) => {
           Object.values(users).find(
             user =>
               user.email ===
-              farmMembersAfterTest.find(m => m.role === 'owner').email
-          ).token,
+              farmMembersAfterTest.find(m => m.role === 'owner')?.email
+          )?.token,
         ],
       ],
       body: {
@@ -147,16 +148,17 @@ const failToUpdateMember = async ({
         Object.values(users).find(
           user =>
             user.email ===
-            farmMembersBeforeTest.find(member => member.role === by).email
-        ).token,
+            farmMembersBeforeTest.find(member => member.role === by)?.email
+        )?.token,
       ],
     ],
     body: {
       operation: 'update_member',
       farmid: testfarmid,
-      email: farmMembersBeforeTest.find(member => member.role === from).email,
+      email: farmMembersBeforeTest.find(member => member.role === from)?.email,
       role: to,
-      userid: farmMembersBeforeTest.find(member => member.role === from).userid,
+      userid: farmMembersBeforeTest.find(member => member.role === from)
+        ?.userid,
     },
   })
     .then(expect.responseCode(401))
@@ -164,7 +166,7 @@ const failToUpdateMember = async ({
     .then(json => {
       test(
         `Error message should include "${message}"`,
-        expect.toMatch(json.message.toLowerCase(), new RegExp(message))
+        expect.toMatch(json.message?.toLowerCase(), new RegExp(message))
       );
       test(
         'Farm roles should be unchanged',
@@ -195,7 +197,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
       test(
         `Error message should include "no user found with this email adress"`,
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /no user found with this email adress/
         )
       );
@@ -220,7 +222,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
       test(
         `Error message should include "userid does not fit email adress"`,
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /userid does not fit email adress/
         )
       );
@@ -244,7 +246,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
     .then(json => {
       test(
         `Error message should include ""role" is required"`,
-        expect.toMatch(json.message.toLowerCase(), /"role" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"role" is required/)
       );
     });
 
@@ -266,7 +268,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
     .then(json => {
       test(
         `Error message should include ""farmid" is required"`,
-        expect.toMatch(json.message.toLowerCase(), /"farmid" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmid" is required/)
       );
     });
 
@@ -289,7 +291,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
       test(
         `Error message should include "role "employe" not excepted"`,
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /role "employe" not excepted/
         )
       );
@@ -313,7 +315,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
     .then(json => {
       test(
         `Error message should include ""farmid" must be numeric"`,
-        expect.toMatch(json.message.toLowerCase(), /"farmid" must be numeric/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmid" must be numeric/)
       );
     });
 
@@ -649,7 +651,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
       test(
         `Error message should include "admin cannot change other admins"`,
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /admin cannot change other admins/
         )
       );
@@ -676,7 +678,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
       test(
         `Error message should include "admin cannot change other admins"`,
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /admin cannot change other admins/
         )
       );
@@ -703,7 +705,7 @@ export const testFarmsUpdateMember = async function (users, testfarmid) {
       test(
         `Error message should include "admin cannot change other admins"`,
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /admin cannot change other admins/
         )
       );

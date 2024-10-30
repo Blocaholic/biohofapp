@@ -16,7 +16,7 @@ export const testFarmsGet = async function (users) {
     .then(json => {
       test(
         'Error message should include "invalid token"',
-        expect.toMatch(json.message.toLowerCase(), /invalid token/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid token/)
       );
     });
 

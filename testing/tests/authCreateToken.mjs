@@ -16,7 +16,7 @@ export const testAuthCreateToken = async function (users) {
     .then(json =>
       test(
         'Error message should include "password not accepted"',
-        expect.toMatch(json.message.toLowerCase(), /password not accepted/)
+        expect.toMatch(json.message?.toLowerCase(), /password not accepted/)
       )
     );
 
@@ -35,7 +35,7 @@ export const testAuthCreateToken = async function (users) {
       );
       test(
         'Error message should include "could not find deviceid"',
-        expect.toMatch(json.message.toLowerCase(), /could not find deviceid/)
+        expect.toMatch(json.message?.toLowerCase(), /could not find deviceid/)
       );
     });
 
@@ -50,7 +50,7 @@ export const testAuthCreateToken = async function (users) {
     .then(json =>
       test(
         'Error message should include "device is not confirmed"',
-        expect.toMatch(json.message.toLowerCase(), /device is not confirmed/)
+        expect.toMatch(json.message?.toLowerCase(), /device is not confirmed/)
       )
     );
 
@@ -70,7 +70,7 @@ export const testAuthCreateToken = async function (users) {
       test(
         'Error message should include "deviceid must be an integer greater than 0"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /deviceid must be an integer greater than 0/
         )
       );
@@ -95,7 +95,7 @@ export const testAuthCreateToken = async function (users) {
     .then(json =>
       test(
         'Error message should include "password is required"',
-        expect.toMatch(json.message.toLowerCase(), /password is required/)
+        expect.toMatch(json.message?.toLowerCase(), /password is required/)
       )
     );
 
@@ -115,7 +115,7 @@ export const testAuthCreateToken = async function (users) {
       test(
         'error message should include "password must be 32 characters"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /password must be 32 characters/
         )
       );

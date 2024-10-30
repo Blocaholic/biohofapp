@@ -22,7 +22,7 @@ export const testDevicesRegister = async function (users) {
     .then(json => {
       test(
         'Error message should include "email is required"',
-        expect.toMatch(json.message.toLowerCase(), /email is required/)
+        expect.toMatch(json.message?.toLowerCase(), /email is required/)
       );
     });
 
@@ -60,7 +60,7 @@ export const testDevicesRegister = async function (users) {
     .then(json =>
       test(
         'Error message should include "password is required"',
-        expect.toMatch(json.message.toLowerCase(), /password is required/)
+        expect.toMatch(json.message?.toLowerCase(), /password is required/)
       )
     );
 
@@ -80,7 +80,7 @@ export const testDevicesRegister = async function (users) {
       test(
         'Error message should include "password must be 32 characters"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /password must be 32 characters/
         )
       );
@@ -106,7 +106,7 @@ export const testDevicesRegister = async function (users) {
       test(
         'Error message should include "invalid characters in devicename"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /invalid characters in devicename/
         )
       );

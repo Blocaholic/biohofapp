@@ -24,7 +24,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "invalid operation"',
-        expect.toMatch(json.message.toLowerCase(), /invalid operation/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid operation/)
       );
     });
 
@@ -47,7 +47,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "invalid token"',
-        expect.toMatch(json.message.toLowerCase(), /invalid token/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid token/)
       );
     });
 
@@ -71,7 +71,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         'Error message should include ""farmid" must be an integer"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"farmid" must be an integer/
         )
       );
@@ -97,7 +97,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         'Error message should include ""module_marketgarden" is required"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"module_marketgarden" is required/
         )
       );
@@ -123,7 +123,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         '"module_chicken" is required',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"module_chicken" is required/
         )
       );
@@ -148,7 +148,10 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include ""module_goats" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"module_goats" is required/)
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /"module_goats" is required/
+        )
       );
     });
 
@@ -171,7 +174,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include ""module_bees" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"module_bees" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"module_bees" is required/)
       );
     });
 
@@ -195,7 +198,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         'Error message should include "module_marketgarden must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_marketgarden must be either, 0 or 1/
         )
       );
@@ -221,7 +224,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         'Error message should include "module_chicken must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_chicken must be either, 0 or 1/
         )
       );
@@ -247,7 +250,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         'Error message should include "module_goats must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_goats must be either, 0 or 1/
         )
       );
@@ -273,7 +276,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
       test(
         'Error message should include "module_bees must be either, 0 or 1"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /module_bees must be either, 0 or 1/
         )
       );
@@ -298,7 +301,7 @@ export const testFarmsUpdateModules = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "no permission"',
-        expect.toMatch(json.message.toLowerCase(), /no permission/)
+        expect.toMatch(json.message?.toLowerCase(), /no permission/)
       );
     });
 

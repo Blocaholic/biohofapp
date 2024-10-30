@@ -21,7 +21,7 @@ export const testDevicesConfirm = async function (users) {
     .then(json =>
       test(
         'Error message should include "operation must be defined"',
-        expect.toMatch(json.message.toLowerCase(), /operation must be defined/)
+        expect.toMatch(json.message?.toLowerCase(), /operation must be defined/)
       )
     );
 
@@ -39,7 +39,7 @@ export const testDevicesConfirm = async function (users) {
     .then(json => {
       test(
         'Error message should include "unknown operation"',
-        expect.toMatch(json.message.toLowerCase(), /unknown operation/)
+        expect.toMatch(json.message?.toLowerCase(), /unknown operation/)
       );
       test(
         'Operation should be sent back',
@@ -62,7 +62,7 @@ export const testDevicesConfirm = async function (users) {
       test(
         'Error message should include "id must be an integer greater than 0"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /id must be an integer greater than 0/
         )
       );
@@ -91,7 +91,7 @@ export const testDevicesConfirm = async function (users) {
     .then(json =>
       test(
         'Error message should include "password is required"',
-        expect.toMatch(json.message.toLowerCase(), /password is required/)
+        expect.toMatch(json.message?.toLowerCase(), /password is required/)
       )
     );
 
@@ -110,7 +110,7 @@ export const testDevicesConfirm = async function (users) {
       test(
         'Error message should include "confirmationpassword must be 32 characters"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /confirmationpassword must be 32 characters/
         )
       );
@@ -134,7 +134,7 @@ export const testDevicesConfirm = async function (users) {
     .then(json => {
       test(
         'Error message should include "could not find deviceid"',
-        expect.toMatch(json.message.toLowerCase(), /could not find deviceid/)
+        expect.toMatch(json.message?.toLowerCase(), /could not find deviceid/)
       );
       test(
         'deviceid should be sent back',
@@ -157,7 +157,7 @@ export const testDevicesConfirm = async function (users) {
       test(
         'Error message should include "confirmationpassword not accepted"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /confirmationpassword not accepted/
         )
       )
