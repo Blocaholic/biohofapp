@@ -22,7 +22,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "email is required"',
-        expect.toMatch(json.message.toLowerCase(), /email is required/)
+        expect.toMatch(json.message?.toLowerCase(), /email is required/)
       );
     });
 
@@ -43,7 +43,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "invalid email"',
-        expect.toMatch(json.message.toLowerCase(), /invalid email/)
+        expect.toMatch(json.message?.toLowerCase(), /invalid email/)
       );
     });
 
@@ -64,7 +64,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include ""farmid" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"farmid" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"farmid" is required/)
       );
     });
 
@@ -86,7 +86,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
       test(
         'Error message should include ""farmid" must be greater than 0"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /"farmid" must be greater than 0/
         )
       );
@@ -109,7 +109,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include ""role" is required"',
-        expect.toMatch(json.message.toLowerCase(), /"role" is required/)
+        expect.toMatch(json.message?.toLowerCase(), /"role" is required/)
       );
     });
 
@@ -130,7 +130,10 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "role "adrian" not excepted"',
-        expect.toMatch(json.message.toLowerCase(), /role "adrian" not excepted/)
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /role "adrian" not excepted/
+        )
       );
     });
 
@@ -152,8 +155,32 @@ export const testFarmsAddMember = async function (users, testfarmid) {
       test(
         'Error message should include "no user found with this email adress"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /no user found with this email adress/
+        )
+      );
+    });
+
+  console.log('#### unconfirmed user');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: users.unconfirmedUser.email,
+      role: 'employee',
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "cannot add unconfirmed user"',
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /cannot add unconfirmed user/
         )
       );
     });
@@ -175,7 +202,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "no permission"',
-        expect.toMatch(json.message.toLowerCase(), /no permission/)
+        expect.toMatch(json.message?.toLowerCase(), /no permission/)
       );
     });
 
@@ -197,7 +224,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
       test(
         'Error message should include "role "owner" must not be added"',
         expect.toMatch(
-          json.message.toLowerCase(),
+          json.message?.toLowerCase(),
           /role "owner" must not be added/
         )
       );
@@ -220,7 +247,7 @@ export const testFarmsAddMember = async function (users, testfarmid) {
     .then(json => {
       test(
         'Error message should include "user is already member"',
-        expect.toMatch(json.message.toLowerCase(), /user is already member/)
+        expect.toMatch(json.message?.toLowerCase(), /user is already member/)
       );
     });
 
