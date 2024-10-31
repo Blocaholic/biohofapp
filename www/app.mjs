@@ -125,6 +125,13 @@ const init = () => {
   $('updateUserPermissions__close').addEventListener('click', _ =>
     $hide('updateUserPermissions__modal')
   );
+  $('changeOwner__close').addEventListener('click', _ =>
+    $hide('changeOwner__modal')
+  );
+  $('changeOwner__cancelButton').addEventListener('click', event => {
+    event.preventDefault();
+    $hide('changeOwner__modal');
+  });
 
   $('editFarm__button').addEventListener('click', Farm.rename);
   $('addFarm__button').addEventListener('click', Farm.add);
@@ -132,7 +139,15 @@ const init = () => {
   $('resetApp__firstButton').addEventListener('click', _ =>
     $show('resetApp__modal')
   );
-  $('updateUserPermissions__button').addEventListener(
+
+  $('updateUserPermissions__button').addEventListener('click', event => {
+    event.preventDefault();
+    document.querySelector('input[name="updateUserPermissions__role"]:checked')
+      .value === 'owner'
+      ? $show('changeOwner__modal')
+      : Farm.updateUserPermissions(event);
+  });
+  $('changeOwner__continueButton').addEventListener(
     'click',
     Farm.updateUserPermissions
   );
