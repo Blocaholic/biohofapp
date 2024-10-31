@@ -222,11 +222,12 @@ const main = async () => {
     role.innerText = roles[member.role];
     role.innerText += ' ';
     if (
-      selectedFarm.role === 'owner' ||
-      (selectedFarm.role === 'admin' &&
-        !['owner', 'admin'].includes(member.role)) ||
-      (selectedFarm.role === 'admin' &&
-        Number(localStorage.userid) === Number(member.userid))
+      member.role !== 'owner' &&
+      (selectedFarm.role === 'owner' ||
+        (selectedFarm.role === 'admin' &&
+          !['owner', 'admin'].includes(member.role)) ||
+        (selectedFarm.role === 'admin' &&
+          Number(localStorage.userid) === Number(member.userid)))
     ) {
       const icon = document.createElement('img');
       icon.src = './icon/pencil.svg';
