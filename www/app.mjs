@@ -125,6 +125,13 @@ const init = () => {
   $('updateUserPermissions__close').addEventListener('click', _ =>
     $hide('updateUserPermissions__modal')
   );
+  $('deleteUserPermissions__close').addEventListener('click', _ =>
+    $hide('deleteUserPermissions__modal')
+  );
+  $('deleteUserPermissions__cancelButton').addEventListener('click', event => {
+    event.preventDefault();
+    $hide('deleteUserPermissions__modal');
+  });
   $('changeOwner__close').addEventListener('click', _ =>
     $hide('changeOwner__modal')
   );
@@ -147,6 +154,10 @@ const init = () => {
       ? $show('changeOwner__modal')
       : Farm.updateUserPermissions(event);
   });
+  $('deleteUserPermissions__continueButton').addEventListener(
+    'click',
+    Farm.deleteUserPermissions
+  );
   $('changeOwner__continueButton').addEventListener(
     'click',
     Farm.updateUserPermissions
@@ -261,7 +272,6 @@ const main = async () => {
           Number(localStorage.userid) === Number(member.userid)) ||
         Number(localStorage.userid) === Number(member.userid))
     ) {
-      // add trash
       const trash = document.createElement('img');
       trash.src = './icon/trash.svg';
       trash.alt = '';
