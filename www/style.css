@@ -239,6 +239,11 @@ table {
   border: 0;
 }
 
+.highlighted {
+  color: var(--green-8);
+  font-weight: bold;
+}
+
 .highlightedRow {
   color: var(--green-8);
   font-weight: 500;

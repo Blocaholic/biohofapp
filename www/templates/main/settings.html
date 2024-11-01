@@ -344,3 +344,28 @@
             class="button--danger">Eigentümer wechseln</button>
   </form>
 </article>
+
+<article id="deleteUserPermissions__modal"
+         class="modal__background"
+         style="display: none;">
+  <form id="deleteUserPermissions__form"
+        class="modal__box">
+    <h3>Benutzerrechte entfernen</h3>
+    <span id="deleteUserPermissions__close"
+          class="controlElement controlElement--close"
+          title="Abbrechen">&#65291;</span>
+    <p>Hiermit entfernst du alle Rechte des Benutzers</p>
+    <p><span class="highlighted"><span id="deleteUserPermissions__email"></span> (#<span
+              id="deleteUserPermissions__userid"></span>)</span></p>
+    <p>am
+      Betrieb</p>
+    <p><span class="highlighted"><span id="deleteUserPermissions__farmname"></span> (#<span
+              id="deleteUserPermissions__farmid"></span>)</span>.
+    </p>
+    <p>Bist du sicher?</p>
+    <button id="deleteUserPermissions__cancelButton"
+            class="button--attention">Abbrechen</button>
+    <button id="deleteUserPermissions__continueButton"
+            class="button--danger">Benutzerrechte entfernen</button>
+  </form>
+</article>

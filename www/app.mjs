@@ -233,15 +233,15 @@ const main = async () => {
         (selectedFarm.role === 'admin' &&
           Number(localStorage.userid) === Number(member.userid)))
     ) {
-      const icon = document.createElement('img');
-      icon.src = './icon/pencil.svg';
-      icon.alt = '';
-      icon.classList.add('icon--inline');
-      icon.classList.add('settings__updateUserPermissionLink');
-      icon.dataset.userid = member.userid;
-      icon.dataset.email = member.email;
-      icon.dataset.role = member.role;
-      icon.addEventListener('click', event => {
+      const pencil = document.createElement('img');
+      pencil.src = './icon/pencil.svg';
+      pencil.alt = '';
+      pencil.classList.add('icon--inline');
+      pencil.classList.add('settings__updateUserPermissionLink');
+      pencil.dataset.userid = member.userid;
+      pencil.dataset.email = member.email;
+      pencil.dataset.role = member.role;
+      pencil.addEventListener('click', event => {
         $(
           'updateUserPermissions__userid'
         ).innerText = `User-ID: ${event.target.dataset.userid}`;
@@ -250,7 +250,36 @@ const main = async () => {
         $(`updateUserPermissions__${event.target.dataset.role}`).checked = true;
         $show('updateUserPermissions__modal');
       });
-      role.appendChild(icon);
+      role.appendChild(pencil);
+    }
+    if (
+      member.role !== 'owner' &&
+      (selectedFarm.role === 'owner' ||
+        (selectedFarm.role === 'admin' &&
+          !['owner', 'admin'].includes(member.role)) ||
+        (selectedFarm.role === 'admin' &&
+          Number(localStorage.userid) === Number(member.userid)) ||
+        Number(localStorage.userid) === Number(member.userid))
+    ) {
+      // add trash
+      const trash = document.createElement('img');
+      trash.src = './icon/trash.svg';
+      trash.alt = '';
+      trash.classList.add('icon--inline');
+      trash.classList.add('settings__deleteUserPermissionLink');
+      trash.dataset.userid = member.userid;
+      trash.dataset.email = member.email;
+      trash.dataset.role = member.role;
+      trash.addEventListener('click', event => {
+        $('deleteUserPermissions__userid').innerText =
+          event.target.dataset.userid;
+        $('deleteUserPermissions__email').innerText =
+          event.target.dataset.email;
+        $('deleteUserPermissions__farmname').innerText = selectedFarm.farmname;
+        $('deleteUserPermissions__farmid').innerText = selectedFarm.farmid;
+        $show('deleteUserPermissions__modal');
+      });
+      role.appendChild(trash);
     }
     if (localStorage.userid == member.userid) {
       id.classList.add('highlightedRow');
