@@ -162,17 +162,6 @@ const init = () => {
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))
   );
-
-  $$('.settings__updateUserPermissionLink').forEach(link =>
-    link.addEventListener('click', event => {
-      $(
-        'updateUserPermissions__userid'
-      ).innerText = `User-ID: ${event.target.dataset.userid}`;
-      $('updateUserPermissions__email').innerText = event.target.dataset.email;
-      $(`updateUserPermissions__${event.target.dataset.role}`).checked = true;
-      $show('updateUserPermissions__modal');
-    })
-  );
 };
 
 const main = async () => {
@@ -252,6 +241,15 @@ const main = async () => {
       icon.dataset.userid = member.userid;
       icon.dataset.email = member.email;
       icon.dataset.role = member.role;
+      icon.addEventListener('click', event => {
+        $(
+          'updateUserPermissions__userid'
+        ).innerText = `User-ID: ${event.target.dataset.userid}`;
+        $('updateUserPermissions__email').innerText =
+          event.target.dataset.email;
+        $(`updateUserPermissions__${event.target.dataset.role}`).checked = true;
+        $show('updateUserPermissions__modal');
+      });
       role.appendChild(icon);
     }
     if (localStorage.userid == member.userid) {
@@ -332,4 +330,4 @@ const main = async () => {
 };
 
 main();
-setTimeout(init, 100);
+init();
