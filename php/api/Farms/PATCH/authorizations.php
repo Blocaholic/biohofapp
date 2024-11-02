@@ -105,4 +105,31 @@ namespace Farms\PATCH\authorizations {
 
     return $input;
   }
+
+  function remove_member($input) {
+    $farmid = $input['farmid'];
+    $userid = \Token::verify_payload_from_header()['userid'];
+    $userrole = \Database::get_farm_role($farmid, $userid);
+
+    $member_id = $input['userid'];
+    $member_role = \Database::get_farm_role($farmid, $member_id);
+
+    if (!in_array($userrole, ["owner", "admin"])) {
+      exit_with_error(401, ["message" => "No permission to change settings."]);
+    }
+
+    if ($member_role === 'owner') {
+      exit_with_error(401, ["message" => "Owner cannot be removed."]);
+    }
+
+    if (
+      $userrole === 'admin'
+      && $member_role === 'admin'
+      && $userid !== $member_id
+    ) {
+      exit_with_error(401, ["message" => "Admin cannot remove other admins."]);
+    }
+
+    return $input;
+  }
 }

@@ -39,6 +39,25 @@ class ValidateInput {
     return $farmid;
   }
 
+  public static function userid($input) {
+    $userid = $input['userid'] ?? exit_with_error(400, [
+      "message" => '"userid" is required.',
+    ]);
+
+    if (!is_numeric($userid)) {
+      exit_with_error(400, ["message" => '"userid" must be numeric']);
+    }
+    if ($userid < 1) {
+      exit_with_error(400, ["message" => '"userid" must be greater than 0']);
+    }
+
+    if ($userid != round($userid)) {
+      exit_with_error(400, ["message" => '"userid" must be an integer']);
+    }
+
+    return $userid;
+  }
+
   public static function owner($input) {
     $owner = $input['owner'] ?? exit_with_error(400, [
       "message" => '"owner" is required.',

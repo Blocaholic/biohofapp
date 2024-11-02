@@ -27,13 +27,25 @@ namespace Farms\PATCH\validations {
 
   function update_member($input) {
     $email = \ValidateInput::email($input);
+    $memberid = \ValidateInput::userid($input);
     $userid = \Database::get_userid($email) ?? exit_with_error(400, ["message" => "No user found with this email adress."]);
-    if ($userid != $input['userid']) {
+    if ($userid != $memberid) {
       exit_with_error(400, ["message" => "Userid does not fit email adress."]);
     }
     $role = \ValidateInput::role($input);
     $farmid = \ValidateInput::farmid($input);
     return compact('email', 'userid', 'role', 'farmid');
+  }
+
+  function remove_member($input) {
+    $email = \ValidateInput::email($input);
+    $memberid = \ValidateInput::userid($input);
+    $userid = \Database::get_userid($email) ?? exit_with_error(400, ["message" => "No user found with this email adress."]);
+    if ($userid != $memberid) {
+      exit_with_error(400, ["message" => "Userid does not fit email adress."]);
+    }
+    $farmid = \ValidateInput::farmid($input);
+    return compact('email', 'userid', 'farmid');
   }
 
 }

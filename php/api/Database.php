@@ -317,4 +317,16 @@ class Database {
     ]);
   }
 
+  public static function farm_remove_member($input) {
+    $pdo = self::connect();
+    $query = 'DELETE FROM farmmembers
+      WHERE farmid = :farmid
+        AND userid = :userid';
+    $statement = $pdo->prepare($query);
+    return $statement->execute([
+      "farmid" => $input['farmid'],
+      "userid" => $input['userid'],
+    ]);
+  }
+
 }
