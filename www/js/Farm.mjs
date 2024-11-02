@@ -67,14 +67,14 @@ const updateUserPermissions = async event => {
   result.message ? Error.show(result.message) : location.reload();
 };
 
-const deleteUserPermissions = async event => {
+const removeUserPermissions = async event => {
   event.preventDefault();
 
   const patchData = {
-    operation: 'delete_member',
-    email: $('deleteUserPermissions__email').innerText,
-    userid: $('deleteUserPermissions__userid').innerText,
-    farmid: $('deleteUserPermissions__farmid').innerText,
+    operation: 'remove_member',
+    email: $('removeUserPermissions__email').innerText,
+    userid: $('removeUserPermissions__userid').innerText,
+    farmid: $('removeUserPermissions__farmid').innerText,
   };
 
   const result = await fetchJson('./api/farms', 'PATCH', patchData);
@@ -133,7 +133,7 @@ export {
   add,
   addUser,
   updateUserPermissions,
-  deleteUserPermissions,
+  removeUserPermissions,
   updateModules,
   rename,
   erase,

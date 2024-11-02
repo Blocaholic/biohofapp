@@ -125,12 +125,12 @@ const init = () => {
   $('updateUserPermissions__close').addEventListener('click', _ =>
     $hide('updateUserPermissions__modal')
   );
-  $('deleteUserPermissions__close').addEventListener('click', _ =>
-    $hide('deleteUserPermissions__modal')
+  $('removeUserPermissions__close').addEventListener('click', _ =>
+    $hide('removeUserPermissions__modal')
   );
-  $('deleteUserPermissions__cancelButton').addEventListener('click', event => {
+  $('removeUserPermissions__cancelButton').addEventListener('click', event => {
     event.preventDefault();
-    $hide('deleteUserPermissions__modal');
+    $hide('removeUserPermissions__modal');
   });
   $('changeOwner__close').addEventListener('click', _ =>
     $hide('changeOwner__modal')
@@ -154,9 +154,9 @@ const init = () => {
       ? $show('changeOwner__modal')
       : Farm.updateUserPermissions(event);
   });
-  $('deleteUserPermissions__continueButton').addEventListener(
+  $('removeUserPermissions__continueButton').addEventListener(
     'click',
-    Farm.deleteUserPermissions
+    Farm.removeUserPermissions
   );
   $('changeOwner__continueButton').addEventListener(
     'click',
@@ -276,18 +276,18 @@ const main = async () => {
       trash.src = './icon/trash.svg';
       trash.alt = '';
       trash.classList.add('icon--inline');
-      trash.classList.add('settings__deleteUserPermissionLink');
+      trash.classList.add('settings__removeUserPermissionLink');
       trash.dataset.userid = member.userid;
       trash.dataset.email = member.email;
       trash.dataset.role = member.role;
       trash.addEventListener('click', event => {
-        $('deleteUserPermissions__userid').innerText =
+        $('removeUserPermissions__userid').innerText =
           event.target.dataset.userid;
-        $('deleteUserPermissions__email').innerText =
+        $('removeUserPermissions__email').innerText =
           event.target.dataset.email;
-        $('deleteUserPermissions__farmname').innerText = selectedFarm.farmname;
-        $('deleteUserPermissions__farmid').innerText = selectedFarm.farmid;
-        $show('deleteUserPermissions__modal');
+        $('removeUserPermissions__farmname').innerText = selectedFarm.farmname;
+        $('removeUserPermissions__farmid').innerText = selectedFarm.farmid;
+        $show('removeUserPermissions__modal');
       });
       role.appendChild(trash);
     }
