@@ -206,6 +206,75 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
       );
     });
 
+  console.log('#### Owner cannot be removed');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'remove_member',
+      email: users.user1.email,
+      userid: users.user1.userid,
+      farmid: testfarmid,
+    },
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "owner cannot be removed"',
+        expect.toMatch(json.message?.toLowerCase(), /owner cannot be removed/)
+      );
+    });
+
+  console.log('#### Admin cannot remove other admins');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'admin',
+      userid: users.user4.userid,
+    },
+  }).then(expect.responseCode(200));
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user2.token]],
+    body: {
+      operation: 'remove_member',
+      email: users.user4.email,
+      userid: users.user4.userid,
+      farmid: testfarmid,
+    },
+  })
+    .then(expect.responseCode(401))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "admin cannot remove other admins"',
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /admin cannot remove other admins/
+        )
+      );
+    });
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_member',
+      farmid: testfarmid,
+      email: users.user4.email,
+      role: 'visitor',
+      userid: users.user4.userid,
+    },
+  }).then(expect.responseCode(200));
+
   console.log('\n### Farms::remove_member (Success)');
   await httpRequest({
     url: `farms`,
