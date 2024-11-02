@@ -92,6 +92,30 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
       );
     });
 
+  console.log('#### userid does not fit email');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'remove_member',
+      email: users.user4.email,
+      userid: users.user3.userid,
+      farmid: testfarmid,
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "userid does not fit email adress"',
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /userid does not fit email adress/
+        )
+      );
+    });
+
   console.log('#### missing farmid');
   await httpRequest({
     url: `farms`,
