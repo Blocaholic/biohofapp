@@ -15,6 +15,7 @@ import {testFarmsRename} from './tests/farmsRename.mjs';
 import {testFarmsUpdateModules} from './tests/farmsUpdateModules.mjs';
 import {testFarmsAddMember} from './tests/farmsAddMember.mjs';
 import {testFarmsUpdateMember} from './tests/farmsUpdateMember.mjs';
+import {testFarmsRemoveMember} from './tests/farmsRemoveMember.mjs';
 import {testFarmsDelete} from './tests/farmsDelete.mjs';
 
 const starttime = Date.now();
@@ -92,6 +93,10 @@ const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(
   users,
   testfarmid
 );
+const FarmsRemoveMemberTestResult = await testFarmsRemoveMember(
+  users,
+  testfarmid
+);
 const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(
   users,
   testfarmid
@@ -112,6 +117,7 @@ Promise.all([
   FarmsUpdateModulesTestResult,
   FarmsAddMemberTestResult,
   FarmsUpdateMemberTestResult,
+  FarmsRemoveMemberTestResult,
   FarmsDeleteTestResult,
 ]).then(printFooterToConsole);
 
