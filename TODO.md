@@ -8,8 +8,9 @@
 
 #### API
 
-- all exceptions -> exit_with_error()
+- Utils.php: configure_error_handling -> exit_with_error()
 - move id from URL to body
+- rename device
 - delete device
 - delete user
 

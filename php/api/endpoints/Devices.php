@@ -158,7 +158,7 @@ class Devices {
     $header = implode("\r\n", $header_array);
     $mailSent = mail(
       $email, $title, $content, $header
-    ) ?: throw new Exception("Could not send email.");
+    ) ?: exit_with_error(500, "Could not send email.");
     return true;
   }
 

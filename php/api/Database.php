@@ -98,7 +98,7 @@ class Database {
     ];
     $statement = $pdo->prepare($query);
     $statement->execute($data);
-    $deviceid = $pdo->lastInsertId() ?: throw new Exception(
+    $deviceid = $pdo->lastInsertId() ?: exit_with_error(500,
       "Failed to create deviceid."
     );
 
@@ -111,7 +111,7 @@ class Database {
     $query = "INSERT INTO users (email) VALUES(?);";
     $statement = $pdo->prepare($query);
     $statement->execute([$email]);
-    $userid = $pdo->lastInsertId() ?: throw new Exception(
+    $userid = $pdo->lastInsertId() ?: exit_with_error(500,
       "Failed to create userid."
     );
 
@@ -126,8 +126,8 @@ class Database {
     $statement->execute([$deviceid]);
     $updated_rows = $statement->rowCount();
 
-    if ($updated_rows < 1) {throw new Exception("No device affected.");}
-    if ($updated_rows > 1) {throw new Exception("Multiple devices affected.");}
+    if ($updated_rows < 1) {exit_with_error(500, "No device affected.");}
+    if ($updated_rows > 1) {exit_with_error(500, "Multiple devices affected.");}
 
     return true;
   }
@@ -140,8 +140,8 @@ class Database {
     $statement->execute([$userid]);
     $updated_rows = $statement->rowCount();
 
-    if ($updated_rows < 1) {throw new Exception("No user affected.");}
-    if ($updated_rows > 1) {throw new Exception("Multiple users affected.");}
+    if ($updated_rows < 1) {exit_with_error(500, "No user affected.");}
+    if ($updated_rows > 1) {exit_with_error(500, "Multiple users affected.");}
 
     return true;
   }
@@ -169,7 +169,7 @@ class Database {
       "module_goats" => $farm['module_goats'],
       "module_bees" => $farm['module_bees'],
     ]);
-    $farmid = $pdo->lastInsertId() ?: throw new Exception(
+    $farmid = $pdo->lastInsertId() ?: exit_with_error(500,
       "Failed to add farm to database."
     );
     $farmmember = [
@@ -199,7 +199,7 @@ class Database {
       "role" => $member['role'],
     ]);
     $row_count = $statement->rowCount();
-    if ($row_count !== 1) {throw new Exception("Could not set user role.");}
+    if ($row_count !== 1) {exit_with_error(500, "Could not set user role.");}
     return true;
   }
 
