@@ -4,8 +4,13 @@
 
 ### Prio A
 
+- module marketgarden as default, hide selection
+
 #### API
 
+- make user permissions removable
+- all exceptions -> exit_with_error()
+- move id from URL to body
 - delete device
 - delete user
 
