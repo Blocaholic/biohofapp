@@ -76,30 +76,38 @@
        id="settings__farmRoles">
   </div>
   <h4>Module</h4>
-  <label class="label--block">
-    <input type="checkbox"
-           name="module_marketgarden"
-           id="selectedFarm__moduleMarketgarden">
-    Market Garden
-  </label>
-  <label class="label--block">
-    <input type="checkbox"
-           name="module_chicken"
-           id="selectedFarm__moduleChicken">
-    Hühner
-  </label>
-  <label class="label--block">
-    <input type="checkbox"
-           name="module_goats"
-           id="selectedFarm__moduleGoats">
-    Ziegen
-  </label>
-  <label class="label--block">
-    <input type="checkbox"
-           name="module_bees"
-           id="selectedFarm__moduleBees">
-    Bienen
-  </label>
+  <div class="labelWrapper--block">
+    <label class="label--left">
+      <input type="checkbox"
+             name="module_marketgarden"
+             id="selectedFarm__moduleMarketgarden">
+      Gemüseanbau
+    </label>
+  </div>
+  <div class="labelWrapper--block">
+    <label class="label--left">
+      <input type="checkbox"
+             name="module_chicken"
+             id="selectedFarm__moduleChicken">
+      Hühner
+    </label>
+  </div>
+  <div class="labelWrapper--block">
+    <label class="label--left">
+      <input type="checkbox"
+             name="module_goats"
+             id="selectedFarm__moduleGoats">
+      Ziegen
+    </label>
+  </div>
+  <div class="labelWrapper--block">
+    <label class="label--left">
+      <input type="checkbox"
+             name="module_bees"
+             id="selectedFarm__moduleBees">
+      Bienen
+    </label>
+  </div>
 </article>
 
 <button id="settings__addFarmLinkButton"
@@ -126,8 +134,10 @@
     <span id="editFarm__close"
           class="controlElement controlElement--close"
           title="Abbrechen">&#65291;</span>
-    <label for="name"
-           class="label--block">Name des Betriebs</label>
+    <div class="labelWrapper--block">
+      <label for="name"
+             class="label--left">Name des Betriebs</label>
+    </div>
     <input type="text"
            name="name"
            id="editFarm__name">
@@ -182,36 +192,46 @@
     <span id="addFarm__close"
           class="controlElement controlElement--close"
           title="Abbrechen">&#65291;</span>
-    <label for="name"
-           class="label--block">Name des Betriebs</label>
+    <div class="labelWrapper--block">
+      <label for="name"
+             class="label--left">Name des Betriebs</label>
+    </div>
     <input type="text"
            name="name"
            id="addFarm__name">
     <h4>Module</h4>
-    <label class="label--block">
-      <input type="checkbox"
-             name="module_marketgarden"
-             id="addFarm__moduleMarketgarden">
-      Market Garden
-    </label>
-    <label class="label--block">
-      <input type="checkbox"
-             name="module_chicken"
-             id="addFarm__moduleChicken">
-      Hühner
-    </label>
-    <label class="label--block">
-      <input type="checkbox"
-             name="module_goats"
-             id="addFarm__moduleGoats">
-      Ziegen
-    </label>
-    <label class="label--block">
-      <input type="checkbox"
-             name="module_bees"
-             id="addFarm__moduleBees">
-      Bienen
-    </label>
+    <div class="labelWrapper--block">
+      <label class="label--left">
+        <input type="checkbox"
+               name="module_marketgarden"
+               id="addFarm__moduleMarketgarden">
+        Gemüseanbau
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label class="label--left">
+        <input type="checkbox"
+               name="module_chicken"
+               id="addFarm__moduleChicken">
+        Hühner
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label class="label--left">
+        <input type="checkbox"
+               name="module_goats"
+               id="addFarm__moduleGoats">
+        Ziegen
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label class="label--left">
+        <input type="checkbox"
+               name="module_bees"
+               id="addFarm__moduleBees">
+        Bienen
+      </label>
+    </div>
     <button id="addFarm__button">Betrieb hinzufügen</button>
   </form>
 </article>
@@ -240,39 +260,47 @@
     <span id="addUser__close"
           class="controlElement controlElement--close"
           title="Abbrechen">&#65291;</span>
-    <label for="addUser__email"
-           class="label--block">
-      <input type="email"
-             name="addUser__email"
-             id="addUser__email"
-             required>
-      E-Mail-Adresse des Benutzers
-    </label>
-    <label for="addUser__admin"
-           class="label--block">
-      <input type="radio"
-             name="addUser__role"
-             id="addUser__admin"
-             value="admin">
-      Administrator
-    </label>
-    <label for="addUser__employee"
-           class="label--block">
-      <input type="radio"
-             name="addUser__role"
-             id="addUser__employee"
-             value="employee">
-      Mitarbeiter
-    </label>
-    <label for="addUser__visitor"
-           class="label--block">
-      <input type="radio"
-             name="addUser__role"
-             id="addUser__visitor"
-             value="visitor"
-             checked>
-      Besucher
-    </label>
+    <div class="labelWrapper--block">
+      <label for="addUser__email"
+             class="label--left">
+        <input type="email"
+               name="addUser__email"
+               id="addUser__email"
+               required>
+        E-Mail-Adresse des Benutzers
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label for="addUser__admin"
+             class="label--left">
+        <input type="radio"
+               name="addUser__role"
+               id="addUser__admin"
+               value="admin">
+        Administrator
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label for="addUser__employee"
+             class="label--left">
+        <input type="radio"
+               name="addUser__role"
+               id="addUser__employee"
+               value="employee">
+        Mitarbeiter
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label for="addUser__visitor"
+             class="label--left">
+        <input type="radio"
+               name="addUser__role"
+               id="addUser__visitor"
+               value="visitor"
+               checked>
+        Besucher
+      </label>
+    </div>
     <button id="addUser__button">Benutzerrechte speichern</button>
   </form>
 </article>
@@ -289,38 +317,46 @@
     <p id="updateUserPermissions__userid"></p>
     <p class="updateUserPermissions__email"
        id="updateUserPermissions__email"></p>
-    <label for="updateUserPermissions__owner"
-           class="label--block">
-      <input type="radio"
-             name="updateUserPermissions__role"
-             id="updateUserPermissions__owner"
-             value="owner">
-      Eigentümer
-    </label>
-    <label for="updateUserPermissions__admin"
-           class="label--block">
-      <input type="radio"
-             name="updateUserPermissions__role"
-             id="updateUserPermissions__admin"
-             value="admin">
-      Bevollmächtigter
-    </label>
-    <label for="updateUserPermissions__employee"
-           class="label--block">
-      <input type="radio"
-             name="updateUserPermissions__role"
-             id="updateUserPermissions__employee"
-             value="employee">
-      Mitarbeiter
-    </label>
-    <label for="updateUserPermissions__visitor"
-           class="label--block">
-      <input type="radio"
-             name="updateUserPermissions__role"
-             id="updateUserPermissions__visitor"
-             value="visitor">
-      Besucher
-    </label>
+    <div class="labelWrapper--block">
+      <label for="updateUserPermissions__owner"
+             class="label--left">
+        <input type="radio"
+               name="updateUserPermissions__role"
+               id="updateUserPermissions__owner"
+               value="owner">
+        Eigentümer
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label for="updateUserPermissions__admin"
+             class="label--left">
+        <input type="radio"
+               name="updateUserPermissions__role"
+               id="updateUserPermissions__admin"
+               value="admin">
+        Bevollmächtigter
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label for="updateUserPermissions__employee"
+             class="label--left">
+        <input type="radio"
+               name="updateUserPermissions__role"
+               id="updateUserPermissions__employee"
+               value="employee">
+        Mitarbeiter
+      </label>
+    </div>
+    <div class="labelWrapper--block">
+      <label for="updateUserPermissions__visitor"
+             class="label--left">
+        <input type="radio"
+               name="updateUserPermissions__role"
+               id="updateUserPermissions__visitor"
+               value="visitor">
+        Besucher
+      </label>
+    </div>
     <button id="updateUserPermissions__button">Benutzerrechte speichern</button>
   </form>
 </article>

@@ -383,9 +383,12 @@ table {
   background-color: rgb(240, 248, 236);
 }
 
-.label--block {
-  display: block;
+.label--left {
   text-align: left;
+}
+
+.labelWrapper--block {
+  display: block;
   margin-bottom: 0.2em;
 }
 
