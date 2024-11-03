@@ -16,6 +16,7 @@
 
 ### Prio B
 
+- set @media max-width for settings\_\_farmRoles dynamically (as needed)
 - alle Fehlermeldungen auf Deutsch
 - add service worker to update token
 - delete all unconfirmed users and devices older than one week
