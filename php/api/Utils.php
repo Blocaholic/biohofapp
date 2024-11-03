@@ -7,16 +7,16 @@ class Utils {
     ini_set('display_startup_errors', 1);
 
     $exception_handler = function ($e) {
-      http_response_code(500);
-      echo Utils::exception2json($e);
-      exit;
+      exit_with_error(500, Utils::exception2json($e));
     };
 
     set_exception_handler($exception_handler);
 
     set_error_handler(function ($severity, $message, $file, $line) {
       if (!(error_reporting() & $severity)) {return;}
-      throw new ErrorException($message, 0, $severity, $file, $line);
+      try {throw new ErrorException($message, 0, $severity, $file, $line);} catch (ErrorException $e) {
+        exit_with_error(500, Utils::exception2json($e));
+      }
     });
   }
 
