@@ -11,7 +11,7 @@
 - Utils.php: configure_error_handling -> exit_with_error()
 - move id from URL to body
 - rename device
-- delete device
+- delete device (@ reset app)
 - delete user
 
 ### Prio B
