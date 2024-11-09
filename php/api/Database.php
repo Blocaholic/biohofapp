@@ -329,4 +329,39 @@ class Database {
     ]);
   }
 
+  public static function bedblock_add($bedblock) {
+    $pdo = self::connect();
+    $query = 'INSERT INTO bedblock (
+      name,
+      farmid,
+      bedwidth,
+      bedlength,
+      number,
+      gap,
+      x,
+      y,
+      orientation,
+      start,
+      end
+    ) VALUES (
+      :name,
+      :farmid,
+      :bedwidth,
+      :bedlength,
+      :number,
+      :gap,
+      :x,
+      :y,
+      :orientation,
+      :start,
+      :end
+    );';
+    $statement = $pdo->prepare($query);
+    $statement->execute($bedblock);
+    $bedblockid = $pdo->lastInsertId() ?: exit_with_error(500,
+      "Failed to add bedblock to database."
+    );
+    return $bedblockid;
+  }
+
 }

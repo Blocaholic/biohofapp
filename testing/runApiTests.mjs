@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-'use strict';
+
+import {Temporal} from '../www/js/Temporal.mjs';
 
 import {test} from './test.mjs';
 import {testBaseURL} from './tests/baseURL.mjs';
@@ -17,8 +18,9 @@ import {testFarmsAddMember} from './tests/farmsAddMember.mjs';
 import {testFarmsUpdateMember} from './tests/farmsUpdateMember.mjs';
 import {testFarmsRemoveMember} from './tests/farmsRemoveMember.mjs';
 import {testFarmsDelete} from './tests/farmsDelete.mjs';
+import {testBedblockAdd} from './tests/bedblockAdd.mjs';
 
-const starttime = Date.now();
+const starttime = Temporal.Now.instant().epochMilliseconds;
 
 const user1 = {
   email: 'testbot1@reinwiese.de',
@@ -66,10 +68,10 @@ const users = {user1, user2, user3, user4, unconfirmedUser};
 
 printHeaderToConsole();
 
-const baseURLTestResult = await testBaseURL();
-const apiFailureTestResult = await testApiBasics();
+await testBaseURL();
+await testApiBasics();
 const devicesRegisterTestResult = await testDevicesRegister(users);
-const devicesConfirmTestResult = await testDevicesConfirm(users);
+await testDevicesConfirm(users);
 
 users.unconfirmedUser.userid = devicesRegisterTestResult.userid;
 users.unconfirmedUser.deviceid = devicesRegisterTestResult.deviceid;
@@ -81,45 +83,23 @@ users.user2.token = authCreateTokenTestResult.user2.token;
 users.user3.token = authCreateTokenTestResult.user3.token;
 users.user4.token = authCreateTokenTestResult.user4.token;
 
-const devicesRenameTestResult = await testDevicesRename(users);
+await testDevicesRename(users);
 
 const FarmsAddTestResult = await testFarmsAdd(users);
 const testfarmid = FarmsAddTestResult.farmid;
-const FarmsGetTestResult = await testFarmsGet(users);
+await testFarmsGet(users);
 
-const FarmsRenameTestResult = await testFarmsRename(users, testfarmid);
-const FarmsAddMemberTestResult = await testFarmsAddMember(users, testfarmid);
-const FarmsUpdateMemberTestResult = await testFarmsUpdateMember(
-  users,
-  testfarmid
-);
-const FarmsRemoveMemberTestResult = await testFarmsRemoveMember(
-  users,
-  testfarmid
-);
-const FarmsUpdateModulesTestResult = await testFarmsUpdateModules(
-  users,
-  testfarmid
-);
+await testFarmsRename(users, testfarmid);
+await testFarmsAddMember(users, testfarmid);
+await testFarmsUpdateMember(users, testfarmid);
+await testFarmsRemoveMember(users, testfarmid);
+await testFarmsUpdateModules(users, testfarmid);
+await testBedblockAdd(users, testfarmid);
+
 // delete member
-const FarmsDeleteTestResult = await testFarmsDelete(users, testfarmid);
+await testFarmsDelete(users, testfarmid);
 
-Promise.all([
-  baseURLTestResult,
-  apiFailureTestResult,
-  devicesRegisterTestResult,
-  devicesConfirmTestResult,
-  authCreateTokenTestResult,
-  devicesRenameTestResult,
-  FarmsAddTestResult,
-  FarmsGetTestResult,
-  FarmsRenameTestResult,
-  FarmsUpdateModulesTestResult,
-  FarmsAddMemberTestResult,
-  FarmsUpdateMemberTestResult,
-  FarmsRemoveMemberTestResult,
-  FarmsDeleteTestResult,
-]).then(printFooterToConsole);
+printFooterToConsole();
 
 function printHeaderToConsole() {
   console.log('\n# Testing biohofapp.de API');
@@ -137,7 +117,7 @@ function printFooterToConsole() {
     `${test.count().failure} Tests fehlgeschlagen`
   );
   console.log(`${test.count().total} Tests gesamt`);
-  const endtime = Date.now();
+  const endtime = Temporal.Now.instant().epochMilliseconds;
   const duration = (endtime - starttime) / 1000;
   console.log(
     `\n## DONE Testing biohofapp.de API (in ${

@@ -154,4 +154,66 @@ class ValidateInput {
     ];
   }
 
+  public static function bedblockOrientation($input) {
+    $integer = self::defaultInteger($input, 'orientation');
+    if ($integer < -89) {
+      exit_with_error(400, ["message" => 'orientation cannot be less than -89']);
+    }
+    if ($integer > 90) {
+      exit_with_error(400, ["message" => 'orientation cannot be bigger than 90']);
+    }
+    return $integer;
+  }
+
+  public static function defaultDate($input, $varName) {
+    if (!(bool) preg_match('/^\d{4}-\d{2}-\d{2}$/', $input[$varName])) {
+      exit_with_error(400, ["message" => '"' . $varName . '": invalid date format']);
+    }
+
+    list($year, $month, $day) = explode('-', $input[$varName]);
+    if (!checkdate($month, $day, $year)) {
+      exit_with_error(400, ["message" => '"' . $varName . '": invalid date']);
+    }
+
+    return $input[$varName];
+  }
+
+  public static function defaultName($input, $varName) {
+    $name = $input[$varName] ?? exit_with_error(400, [
+      "message" => '"' . $varName . '" is required.',
+    ]);
+
+    if (strlen($name) < 1) {
+      exit_with_error(400, [
+        "message" => '"' . $varName . '" must be at least 1 character.',
+      ]);
+    }
+
+    return $name;
+  }
+
+  public static function defaultInteger($input, $varName) {
+    $integer = $input[$varName] ?? exit_with_error(400, [
+      "message" => '"' . $varName . '" is required.',
+    ]);
+
+    if (!is_numeric($integer)) {
+      exit_with_error(400, ["message" => '"' . $varName . '" must be numeric']);
+    }
+
+    if ($integer != round($integer)) {
+      exit_with_error(400, ["message" => '"' . $varName . '" must be an integer']);
+    }
+
+    return $integer;
+  }
+
+  public static function defaultPositiveInteger($input, $varName) {
+    $positiveInteger = self::defaultInteger($input, $varName);
+    if ($positiveInteger < 1) {
+      exit_with_error(400, ["message" => '"' . $varName . '" must be greater than 0']);
+    }
+    return $positiveInteger;
+  }
+
 }

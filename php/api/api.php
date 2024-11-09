@@ -3,6 +3,7 @@ require_once __DIR__ . '/Utils.php';
 require_once __DIR__ . '/endpoints/Auth.php';
 require_once __DIR__ . '/endpoints/Devices.php';
 require_once __DIR__ . '/endpoints/Farms.php';
+require_once __DIR__ . '/endpoints/Bedblock.php';
 
 Utils::configure_error_handling();
 
@@ -17,6 +18,7 @@ $valid_endpoints = [
   'devices' => ['PATCH', 'POST'],
   'auth' => ['POST'],
   'farms' => ['POST', 'PATCH', 'GET', 'DELETE'],
+  'bedblock' => ['POST', 'GET'],
 ];
 
 $http_methods = [
