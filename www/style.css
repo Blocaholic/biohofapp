@@ -200,6 +200,12 @@ form {
 
 form > *:first-child {
   margin-right: 0.6em;
+  margin-top: 0;
+}
+
+form.draggable:hover,
+form.draggable > *:first-child:hover {
+  cursor: move;
 }
 
 fieldset {
@@ -345,7 +351,7 @@ table {
 }
 
 .mainSection {
-  padding: 1em;
+  padding: 1.8em 1em 1em 1em;
 }
 
 .error {
@@ -381,6 +387,13 @@ table {
 
 .modal__box {
   background-color: rgb(240, 248, 236);
+}
+
+.popup__box {
+  background-color: var(--green-1);
+  border: 0.2em solid var(--green-5);
+  position: fixed;
+  top: 3em;
 }
 
 .label--left {

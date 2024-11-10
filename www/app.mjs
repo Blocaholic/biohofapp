@@ -4,6 +4,7 @@ import * as Device from './js/Device.mjs';
 import * as Utils from './js/Utils.mjs';
 import * as Token from './js/Token.mjs';
 import * as Farm from './js/Farm.mjs';
+import * as Bedblock from './js/Bedblock.mjs';
 
 import './js/pages/planCrops.mjs';
 
@@ -111,6 +112,9 @@ const init = () => {
   );
   $('addFarm__link').addEventListener('click', _ => $show('addFarm__modal'));
   $('addUser__link').addEventListener('click', _ => $show('addUser__modal'));
+  $('addBedblock__link').addEventListener('click', _ =>
+    $show('addBedblock__popup')
+  );
 
   $('editFarm__close').addEventListener('click', _ => $hide('editFarm__modal'));
   $('deleteFarm__close').addEventListener('click', _ =>
@@ -139,6 +143,9 @@ const init = () => {
     event.preventDefault();
     $hide('changeOwner__modal');
   });
+  $('addBedblock__close').addEventListener('click', _ =>
+    $hide('addBedblock__popup')
+  );
 
   $('editFarm__button').addEventListener('click', Farm.rename);
   $('addFarm__button').addEventListener('click', Farm.add);
@@ -169,6 +176,8 @@ const init = () => {
   $('settings__addFarmLinkButton').addEventListener('click', _ =>
     $show('addFarm__modal')
   );
+
+  $('addBedblock__button').addEventListener('click', Bedblock.add);
 
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))
