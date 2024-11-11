@@ -53,7 +53,16 @@ class Bedblock {
 
     $userid = $token_payload['userid'];
 
+    $farms = Database::get_farms($userid);
+
+    function get_farmid_from_farm($farm) {
+      return $farm['farmid'];
+    }
+
+    $farmids = array_map('get_farmid_from_farm', $farms);
+    $bedblocks = array_combine($farmids, array_map('Database::get_bedblocks', $farmids));
+
     http_response_code(200);
-    return [true];
+    return $bedblocks;
   }
 }

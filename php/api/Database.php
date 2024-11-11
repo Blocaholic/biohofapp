@@ -364,4 +364,15 @@ class Database {
     return $bedblockid;
   }
 
+  public static function get_bedblocks($farmid) {
+    $pdo = self::connect();
+    $query = "SELECT *
+      FROM bedblock
+      WHERE farmid = ?;";
+    $statement = $pdo->prepare($query);
+    $statement->execute([$farmid]);
+    $bedblocks = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $bedblocks;
+  }
+
 }
