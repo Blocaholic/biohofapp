@@ -373,6 +373,8 @@ const main = async () => {
     element.style.display = beesVisibility;
   });
 
+  Bedblock.drawAll();
+
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
 };

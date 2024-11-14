@@ -60,7 +60,7 @@ class Bedblock {
     }
 
     $farmids = array_map('get_farmid_from_farm', $farms);
-    $bedblocks = array_combine($farmids, array_map('Database::get_bedblocks', $farmids));
+    $bedblocks = array_map('Database::get_bedblocks', $farmids);
 
     http_response_code(200);
     return $bedblocks;
