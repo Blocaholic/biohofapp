@@ -1,3 +1,5 @@
+import {Temporal} from './js/Temporal.mjs';
+
 import {$, $$, $show, $hide} from './js/$.mjs';
 import * as Sections from './js/Sections.mjs';
 import * as Device from './js/Device.mjs';
@@ -112,9 +114,10 @@ const init = () => {
   );
   $('addFarm__link').addEventListener('click', _ => $show('addFarm__modal'));
   $('addUser__link').addEventListener('click', _ => $show('addUser__modal'));
-  $('addBedblock__link').addEventListener('click', _ =>
-    $show('addBedblock__popup')
-  );
+  $('addBedblock__link').addEventListener('click', _ => {
+    $show('addBedblock__popup');
+    Bedblock.drawPreview();
+  });
 
   $('editFarm__close').addEventListener('click', _ => $hide('editFarm__modal'));
   $('deleteFarm__close').addEventListener('click', _ =>
@@ -143,9 +146,10 @@ const init = () => {
     event.preventDefault();
     $hide('changeOwner__modal');
   });
-  $('addBedblock__close').addEventListener('click', _ =>
-    $hide('addBedblock__popup')
-  );
+  $('addBedblock__close').addEventListener('click', _ => {
+    $hide('addBedblock__popup');
+    $('addBedblock__preview').remove();
+  });
 
   $('editFarm__button').addEventListener('click', Farm.rename);
   $('addFarm__button').addEventListener('click', Farm.add);
@@ -182,6 +186,21 @@ const init = () => {
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))
   );
+
+  [...document.getElementsByTagName('input')].forEach(input =>
+    input.addEventListener('click', event => event.target.select())
+  );
+
+  [
+    $('addBedblock__name'),
+    $('addBedblock__number'),
+    $('addBedblock__bedwidth'),
+    $('addBedblock__bedlength'),
+    $('addBedblock__gap'),
+    $('addBedblock__x'),
+    $('addBedblock__y'),
+    $('addBedblock__orientation'),
+  ].forEach(element => element.addEventListener('input', Bedblock.drawPreview));
 };
 
 const main = async () => {
@@ -372,6 +391,8 @@ const main = async () => {
   $$('[data-module="bees"]').forEach(element => {
     element.style.display = beesVisibility;
   });
+
+  $('addBedblock__start').value = Temporal.Now.plainDateISO().toString();
 
   Bedblock.drawAll();
 

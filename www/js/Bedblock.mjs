@@ -26,7 +26,8 @@ const add = async event => {
 };
 
 const createBedblockSVG = bedblock => {
-  const {x, y, bedlength, bedwidth, orientation, name, gap, number} = bedblock;
+  const {x, y, bedlength, bedwidth, orientation, name, gap, number, preview} =
+    bedblock;
 
   const width = bedwidth * number + gap * (number - 1);
   const height = bedlength * 100;
@@ -37,10 +38,12 @@ const createBedblockSVG = bedblock => {
     'transform',
     `translate(${x} ${y}) rotate(${orientation} 0 ${height})`
   );
+  g.setAttribute('id', preview ? 'addBedblock__preview' : '');
 
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttributeNS(null, 'fill', '#ddd');
-  rect.setAttributeNS(null, 'stroke-width', '0');
+  rect.setAttributeNS(null, 'fill', '#ac8269');
+  rect.setAttributeNS(null, 'stroke-width', preview ? padding : '0');
+  rect.setAttributeNS(null, 'stroke', preview ? 'red' : '');
   rect.setAttributeNS(null, 'width', width);
   rect.setAttributeNS(null, 'height', height);
 
@@ -75,7 +78,7 @@ const createBedblockSVG = bedblock => {
       'http://www.w3.org/2000/svg',
       'rect'
     );
-    bedRect.setAttributeNS(null, 'fill', '#967969');
+    bedRect.setAttributeNS(null, 'fill', '#715645');
     bedRect.setAttributeNS(null, 'stroke-width', '0');
     bedRect.setAttributeNS(null, 'width', bedwidth);
     bedRect.setAttributeNS(null, 'height', height);
@@ -186,7 +189,7 @@ const getMaxCoordinates = bedblocks => {
     bedblock.width =
       bedblock.number * (bedblock.bedwidth + bedblock.gap) - bedblock.gap;
     bedblock.height = bedblock.bedlength * 100;
-    // bedblock.diagonal = getHypotenuse(bedblock.width, bedblock.height);
+
     const bedblockXmax = getXmax(bedblock);
     const bedblockXmin = getXmin(bedblock);
     const bedblockYmax = getYmax(bedblock);
@@ -202,11 +205,38 @@ const getMaxCoordinates = bedblocks => {
   return {xMax, xMin, yMax, yMin, paddingMax};
 };
 
-const drawAll = async () => {
-  const bedblocks = await fetchJson('./api/bedblock', 'GET');
+const drawPreview = async () => {
+  $('addBedblock__preview')?.remove();
 
-  const {xMax, xMin, yMax, yMin, paddingMax} = getMaxCoordinates(
-    bedblocks.flat()
+  const previewBedblock = {
+    name: $('addBedblock__name').value,
+    bedlength: Number($('addBedblock__bedlength').value),
+    bedwidth: Number($('addBedblock__bedwidth').value),
+    farmid: localStorage.selectedFarm,
+    gap: Number($('addBedblock__gap').value),
+    height: Number($('addBedblock__bedlength').value) * 100,
+    number: Number($('addBedblock__number').value),
+    orientation: Number($('addBedblock__orientation').value),
+    width:
+      Number($('addBedblock__number').value) *
+        (Number($('addBedblock__bedwidth').value) +
+          Number($('addBedblock__gap').value)) -
+      Number($('addBedblock__gap').value),
+    x: Number($('addBedblock__x').value),
+    y: Number($('addBedblock__y').value),
+    preview: true,
+  };
+
+  const previousBoundaries = $('settings__bedblocksSVG').dataset;
+  const previewBoundaries = getMaxCoordinates([previewBedblock]);
+
+  const xMax = Math.max(previousBoundaries.xMax, previewBoundaries.xMax);
+  const xMin = Math.min(previousBoundaries.xMin, previewBoundaries.xMin);
+  const yMax = Math.max(previousBoundaries.yMax, previewBoundaries.yMax);
+  const yMin = Math.min(previousBoundaries.yMin, previewBoundaries.yMin);
+  const paddingMax = Math.max(
+    previousBoundaries.paddingMax,
+    previewBoundaries.paddingMax
   );
 
   $('settings__bedblocksSVG').setAttribute(
@@ -215,8 +245,39 @@ const drawAll = async () => {
       yMax - yMin + paddingMax * 2
     }`
   );
+
+  const previewSVG = createBedblockSVG({
+    ...previewBedblock,
+    y: yMax - (previewBedblock.y + previewBedblock.bedlength * 100),
+  });
+  $('settings__bedblocksSVG').appendChild(previewSVG);
+};
+
+const drawAll = async () => {
+  /*  [...$('settings__bedblocksSVG').getElementsByTagName('g')].map(g =>
+    g.remove()
+  ); */
+
+  const bedblocks = await fetchJson('./api/bedblock', 'GET').then(bedblocks =>
+    bedblocks.flat()
+  );
+
+  const {xMax, xMin, yMax, yMin, paddingMax} = getMaxCoordinates(bedblocks);
+
+  $('settings__bedblocksSVG').setAttribute(
+    'viewBox',
+    `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
+      yMax - yMin + paddingMax * 2
+    }`
+  );
+
+  $('settings__bedblocksSVG').dataset.xMax = xMax;
+  $('settings__bedblocksSVG').dataset.xMin = xMin;
+  $('settings__bedblocksSVG').dataset.yMax = yMax;
+  $('settings__bedblocksSVG').dataset.yMin = yMin;
+  $('settings__bedblocksSVG').dataset.paddingMax = paddingMax;
+
   bedblocks
-    .flat()
     .filter(bedblock => +bedblock.farmid === +localStorage.selectedFarm)
     .map(bedblock => ({
       ...bedblock,
@@ -226,4 +287,4 @@ const drawAll = async () => {
     .forEach(svg => $('settings__bedblocksSVG').appendChild(svg));
 };
 
-export {add, drawAll};
+export {add, drawAll, drawPreview};
