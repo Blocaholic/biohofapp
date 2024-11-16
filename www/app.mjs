@@ -201,6 +201,7 @@ const init = () => {
     $('addBedblock__y'),
     $('addBedblock__orientation'),
   ].forEach(element => element.addEventListener('input', Bedblock.drawPreview));
+  setInterval(Token.get, 180 * 1000);
 };
 
 const main = async () => {
