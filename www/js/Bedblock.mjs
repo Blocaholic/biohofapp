@@ -41,7 +41,7 @@ const createBedblockSVG = bedblock => {
   g.setAttribute('id', preview ? 'addBedblock__preview' : '');
 
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttributeNS(null, 'fill', '#ac8269');
+  rect.setAttributeNS(null, 'fill', '#d0b8a9');
   rect.setAttributeNS(null, 'stroke-width', preview ? padding : '0');
   rect.setAttributeNS(null, 'stroke', preview ? 'red' : '');
   rect.setAttributeNS(null, 'width', width);
@@ -78,7 +78,7 @@ const createBedblockSVG = bedblock => {
       'http://www.w3.org/2000/svg',
       'rect'
     );
-    bedRect.setAttributeNS(null, 'fill', '#715645');
+    bedRect.setAttributeNS(null, 'fill', '#aa8974');
     bedRect.setAttributeNS(null, 'stroke-width', '0');
     bedRect.setAttributeNS(null, 'width', bedwidth);
     bedRect.setAttributeNS(null, 'height', height);
@@ -254,10 +254,6 @@ const drawPreview = async () => {
 };
 
 const drawAll = async () => {
-  /*  [...$('settings__bedblocksSVG').getElementsByTagName('g')].map(g =>
-    g.remove()
-  ); */
-
   const bedblocks = await fetchJson('./api/bedblock', 'GET').then(bedblocks =>
     bedblocks.flat()
   );
@@ -285,6 +281,29 @@ const drawAll = async () => {
     }))
     .map(createBedblockSVG)
     .forEach(svg => $('settings__bedblocksSVG').appendChild(svg));
+  [...document.getElementsByClassName('svg__bedblockLabel')].forEach(label => {
+    while (
+      label.parentElement.parentElement.firstChild.getBoundingClientRect()
+        .width < label.getBoundingClientRect().width
+    ) {
+      label.setAttribute('font-size', label.getAttribute('font-size') - 1);
+    }
+    const labelResizeFactor =
+      Math.abs(getBedblockLabelRotation(label)) > 0 ? 0.6 : 0.9;
+    label.setAttribute(
+      'font-size',
+      label.getAttribute('font-size') * labelResizeFactor
+    );
+  });
+
+  function getBedblockLabelRotation(element) {
+    return Number(
+      element.parentElement.parentElement
+        .getAttribute('transform')
+        .match(/rotate\((.+)\)/)[1]
+        .split(' ')[0]
+    );
+  }
 };
 
 export {add, drawAll, drawPreview};
