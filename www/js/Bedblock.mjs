@@ -337,4 +337,17 @@ const drawAll = async () => {
   }
 };
 
-export {add, drawAll, drawPreview};
+const resetSVGviewBox = () => {
+  const {xMax, xMin, yMax, yMin, paddingMax} = $(
+    'settings__bedblocksSVG'
+  ).dataset;
+
+  $('settings__bedblocksSVG').setAttribute(
+    'viewBox',
+    `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
+      yMax - yMin + paddingMax * 2
+    }`
+  );
+};
+
+export {add, drawAll, drawPreview, resetSVGviewBox};

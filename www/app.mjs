@@ -149,6 +149,7 @@ const init = () => {
   $('addBedblock__close').addEventListener('click', _ => {
     $hide('addBedblock__popup');
     $('addBedblock__preview').remove();
+    Bedblock.resetSVGviewBox();
   });
 
   $('editFarm__button').addEventListener('click', Farm.rename);
