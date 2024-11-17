@@ -302,6 +302,31 @@ const drawAll = async () => {
     origin.setAttributeNS(null, 'r', paddingMax)
   );
 
+  const originCrossVertical = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'line'
+  );
+  originCrossVertical.setAttributeNS(null, 'stroke', 'black');
+  originCrossVertical.setAttributeNS(null, 'stroke-width', paddingMax / 3);
+  originCrossVertical.setAttributeNS(null, 'x1', -999999999999);
+  originCrossVertical.setAttributeNS(null, 'y1', yMax);
+  originCrossVertical.setAttributeNS(null, 'x2', 999999999999);
+  originCrossVertical.setAttributeNS(null, 'y2', yMax);
+
+  const originCrossHorizontal = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'line'
+  );
+  originCrossHorizontal.setAttributeNS(null, 'stroke', 'black');
+  originCrossHorizontal.setAttributeNS(null, 'stroke-width', paddingMax / 3);
+  originCrossHorizontal.setAttributeNS(null, 'x1', 0);
+  originCrossHorizontal.setAttributeNS(null, 'y1', -999999999999);
+  originCrossHorizontal.setAttributeNS(null, 'x2', 0);
+  originCrossHorizontal.setAttributeNS(null, 'y2', 999999999999);
+
+  $('settings__bedblocksSVG').appendChild(originCrossHorizontal);
+  $('settings__bedblocksSVG').appendChild(originCrossVertical);
+
   function getBedblockLabelRotation(element) {
     return Number(
       element.parentElement.parentElement
