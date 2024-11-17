@@ -252,6 +252,35 @@ const drawPreview = async () => {
     y: yMax - (previewBedblock.y + previewBedblock.bedlength * 100),
   });
   $('settings__bedblocksSVG').appendChild(previewSVG);
+
+  const previewLabel = [
+    ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
+  ][0];
+
+  while (
+    previewLabel.parentElement.parentElement.firstChild.getBoundingClientRect()
+      .width < previewLabel.getBoundingClientRect().width
+  ) {
+    previewLabel.setAttribute(
+      'font-size',
+      Math.round(previewLabel.getAttribute('font-size') * 0.95)
+    );
+  }
+
+  const labelResizeFactor =
+    Math.abs(getBedblockLabelRotation(previewLabel)) > 0 ? 0.6 : 0.9;
+  if (previewLabel) {
+    previewLabel.setAttribute(
+      'font-size',
+      previewLabel.getAttribute('font-size') * labelResizeFactor
+    );
+  }
+
+  const previewOrigin = [
+    ...$('addBedblock__preview').getElementsByClassName('svg_bedblockOrigin'),
+  ][0];
+
+  previewOrigin.setAttributeNS(null, 'r', paddingMax);
 };
 
 const drawAll = async () => {
@@ -288,7 +317,10 @@ const drawAll = async () => {
       label.parentElement.parentElement.firstChild.getBoundingClientRect()
         .width < label.getBoundingClientRect().width
     ) {
-      label.setAttribute('font-size', label.getAttribute('font-size') - 1);
+      label.setAttribute(
+        'font-size',
+        Math.round(label.getAttribute('font-size') * 0.95)
+      );
     }
     const labelResizeFactor =
       Math.abs(getBedblockLabelRotation(label)) > 0 ? 0.6 : 0.9;
@@ -326,15 +358,16 @@ const drawAll = async () => {
 
   $('settings__bedblocksSVG').appendChild(originCrossHorizontal);
   $('settings__bedblocksSVG').appendChild(originCrossVertical);
+};
 
-  function getBedblockLabelRotation(element) {
-    return Number(
-      element.parentElement.parentElement
-        .getAttribute('transform')
-        .match(/rotate\((.+)\)/)[1]
-        .split(' ')[0]
-    );
-  }
+const getBedblockLabelRotation = element => {
+  if (!element) return 0;
+  return Number(
+    element.parentElement.parentElement
+      .getAttribute('transform')
+      .match(/rotate\((.+)\)/)[1]
+      .split(' ')[0]
+  );
 };
 
 const resetSVGviewBox = () => {
