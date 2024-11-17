@@ -71,6 +71,7 @@ const createBedblockSVG = bedblock => {
   circle.setAttributeNS(null, 'r', padding);
   circle.setAttributeNS(null, 'cy', height);
   circle.setAttributeNS(null, 'cx', '0');
+  circle.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
 
   g.appendChild(rect);
   for (let i = 0; i < number; i++) {
@@ -281,6 +282,7 @@ const drawAll = async () => {
     }))
     .map(createBedblockSVG)
     .forEach(svg => $('settings__bedblocksSVG').appendChild(svg));
+
   [...document.getElementsByClassName('svg__bedblockLabel')].forEach(label => {
     while (
       label.parentElement.parentElement.firstChild.getBoundingClientRect()
@@ -295,6 +297,10 @@ const drawAll = async () => {
       label.getAttribute('font-size') * labelResizeFactor
     );
   });
+
+  [...document.getElementsByClassName('svg_bedblockOrigin')].forEach(origin =>
+    origin.setAttributeNS(null, 'r', paddingMax)
+  );
 
   function getBedblockLabelRotation(element) {
     return Number(
