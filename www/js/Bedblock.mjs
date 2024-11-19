@@ -231,6 +231,11 @@ const drawPreview = async () => {
   const previousBoundaries = $('settings__bedblocksSVG').dataset;
   const previewBoundaries = getMaxCoordinates([previewBedblock]);
 
+  const yMaxOffset =
+    previewBoundaries.yMax > previousBoundaries.yMax
+      ? previousBoundaries.yMax - previewBoundaries.yMax
+      : 0;
+
   const xMax = Math.max(previousBoundaries.xMax, previewBoundaries.xMax);
   const xMin = Math.min(previousBoundaries.xMin, previewBoundaries.xMin);
   const yMax = Math.max(previousBoundaries.yMax, previewBoundaries.yMax);
@@ -242,14 +247,15 @@ const drawPreview = async () => {
 
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
-    `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
-      yMax - yMin + paddingMax * 2
-    }`
+    `${-(paddingMax - xMin)} ${-paddingMax + yMaxOffset} ${
+      xMax - xMin + paddingMax * 2
+    } ${yMax - yMin + paddingMax * 2}`
   );
 
   const previewSVG = createBedblockSVG({
     ...previewBedblock,
-    y: yMax - (previewBedblock.y + previewBedblock.bedlength * 100),
+    y:
+      yMax - (previewBedblock.y + previewBedblock.bedlength * 100) + yMaxOffset,
   });
   $('settings__bedblocksSVG').appendChild(previewSVG);
 
