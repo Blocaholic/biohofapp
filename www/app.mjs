@@ -7,6 +7,7 @@ import * as Utils from './js/Utils.mjs';
 import * as Token from './js/Token.mjs';
 import * as Farm from './js/Farm.mjs';
 import * as Bedblock from './js/Bedblock.mjs';
+import * as Error from './js/Error.mjs';
 
 import './js/pages/planCrops.mjs';
 
@@ -115,7 +116,7 @@ const init = () => {
   $('addFarm__link').addEventListener('click', _ => $show('addFarm__modal'));
   $('addUser__link').addEventListener('click', _ => $show('addUser__modal'));
   $('addBedblock__link').addEventListener('click', _ => {
-    $show('addBedblock__popup');
+    Sections.show('addBedblock');
     Bedblock.drawPreview();
   });
 
@@ -146,8 +147,9 @@ const init = () => {
     event.preventDefault();
     $hide('changeOwner__modal');
   });
-  $('addBedblock__close').addEventListener('click', _ => {
-    $hide('addBedblock__popup');
+  $('addBedblock__cancelButton').addEventListener('click', _ => {
+    Error.hide();
+    Sections.show('settings');
     $('addBedblock__preview').remove();
     Bedblock.resetSVGviewBox();
   });
@@ -182,7 +184,7 @@ const init = () => {
     $show('addFarm__modal')
   );
 
-  $('addBedblock__button').addEventListener('click', Bedblock.add);
+  $('addBedblock__submitButton').addEventListener('click', Bedblock.add);
 
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))

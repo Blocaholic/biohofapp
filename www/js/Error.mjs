@@ -1,4 +1,4 @@
-import {$, $$, $show} from './$.mjs';
+import {$, $$, $show, $hide} from './$.mjs';
 
 const isVisible = element => element.style.display !== 'none';
 
@@ -15,7 +15,7 @@ const showErrorInModal = (message, modal) => {
   [...modal.getElementsByClassName('modal__box')][0].prepend(errorDiv);
 };
 
-export const show = message => {
+const show = message => {
   const activeModals = $$('.modal__background').filter(isVisible);
 
   if (activeModals.length > 0) {
@@ -27,3 +27,11 @@ export const show = message => {
 
   console.log(`Error: ${message}`);
 };
+
+const hide = () => {
+  $('error').innerText = '';
+  [...$$('.modal__error')].forEach(element => element.remove());
+  $hide('error');
+};
+
+export {show, hide};

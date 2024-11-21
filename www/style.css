@@ -203,11 +203,6 @@ form > *:first-child {
   margin-top: 0;
 }
 
-form.draggable:hover,
-form.draggable > *:first-child:hover {
-  cursor: move;
-}
-
 fieldset {
   border: 0;
 }
@@ -389,12 +384,12 @@ table {
   background-color: rgb(240, 248, 236);
 }
 
-.popup__box {
+/* .popup__box {
   background-color: var(--green-1);
   border: 0.2em solid var(--green-5);
   position: fixed;
   top: 3em;
-}
+} */
 
 .label--left {
   text-align: left;
