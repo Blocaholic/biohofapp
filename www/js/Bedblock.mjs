@@ -1,6 +1,7 @@
 import {$} from './$.mjs';
 import {fetchJson} from './Utils.mjs';
 import * as Error from './Error.mjs';
+import * as Sections from './Sections.mjs';
 
 const add = async event => {
   event.preventDefault();
@@ -22,6 +23,7 @@ const add = async event => {
   const result = await fetchJson('./api/bedblock', 'POST', bedblock);
   if (result.message) return Error.show(result.message);
 
+  Sections.show('settings');
   location.reload();
 };
 
@@ -41,6 +43,7 @@ const createBedblockSVG = bedblock => {
   g.setAttribute('id', preview ? 'addBedblock__preview' : '');
 
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttributeNS(null, 'paint-order', 'stroke fill');
   rect.setAttributeNS(null, 'fill', '#d0b8a9');
   rect.setAttributeNS(null, 'stroke-width', preview ? padding : '0');
   rect.setAttributeNS(null, 'stroke', preview ? 'red' : '');

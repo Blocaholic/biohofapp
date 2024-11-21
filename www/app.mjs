@@ -117,6 +117,7 @@ const init = () => {
   $('addUser__link').addEventListener('click', _ => $show('addUser__modal'));
   $('addBedblock__link').addEventListener('click', _ => {
     Sections.show('addBedblock');
+    $('addBedblock__previewCanvas').appendChild($('settings__bedblocksSVG'));
     Bedblock.drawPreview();
   });
 
@@ -147,10 +148,12 @@ const init = () => {
     event.preventDefault();
     $hide('changeOwner__modal');
   });
-  $('addBedblock__cancelButton').addEventListener('click', _ => {
+  $('addBedblock__cancelButton').addEventListener('click', event => {
+    event.preventDefault();
     Error.hide();
     Sections.show('settings');
     $('addBedblock__preview').remove();
+    $('settings__bedblocks').appendChild($('settings__bedblocksSVG'));
     Bedblock.resetSVGviewBox();
   });
 
