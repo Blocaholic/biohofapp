@@ -254,6 +254,12 @@ const drawPreview = async () => {
       xMax - xMin + paddingMax * 2
     } ${yMax - yMin + paddingMax * 2}`
   );
+  paddingMax === 0
+    ? $('settings__bedblocksSVG').setAttribute('width', 0)
+    : $('settings__bedblocksSVG').removeAttribute('width');
+  paddingMax === 0
+    ? $('settings__bedblocksSVG').setAttribute('height', 0)
+    : $('settings__bedblocksSVG').removeAttribute('height');
 
   $('bedblocksSVG__originCrossVertical').setAttributeNS(
     null,
@@ -322,6 +328,12 @@ const drawAll = async () => {
       yMax - yMin + paddingMax * 2
     }`
   );
+  paddingMax === 0
+    ? $('settings__bedblocksSVG').setAttribute('width', 0)
+    : $('settings__bedblocksSVG').removeAttribute('width');
+  paddingMax === 0
+    ? $('settings__bedblocksSVG').setAttribute('height', 0)
+    : $('settings__bedblocksSVG').removeAttribute('height');
 
   $('settings__bedblocksSVG').dataset.xMax = xMax;
   $('settings__bedblocksSVG').dataset.xMin = xMin;
