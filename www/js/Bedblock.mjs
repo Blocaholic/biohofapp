@@ -198,7 +198,7 @@ const getMaxCoordinates = bedblocks => {
     const bedblockXmin = getXmin(bedblock);
     const bedblockYmax = getYmax(bedblock);
     const bedblockYmin = getYmin(bedblock);
-    const bedblockPadding = Math.min(bedblock.height, bedblock.width) / 20;
+    const bedblockPadding = Math.min(bedblock.height, bedblock.width) / 10;
 
     if (bedblockXmax > xMax) xMax = bedblockXmax;
     if (bedblockXmin < xMin) xMin = bedblockXmin;
@@ -255,12 +255,29 @@ const drawPreview = async () => {
     } ${yMax - yMin + paddingMax * 2}`
   );
 
+  $('bedblocksSVG__originCrossVertical').setAttributeNS(
+    null,
+    'stroke-width',
+    paddingMax / 6
+  );
+  $('bedblocksSVG__originCrossHorizontal').setAttributeNS(
+    null,
+    'stroke-width',
+    paddingMax / 6
+  );
+
   const previewSVG = createBedblockSVG({
     ...previewBedblock,
     y:
       yMax - (previewBedblock.y + previewBedblock.bedlength * 100) + yMaxOffset,
   });
   $('settings__bedblocksSVG').appendChild(previewSVG);
+  $('settings__bedblocksSVG').appendChild(
+    $('bedblocksSVG__originCrossVertical')
+  );
+  $('settings__bedblocksSVG').appendChild(
+    $('bedblocksSVG__originCrossHorizontal')
+  );
 
   const previewLabel = [
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
@@ -348,22 +365,27 @@ const drawAll = async () => {
     'line'
   );
   originCrossVertical.setAttributeNS(null, 'stroke', 'black');
-  originCrossVertical.setAttributeNS(null, 'stroke-width', paddingMax / 3);
+  originCrossVertical.setAttributeNS(null, 'stroke-width', paddingMax / 6);
   originCrossVertical.setAttributeNS(null, 'x1', -999999999999);
   originCrossVertical.setAttributeNS(null, 'y1', yMax);
   originCrossVertical.setAttributeNS(null, 'x2', 999999999999);
   originCrossVertical.setAttributeNS(null, 'y2', yMax);
+  originCrossVertical.setAttribute('id', 'bedblocksSVG__originCrossVertical');
 
   const originCrossHorizontal = document.createElementNS(
     'http://www.w3.org/2000/svg',
     'line'
   );
   originCrossHorizontal.setAttributeNS(null, 'stroke', 'black');
-  originCrossHorizontal.setAttributeNS(null, 'stroke-width', paddingMax / 3);
+  originCrossHorizontal.setAttributeNS(null, 'stroke-width', paddingMax / 6);
   originCrossHorizontal.setAttributeNS(null, 'x1', 0);
   originCrossHorizontal.setAttributeNS(null, 'y1', -999999999999);
   originCrossHorizontal.setAttributeNS(null, 'x2', 0);
   originCrossHorizontal.setAttributeNS(null, 'y2', 999999999999);
+  originCrossHorizontal.setAttribute(
+    'id',
+    'bedblocksSVG__originCrossHorizontal'
+  );
 
   $('settings__bedblocksSVG').appendChild(originCrossHorizontal);
   $('settings__bedblocksSVG').appendChild(originCrossVertical);
