@@ -1,9 +1,15 @@
 import {$, $$, $hide, $show} from './$.mjs';
+import * as Bedblock from './Bedblock.mjs';
+import * as Error from './Error.mjs';
 
 const hideAll = () => $$('.mainSection').forEach(section => $hide(section));
 
 const show = section => {
+  Error.hide();
   hideAll();
+  $('addBedblock__preview')?.remove();
+  Bedblock.resetSVGviewBox();
+  $('settings__bedblocks').appendChild($('settings__bedblocksSVG'));
   $(section) ? $show(section) : $show('notFound');
   if (section !== 'pleaseConfirm') localStorage.lastPage = section;
 };

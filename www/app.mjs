@@ -152,7 +152,7 @@ const init = () => {
     event.preventDefault();
     Error.hide();
     Sections.show('settings');
-    $('addBedblock__preview').remove();
+    $('addBedblock__preview')?.remove();
     $('settings__bedblocks').appendChild($('settings__bedblocksSVG'));
     Bedblock.resetSVGviewBox();
   });
@@ -207,6 +207,7 @@ const init = () => {
     $('addBedblock__y'),
     $('addBedblock__orientation'),
   ].forEach(element => element.addEventListener('input', Bedblock.drawPreview));
+
   setInterval(Token.get, 180 * 1000);
 };
 
