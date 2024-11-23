@@ -32,7 +32,7 @@ const createBedblockSVG = bedblock => {
     bedblock;
 
   const width = bedwidth * number + gap * (number - 1);
-  const height = bedlength * 100;
+  const height = bedlength;
   const padding = Math.min(height, width) / 20;
 
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -192,7 +192,7 @@ const getMaxCoordinates = bedblocks => {
   bedblocks.forEach(bedblock => {
     bedblock.width =
       bedblock.number * (bedblock.bedwidth + bedblock.gap) - bedblock.gap;
-    bedblock.height = bedblock.bedlength * 100;
+    bedblock.height = bedblock.bedlength;
 
     const bedblockXmax = getXmax(bedblock);
     const bedblockXmin = getXmin(bedblock);
@@ -218,7 +218,7 @@ const drawPreview = async () => {
     bedwidth: Number($('addBedblock__bedwidth').value),
     farmid: localStorage.selectedFarm,
     gap: Number($('addBedblock__gap').value),
-    height: Number($('addBedblock__bedlength').value) * 100,
+    height: Number($('addBedblock__bedlength').value),
     number: Number($('addBedblock__number').value),
     orientation: Number($('addBedblock__orientation').value),
     width:
@@ -274,8 +274,7 @@ const drawPreview = async () => {
 
   const previewSVG = createBedblockSVG({
     ...previewBedblock,
-    y:
-      yMax - (previewBedblock.y + previewBedblock.bedlength * 100) + yMaxOffset,
+    y: yMax - (previewBedblock.y + previewBedblock.bedlength) + yMaxOffset,
   });
   $('settings__bedblocksSVG').appendChild(previewSVG);
   $('settings__bedblocksSVG').appendChild(
@@ -345,7 +344,7 @@ const drawAll = async () => {
     .filter(bedblock => +bedblock.farmid === +localStorage.selectedFarm)
     .map(bedblock => ({
       ...bedblock,
-      y: yMax - (bedblock.y + bedblock.bedlength * 100),
+      y: yMax - (bedblock.y + bedblock.bedlength),
     }))
     .map(createBedblockSVG)
     .forEach(svg => $('settings__bedblocksSVG').appendChild(svg));
@@ -417,6 +416,8 @@ const resetSVGviewBox = () => {
   const {xMax, xMin, yMax, yMin, paddingMax} = $(
     'settings__bedblocksSVG'
   ).dataset;
+
+  if (paddingMax === undefined) return;
 
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
