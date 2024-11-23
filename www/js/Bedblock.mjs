@@ -424,6 +424,13 @@ const resetSVGviewBox = () => {
       yMax - yMin + paddingMax * 2
     }`
   );
+
+  Number(paddingMax) === 0
+    ? $('settings__bedblocksSVG').setAttribute('width', 0)
+    : $('settings__bedblocksSVG').removeAttribute('width');
+  Number(paddingMax) === 0
+    ? $('settings__bedblocksSVG').setAttribute('height', 0)
+    : $('settings__bedblocksSVG').removeAttribute('height');
 };
 
 export {add, drawAll, drawPreview, resetSVGviewBox};
