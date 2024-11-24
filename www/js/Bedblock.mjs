@@ -402,10 +402,10 @@ const drawAll = async () => {
   $('settings__bedblocksSVG').appendChild(originCrossVertical);
 };
 
-const getBedblockLabelRotation = element => {
-  if (!element) return 0;
+const getBedblockLabelRotation = label => {
+  if (!label) return 0;
   return Number(
-    element.parentElement.parentElement
+    label.parentElement.parentElement
       .getAttribute('transform')
       .match(/rotate\((.+)\)/)[1]
       .split(' ')[0]
