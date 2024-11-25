@@ -340,11 +340,19 @@ const main = async () => {
     .flatMap(member => createFarmmemberHtmlRow(member))
     .forEach(element => $('settings__farmRoles').appendChild(element));
 
-  $('selectedFarm__moduleBees').checked = !!selectedFarm?.module_bees;
-  $('selectedFarm__moduleChicken').checked = !!selectedFarm?.module_chicken;
-  $('selectedFarm__moduleGoats').checked = !!selectedFarm?.module_goats;
-  $('selectedFarm__moduleMarketgarden').checked =
-    !!selectedFarm?.module_marketgarden;
+  const modules = {
+    module_marketgarden: selectedFarm?.module_marketgarden,
+    module_chicken: selectedFarm?.module_chicken,
+    module_goats: selectedFarm?.module_goats,
+    module_bees: selectedFarm?.module_bees,
+  };
+
+  localStorage.modules = JSON.stringify(modules);
+
+  $('selectedFarm__moduleMarketgarden').checked = !!modules.module_marketgarden;
+  $('selectedFarm__moduleChicken').checked = !!modules.module_chicken;
+  $('selectedFarm__moduleGoats').checked = !!modules.module_goats;
+  $('selectedFarm__moduleBees').checked = !!modules.module_bees;
 
   $(
     'settings__selectedFarm'
