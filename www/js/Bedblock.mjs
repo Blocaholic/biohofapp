@@ -415,6 +415,10 @@ export function resetSVGviewBox() {
 
   if (paddingMax === undefined) return;
 
+  paddingMax === '0'
+    ? setWidthAndHeightToZero($('settings__bedblocksSVG'))
+    : removeWidthAndHeight($('settings__bedblocksSVG'));
+
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
     `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
@@ -422,12 +426,15 @@ export function resetSVGviewBox() {
     }`
   );
 
-  Number(paddingMax) === 0
-    ? $('settings__bedblocksSVG').setAttribute('width', 0)
-    : $('settings__bedblocksSVG').removeAttribute('width');
-  Number(paddingMax) === 0
-    ? $('settings__bedblocksSVG').setAttribute('height', 0)
-    : $('settings__bedblocksSVG').removeAttribute('height');
+  function setWidthAndHeightToZero(element) {
+    element.setAttribute('width', 0);
+    element.setAttribute('height', 0);
+  }
+
+  function removeWidthAndHeight(element) {
+    element.removeAttribute('width');
+    element.removeAttribute('height');
+  }
 }
 
 function svgDrawLine({color, width, x1, x2, y1, y2}) {
