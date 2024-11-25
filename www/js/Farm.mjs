@@ -6,10 +6,10 @@ const add = async event => {
   event.preventDefault();
 
   const modules = {
-    module_marketgarden: $('addFarm__moduleMarketgarden').checked ? 1 : 0,
-    module_chicken: $('addFarm__moduleChicken').checked ? 1 : 0,
-    module_goats: $('addFarm__moduleGoats').checked ? 1 : 0,
-    module_bees: $('addFarm__moduleBees').checked ? 1 : 0,
+    module_marketgarden: +$('addFarm__moduleMarketgarden').checked,
+    module_chicken: +$('addFarm__moduleChicken').checked,
+    module_goats: +$('addFarm__moduleGoats').checked,
+    module_bees: +$('addFarm__moduleBees').checked,
   };
 
   const farm = {
@@ -86,10 +86,10 @@ const updateModules = async event => {
   event.preventDefault();
 
   const modules = {
-    module_marketgarden: $('selectedFarm__moduleMarketgarden').checked ? 1 : 0,
-    module_chicken: $('selectedFarm__moduleChicken').checked ? 1 : 0,
-    module_goats: $('selectedFarm__moduleGoats').checked ? 1 : 0,
-    module_bees: $('selectedFarm__moduleBees').checked ? 1 : 0,
+    module_marketgarden: +$('selectedFarm__moduleMarketgarden').checked,
+    module_chicken: +$('selectedFarm__moduleChicken').checked,
+    module_goats: +$('selectedFarm__moduleGoats').checked,
+    module_bees: +$('selectedFarm__moduleBees').checked,
   };
 
   const farm = {
