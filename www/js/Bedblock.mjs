@@ -3,7 +3,7 @@ import {fetchJson} from './Utils.mjs';
 import * as Error from './Error.mjs';
 import * as Sections from './Sections.mjs';
 
-const add = async event => {
+export async function add(event) {
   event.preventDefault();
 
   const bedblock = {
@@ -25,7 +25,7 @@ const add = async event => {
 
   Sections.show('settings');
   location.reload();
-};
+}
 
 const createBedblockSVG = bedblock => {
   const {x, y, bedlength, bedwidth, orientation, name, gap, number, preview} =
@@ -209,7 +209,7 @@ const getMaxCoordinates = bedblocks => {
   return {xMax, xMin, yMax, yMin, paddingMax};
 };
 
-const drawPreview = async () => {
+export async function drawPreview() {
   $('addBedblock__preview')?.remove();
 
   const previewBedblock = {
@@ -312,9 +312,9 @@ const drawPreview = async () => {
   ][0];
 
   previewOrigin.setAttributeNS(null, 'r', paddingMax);
-};
+}
 
-const drawAll = async () => {
+export async function drawAll() {
   const bedblocks = await fetchJson('./api/bedblock', 'GET').then(bedblocks =>
     bedblocks.flat()
   );
@@ -371,28 +371,24 @@ const drawAll = async () => {
     origin.setAttributeNS(null, 'r', paddingMax)
   );
 
-  const originCrossVertical = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'line'
-  );
-  originCrossVertical.setAttributeNS(null, 'stroke', 'black');
-  originCrossVertical.setAttributeNS(null, 'stroke-width', paddingMax / 6);
-  originCrossVertical.setAttributeNS(null, 'x1', -999999999999);
-  originCrossVertical.setAttributeNS(null, 'y1', yMax);
-  originCrossVertical.setAttributeNS(null, 'x2', 999999999999);
-  originCrossVertical.setAttributeNS(null, 'y2', yMax);
+  const originCrossVertical = svgDrawLine({
+    color: 'black',
+    width: paddingMax / 6,
+    x1: -999999999999,
+    x2: 999999999999,
+    y1: yMax,
+    y2: yMax,
+  });
   originCrossVertical.setAttribute('id', 'bedblocksSVG__originCrossVertical');
 
-  const originCrossHorizontal = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'line'
-  );
-  originCrossHorizontal.setAttributeNS(null, 'stroke', 'black');
-  originCrossHorizontal.setAttributeNS(null, 'stroke-width', paddingMax / 6);
-  originCrossHorizontal.setAttributeNS(null, 'x1', 0);
-  originCrossHorizontal.setAttributeNS(null, 'y1', -999999999999);
-  originCrossHorizontal.setAttributeNS(null, 'x2', 0);
-  originCrossHorizontal.setAttributeNS(null, 'y2', 999999999999);
+  const originCrossHorizontal = svgDrawLine({
+    color: 'black',
+    width: paddingMax / 6,
+    x1: 0,
+    x2: 0,
+    y1: -999999999999,
+    y2: 999999999999,
+  });
   originCrossHorizontal.setAttribute(
     'id',
     'bedblocksSVG__originCrossHorizontal'
@@ -400,7 +396,7 @@ const drawAll = async () => {
 
   $('settings__bedblocksSVG').appendChild(originCrossHorizontal);
   $('settings__bedblocksSVG').appendChild(originCrossVertical);
-};
+}
 
 const getBedblockLabelRotation = label => {
   if (!label) return 0;
@@ -412,7 +408,7 @@ const getBedblockLabelRotation = label => {
   );
 };
 
-const resetSVGviewBox = () => {
+export function resetSVGviewBox() {
   const {xMax, xMin, yMax, yMin, paddingMax} = $(
     'settings__bedblocksSVG'
   ).dataset;
@@ -432,6 +428,17 @@ const resetSVGviewBox = () => {
   Number(paddingMax) === 0
     ? $('settings__bedblocksSVG').setAttribute('height', 0)
     : $('settings__bedblocksSVG').removeAttribute('height');
-};
+}
 
-export {add, drawAll, drawPreview, resetSVGviewBox};
+function svgDrawLine({color, width, x1, x2, y1, y2}) {
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+  line.setAttributeNS(null, 'stroke', color);
+  line.setAttributeNS(null, 'stroke-width', width);
+  line.setAttributeNS(null, 'x1', x1);
+  line.setAttributeNS(null, 'x2', x2);
+  line.setAttributeNS(null, 'y1', y1);
+  line.setAttributeNS(null, 'y2', y2);
+
+  return line;
+}
