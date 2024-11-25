@@ -316,7 +316,9 @@ export async function drawPreview() {
 
 export async function drawAll() {
   const bedblocks = await fetchJson('./api/bedblock', 'GET').then(bedblocks =>
-    bedblocks.flat()
+    bedblocks
+      .flat()
+      .filter(bedblock => +bedblock.farmid === +localStorage.selectedFarm)
   );
 
   const {xMax, xMin, yMax, yMin, paddingMax} = getMaxCoordinates(bedblocks);
@@ -341,7 +343,6 @@ export async function drawAll() {
   $('settings__bedblocksSVG').dataset.paddingMax = paddingMax;
 
   bedblocks
-    .filter(bedblock => +bedblock.farmid === +localStorage.selectedFarm)
     .map(bedblock => ({
       ...bedblock,
       y: yMax - (bedblock.y + bedblock.bedlength),
