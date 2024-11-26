@@ -254,12 +254,10 @@ export async function drawPreview() {
       xMax - xMin + paddingMax * 2
     } ${yMax - yMin + paddingMax * 2}`
   );
+
   paddingMax === 0
-    ? $('settings__bedblocksSVG').setAttribute('width', 0)
-    : $('settings__bedblocksSVG').removeAttribute('width');
-  paddingMax === 0
-    ? $('settings__bedblocksSVG').setAttribute('height', 0)
-    : $('settings__bedblocksSVG').removeAttribute('height');
+    ? setWidthAndHeightToZero($('settings__bedblocksSVG'))
+    : removeWidthAndHeight($('settings__bedblocksSVG'));
 
   $('bedblocksSVG__originCrossVertical').setAttributeNS(
     null,
@@ -323,18 +321,16 @@ export async function drawAll() {
 
   const {xMax, xMin, yMax, yMin, paddingMax} = getMaxCoordinates(bedblocks);
 
+  paddingMax === 0
+    ? setWidthAndHeightToZero($('settings__bedblocksSVG'))
+    : removeWidthAndHeight($('settings__bedblocksSVG'));
+
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
     `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
       yMax - yMin + paddingMax * 2
     }`
   );
-  paddingMax === 0
-    ? $('settings__bedblocksSVG').setAttribute('width', 0)
-    : $('settings__bedblocksSVG').removeAttribute('width');
-  paddingMax === 0
-    ? $('settings__bedblocksSVG').setAttribute('height', 0)
-    : $('settings__bedblocksSVG').removeAttribute('height');
 
   $('settings__bedblocksSVG').dataset.xMax = xMax;
   $('settings__bedblocksSVG').dataset.xMin = xMin;
@@ -426,16 +422,16 @@ export function resetSVGviewBox() {
       yMax - yMin + paddingMax * 2
     }`
   );
+}
 
-  function setWidthAndHeightToZero(element) {
-    element.setAttribute('width', 0);
-    element.setAttribute('height', 0);
-  }
+function setWidthAndHeightToZero(element) {
+  element.setAttribute('width', 0);
+  element.setAttribute('height', 0);
+}
 
-  function removeWidthAndHeight(element) {
-    element.removeAttribute('width');
-    element.removeAttribute('height');
-  }
+function removeWidthAndHeight(element) {
+  element.removeAttribute('width');
+  element.removeAttribute('height');
 }
 
 function svgDrawLine({color, width, x1, x2, y1, y2}) {
