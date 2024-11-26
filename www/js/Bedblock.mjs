@@ -402,17 +402,22 @@ const getBedblockLabelRotation = label => {
 };
 
 export function resetSVGviewBox() {
-  const {xMax, xMin, yMax, yMin, paddingMax} = $(
-    'settings__bedblocksSVG'
-  ).dataset;
+  const svg = $('settings__bedblocksSVG');
+  const maxValues = svg.dataset;
 
-  if (paddingMax === undefined) return;
+  if (maxValues.paddingMax === undefined) return;
 
-  paddingMax === '0'
-    ? setWidthAndHeightToZero($('settings__bedblocksSVG'))
-    : removeWidthAndHeight($('settings__bedblocksSVG'));
+  setSVGdimensions({svg, maxValues});
+}
 
-  $('settings__bedblocksSVG').setAttribute(
+function setSVGdimensions({svg, maxValues}) {
+  const {xMax, xMin, yMax, yMin, paddingMax} = maxValues;
+
+  Number(paddingMax) === 0
+    ? setWidthAndHeightToZero(svg)
+    : removeWidthAndHeight(svg);
+
+  svg.setAttribute(
     'viewBox',
     getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
   );
