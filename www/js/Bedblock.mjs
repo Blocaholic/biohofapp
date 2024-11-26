@@ -250,9 +250,7 @@ export async function drawPreview() {
 
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
-    `${-(paddingMax - xMin)} ${-paddingMax + yMaxOffset} ${
-      xMax - xMin + paddingMax * 2
-    } ${yMax - yMin + paddingMax * 2}`
+    getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
   );
 
   paddingMax === 0
@@ -327,9 +325,7 @@ export async function drawAll() {
 
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
-    `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
-      yMax - yMin + paddingMax * 2
-    }`
+    getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
   );
 
   $('settings__bedblocksSVG').dataset.xMax = xMax;
@@ -418,10 +414,16 @@ export function resetSVGviewBox() {
 
   $('settings__bedblocksSVG').setAttribute(
     'viewBox',
-    `${-(paddingMax - xMin)} -${paddingMax} ${xMax - xMin + paddingMax * 2} ${
-      yMax - yMin + paddingMax * 2
-    }`
+    getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
   );
+}
+
+function getViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
+  const viewBoxMinX = -(padding - xMin);
+  const viewBoxMinY = -padding;
+  const viewBoxWidth = xMax - xMin + padding * 2;
+  const viewBoxHeight = yMax - yMin + padding * 2;
+  return `${viewBoxMinX} ${viewBoxMinY} ${viewBoxWidth} ${viewBoxHeight}`;
 }
 
 function setWidthAndHeightToZero(element) {
