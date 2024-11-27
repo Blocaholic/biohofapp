@@ -252,24 +252,11 @@ export async function drawPreview() {
 
   setSVGdimensions({svg, maxValues: {xMax, xMin, yMax, yMin, paddingMax}});
 
-  $('bedblocksSVG__originCrossVertical').setAttributeNS(
-    null,
-    'stroke-width',
-    paddingMax / 6
-  );
-  $('bedblocksSVG__originCrossHorizontal').setAttributeNS(
-    null,
-    'stroke-width',
-    paddingMax / 6
-  );
-
   const previewSVG = createBedblockSVG({
     ...previewBedblock,
     y: yMax - (previewBedblock.y + previewBedblock.bedlength) + yMaxOffset,
   });
   svg.appendChild(previewSVG);
-  svg.appendChild($('bedblocksSVG__originCrossVertical'));
-  svg.appendChild($('bedblocksSVG__originCrossHorizontal'));
 
   const previewLabel = [
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
@@ -349,31 +336,7 @@ export async function drawAll() {
     origin.setAttributeNS(null, 'r', maxValues.paddingMax)
   );
 
-  const originCrossVertical = svgDrawLine({
-    color: 'black',
-    width: maxValues.paddingMax / 6,
-    x1: -999999999999,
-    x2: 999999999999,
-    y1: maxValues.yMax,
-    y2: maxValues.yMax,
-  });
-  originCrossVertical.setAttribute('id', 'bedblocksSVG__originCrossVertical');
-
-  const originCrossHorizontal = svgDrawLine({
-    color: 'black',
-    width: maxValues.paddingMax / 6,
-    x1: 0,
-    x2: 0,
-    y1: -999999999999,
-    y2: 999999999999,
-  });
-  originCrossHorizontal.setAttribute(
-    'id',
-    'bedblocksSVG__originCrossHorizontal'
-  );
-
-  svg.appendChild(originCrossHorizontal);
-  svg.appendChild(originCrossVertical);
+  drawOriginCross({parent: svg, y: maxValues.yMax});
 }
 
 const getBedblockLabelRotation = label => {
@@ -426,7 +389,7 @@ function removeWidthAndHeight(element) {
   element.removeAttribute('height');
 }
 
-function svgDrawLine({color, width, x1, x2, y1, y2}) {
+function svgDrawLine({color = 'black', width = '0.4%', x1, x2, y1, y2}) {
   const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 
   line.setAttributeNS(null, 'stroke', color);
@@ -437,4 +400,33 @@ function svgDrawLine({color, width, x1, x2, y1, y2}) {
   line.setAttributeNS(null, 'y2', y2);
 
   return line;
+}
+
+function drawOriginCross({
+  parent,
+  color = 'black',
+  width = '0.4%',
+  x = 0,
+  y = 0,
+}) {
+  const vertical = svgDrawLine({
+    color,
+    width,
+    x1: '-100%',
+    x2: '100%',
+    y1: y,
+    y2: y,
+  });
+
+  const horizontal = svgDrawLine({
+    color,
+    width,
+    x1: x,
+    x2: x,
+    y1: '-100%',
+    y2: '100%',
+  });
+
+  parent.appendChild(vertical);
+  parent.appendChild(horizontal);
 }
