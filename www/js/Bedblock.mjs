@@ -317,30 +317,24 @@ export async function drawAll() {
       .filter(bedblock => +bedblock.farmid === +localStorage.selectedFarm)
   );
 
-  const {xMax, xMin, yMax, yMin, paddingMax} = getMaxCoordinates(bedblocks);
+  const svg = $('settings__bedblocksSVG');
+  const maxValues = getMaxCoordinates(bedblocks);
 
-  paddingMax === 0
-    ? setWidthAndHeightToZero($('settings__bedblocksSVG'))
-    : removeWidthAndHeight($('settings__bedblocksSVG'));
+  setSVGdimensions({svg, maxValues});
 
-  $('settings__bedblocksSVG').setAttribute(
-    'viewBox',
-    getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
-  );
-
-  $('settings__bedblocksSVG').dataset.xMax = xMax;
-  $('settings__bedblocksSVG').dataset.xMin = xMin;
-  $('settings__bedblocksSVG').dataset.yMax = yMax;
-  $('settings__bedblocksSVG').dataset.yMin = yMin;
-  $('settings__bedblocksSVG').dataset.paddingMax = paddingMax;
+  svg.dataset.xMax = maxValues.xMax;
+  svg.dataset.xMin = maxValues.xMin;
+  svg.dataset.yMax = maxValues.yMax;
+  svg.dataset.yMin = maxValues.yMin;
+  svg.dataset.paddingMax = maxValues.paddingMax;
 
   bedblocks
     .map(bedblock => ({
       ...bedblock,
-      y: yMax - (bedblock.y + bedblock.bedlength),
+      y: maxValues.yMax - (bedblock.y + bedblock.bedlength),
     }))
     .map(createBedblockSVG)
-    .forEach(svg => $('settings__bedblocksSVG').appendChild(svg));
+    .forEach(bedblockSvg => svg.appendChild(bedblockSvg));
 
   [...document.getElementsByClassName('svg__bedblockLabel')].forEach(label => {
     while (
@@ -361,22 +355,22 @@ export async function drawAll() {
   });
 
   [...document.getElementsByClassName('svg_bedblockOrigin')].forEach(origin =>
-    origin.setAttributeNS(null, 'r', paddingMax)
+    origin.setAttributeNS(null, 'r', maxValues.paddingMax)
   );
 
   const originCrossVertical = svgDrawLine({
     color: 'black',
-    width: paddingMax / 6,
+    width: maxValues.paddingMax / 6,
     x1: -999999999999,
     x2: 999999999999,
-    y1: yMax,
-    y2: yMax,
+    y1: maxValues.yMax,
+    y2: maxValues.yMax,
   });
   originCrossVertical.setAttribute('id', 'bedblocksSVG__originCrossVertical');
 
   const originCrossHorizontal = svgDrawLine({
     color: 'black',
-    width: paddingMax / 6,
+    width: maxValues.paddingMax / 6,
     x1: 0,
     x2: 0,
     y1: -999999999999,
@@ -387,8 +381,8 @@ export async function drawAll() {
     'bedblocksSVG__originCrossHorizontal'
   );
 
-  $('settings__bedblocksSVG').appendChild(originCrossHorizontal);
-  $('settings__bedblocksSVG').appendChild(originCrossVertical);
+  svg.appendChild(originCrossHorizontal);
+  svg.appendChild(originCrossVertical);
 }
 
 const getBedblockLabelRotation = label => {
