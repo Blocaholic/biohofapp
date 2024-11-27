@@ -231,7 +231,9 @@ export async function drawPreview() {
     preview: true,
   };
 
-  const previousBoundaries = $('settings__bedblocksSVG').dataset;
+  const svg = $('settings__bedblocksSVG');
+
+  const previousBoundaries = svg.dataset;
   const previewBoundaries = getMaxCoordinates([previewBedblock]);
 
   const yMaxOffset =
@@ -248,14 +250,7 @@ export async function drawPreview() {
     previewBoundaries.paddingMax
   );
 
-  $('settings__bedblocksSVG').setAttribute(
-    'viewBox',
-    getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
-  );
-
-  paddingMax === 0
-    ? setWidthAndHeightToZero($('settings__bedblocksSVG'))
-    : removeWidthAndHeight($('settings__bedblocksSVG'));
+  setSVGdimensions({svg, maxValues: {xMax, xMin, yMax, yMin, paddingMax}});
 
   $('bedblocksSVG__originCrossVertical').setAttributeNS(
     null,
@@ -272,13 +267,9 @@ export async function drawPreview() {
     ...previewBedblock,
     y: yMax - (previewBedblock.y + previewBedblock.bedlength) + yMaxOffset,
   });
-  $('settings__bedblocksSVG').appendChild(previewSVG);
-  $('settings__bedblocksSVG').appendChild(
-    $('bedblocksSVG__originCrossVertical')
-  );
-  $('settings__bedblocksSVG').appendChild(
-    $('bedblocksSVG__originCrossHorizontal')
-  );
+  svg.appendChild(previewSVG);
+  svg.appendChild($('bedblocksSVG__originCrossVertical'));
+  svg.appendChild($('bedblocksSVG__originCrossHorizontal'));
 
   const previewLabel = [
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
