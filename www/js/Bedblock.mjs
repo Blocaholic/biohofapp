@@ -300,11 +300,7 @@ export async function drawAll() {
 
   setSVGdimensions({svg, maxValues});
 
-  svg.dataset.xMax = maxValues.xMax;
-  svg.dataset.xMin = maxValues.xMin;
-  svg.dataset.yMax = maxValues.yMax;
-  svg.dataset.yMin = maxValues.yMin;
-  svg.dataset.paddingMax = maxValues.paddingMax;
+  addToDataset({element: svg, dataObject: maxValues});
 
   bedblocks
     .map(bedblock => ({
@@ -429,4 +425,10 @@ function drawOriginCross({
 
   parent.appendChild(vertical);
   parent.appendChild(horizontal);
+}
+
+function addToDataset({element, dataObject}) {
+  for (const property in dataObject) {
+    element.dataset[property] = dataObject[property];
+  }
 }
