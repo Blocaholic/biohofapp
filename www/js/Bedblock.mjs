@@ -233,21 +233,21 @@ export async function drawPreview() {
 
   const svg = $('settings__bedblocksSVG');
 
-  const previousBoundaries = svg.dataset;
-  const previewBoundaries = getMaxCoordinates([previewBedblock]);
+  const previousMaxValues = svg.dataset;
+  const previewMaxValues = getMaxCoordinates([previewBedblock]);
 
   const yMaxOffset =
-    previewBoundaries.yMax > previousBoundaries.yMax
-      ? previousBoundaries.yMax - previewBoundaries.yMax
+    previewMaxValues.yMax > previousMaxValues.yMax
+      ? previousMaxValues.yMax - previewMaxValues.yMax
       : 0;
 
-  const xMax = Math.max(previousBoundaries.xMax, previewBoundaries.xMax);
-  const xMin = Math.min(previousBoundaries.xMin, previewBoundaries.xMin);
-  const yMax = Math.max(previousBoundaries.yMax, previewBoundaries.yMax);
-  const yMin = Math.min(previousBoundaries.yMin, previewBoundaries.yMin);
+  const xMax = Math.max(previousMaxValues.xMax, previewMaxValues.xMax);
+  const xMin = Math.min(previousMaxValues.xMin, previewMaxValues.xMin);
+  const yMax = Math.max(previousMaxValues.yMax, previewMaxValues.yMax);
+  const yMin = Math.min(previousMaxValues.yMin, previewMaxValues.yMin);
   const paddingMax = Math.max(
-    previousBoundaries.paddingMax,
-    previewBoundaries.paddingMax
+    previousMaxValues.paddingMax,
+    previewMaxValues.paddingMax
   );
 
   setSVGdimensions({svg, maxValues: {xMax, xMin, yMax, yMin, paddingMax}});
@@ -299,7 +299,6 @@ export async function drawAll() {
   const maxValues = getMaxCoordinates(bedblocks);
 
   setSVGdimensions({svg, maxValues});
-
   addToDataset({element: svg, dataObject: maxValues});
 
   bedblocks
