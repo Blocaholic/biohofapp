@@ -12,3 +12,40 @@ const $hide = element =>
     : ($(element).style.display = 'none');
 
 export {$, $$, $show, $hide};
+
+// manipulate prototype of Element
+
+(() => {
+  if ('addToDataset' in Element.prototype)
+    return console.log('"Element.prototype.addToDataset" already exists');
+
+  Element.prototype.addToDataset = function (dataObject) {
+    for (const property in dataObject) {
+      this.dataset[property] = dataObject[property];
+    }
+  };
+})();
+
+(() => {
+  if ('setWidthAndHeightToZero' in Element.prototype)
+    return console.log(
+      '"Element.prototype.setWidthAndHeightToZero" already exists'
+    );
+
+  Element.prototype.setWidthAndHeightToZero = function () {
+    this.setAttribute('width', 0);
+    this.setAttribute('height', 0);
+  };
+})();
+
+(() => {
+  if ('removeWidthAndHeight' in Element.prototype)
+    return console.log(
+      '"Element.prototype.removeWidthAndHeight" already exists'
+    );
+
+  Element.prototype.removeWidthAndHeight = function () {
+    this.removeAttribute('width');
+    this.removeAttribute('height');
+  };
+})();

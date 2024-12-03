@@ -304,7 +304,7 @@ export async function drawAll() {
   const maxValues = getMaxCoordinates(bedblocks);
 
   setSVGdimensions({svg, maxValues});
-  addToDataset({element: svg, dataObject: maxValues});
+  svg.addToDataset(maxValues);
 
   bedblocks
     .map(bedblock => ({
@@ -363,8 +363,8 @@ function setSVGdimensions({svg, maxValues, yMaxOffset = 0}) {
   const {xMax, xMin, yMax, yMin, paddingMax} = maxValues;
 
   Number(paddingMax) === 0
-    ? setWidthAndHeightToZero(svg)
-    : removeWidthAndHeight(svg);
+    ? svg.setWidthAndHeightToZero()
+    : svg.removeWidthAndHeight();
 
   svg.setAttribute(
     'viewBox',
@@ -381,20 +381,4 @@ function createViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
   const viewBoxWidth = xMax - xMin + padding * 2;
   const viewBoxHeight = yMax - yMin + padding * 2;
   return `${viewBoxMinX} ${viewBoxMinY} ${viewBoxWidth} ${viewBoxHeight}`;
-}
-
-function setWidthAndHeightToZero(element) {
-  element.setAttribute('width', 0);
-  element.setAttribute('height', 0);
-}
-
-function removeWidthAndHeight(element) {
-  element.removeAttribute('width');
-  element.removeAttribute('height');
-}
-
-function addToDataset({element, dataObject}) {
-  for (const property in dataObject) {
-    element.dataset[property] = dataObject[property];
-  }
 }
