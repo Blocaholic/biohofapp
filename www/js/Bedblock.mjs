@@ -1,7 +1,8 @@
-import {$} from './$.mjs';
+import {$, $$} from './$.mjs';
 import {fetchJson} from './Utils.mjs';
 import * as Error from './Error.mjs';
 import * as Sections from './Sections.mjs';
+import * as Svg from './Svg.mjs';
 
 export async function add(event) {
   event.preventDefault();
@@ -76,7 +77,7 @@ const createBedblockSVG = bedblock => {
   circle.setAttributeNS(null, 'cx', '0');
   circle.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
 
-  g.appendChild(rect);
+  g.append(rect);
   for (let i = 0; i < number; i++) {
     const bedRect = document.createElementNS(
       'http://www.w3.org/2000/svg',
@@ -87,11 +88,10 @@ const createBedblockSVG = bedblock => {
     bedRect.setAttributeNS(null, 'width', bedwidth);
     bedRect.setAttributeNS(null, 'height', height);
     bedRect.setAttributeNS(null, 'x', i * (bedwidth + gap));
-    g.appendChild(bedRect);
+    g.append(bedRect);
   }
-  svg.appendChild(text);
-  g.appendChild(svg);
-  g.appendChild(circle);
+  svg.append(text);
+  g.append(svg, circle);
   return g;
 };
 
@@ -250,13 +250,18 @@ export async function drawPreview() {
     previewMaxValues.paddingMax
   );
 
-  setSVGdimensions({svg, maxValues: {xMax, xMin, yMax, yMin, paddingMax}});
+  setSVGdimensions({
+    svg,
+    maxValues: {xMax, xMin, yMax, yMin, paddingMax},
+    yMaxOffset,
+  });
 
   const previewSVG = createBedblockSVG({
     ...previewBedblock,
     y: yMax - (previewBedblock.y + previewBedblock.bedlength) + yMaxOffset,
   });
-  svg.appendChild(previewSVG);
+
+  svg.insertBefore(previewSVG, svg.lastElementChild);
 
   const previewLabel = [
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
@@ -307,9 +312,9 @@ export async function drawAll() {
       y: maxValues.yMax - (bedblock.y + bedblock.bedlength),
     }))
     .map(createBedblockSVG)
-    .forEach(bedblockSvg => svg.appendChild(bedblockSvg));
+    .forEach(bedblockSvg => svg.append(bedblockSvg));
 
-  [...document.getElementsByClassName('svg__bedblockLabel')].forEach(label => {
+  $$('.svg__bedblockLabel').forEach(label => {
     while (
       label.parentElement.parentElement.firstChild.getBoundingClientRect()
         .width < label.getBoundingClientRect().width
@@ -327,11 +332,12 @@ export async function drawAll() {
     );
   });
 
-  [...document.getElementsByClassName('svg_bedblockOrigin')].forEach(origin =>
-    origin.setAttributeNS(null, 'r', maxValues.paddingMax)
+  $$('.svg_bedblockOrigin').forEach(circle =>
+    Svg.setRadius({circle, radius: maxValues.paddingMax})
   );
 
-  drawOriginCross({parent: svg, y: maxValues.yMax});
+  const originCross = Svg.drawCross({y: maxValues.yMax});
+  svg.append(originCross);
 }
 
 const getBedblockLabelRotation = label => {
@@ -353,7 +359,7 @@ export function resetSVGviewBox() {
   setSVGdimensions({svg, maxValues});
 }
 
-function setSVGdimensions({svg, maxValues}) {
+function setSVGdimensions({svg, maxValues, yMaxOffset = 0}) {
   const {xMax, xMin, yMax, yMin, paddingMax} = maxValues;
 
   Number(paddingMax) === 0
@@ -362,11 +368,14 @@ function setSVGdimensions({svg, maxValues}) {
 
   svg.setAttribute(
     'viewBox',
-    getViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
+    createViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
+      .split(' ')
+      .map((element, index) => (index === 1 ? +element + yMaxOffset : element))
+      .join(' ')
   );
 }
 
-function getViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
+function createViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
   const viewBoxMinX = -(padding - xMin);
   const viewBoxMinY = -padding;
   const viewBoxWidth = xMax - xMin + padding * 2;
@@ -382,48 +391,6 @@ function setWidthAndHeightToZero(element) {
 function removeWidthAndHeight(element) {
   element.removeAttribute('width');
   element.removeAttribute('height');
-}
-
-function svgDrawLine({color = 'black', width = '0.4%', x1, x2, y1, y2}) {
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
-  line.setAttributeNS(null, 'stroke', color);
-  line.setAttributeNS(null, 'stroke-width', width);
-  line.setAttributeNS(null, 'x1', x1);
-  line.setAttributeNS(null, 'x2', x2);
-  line.setAttributeNS(null, 'y1', y1);
-  line.setAttributeNS(null, 'y2', y2);
-
-  return line;
-}
-
-function drawOriginCross({
-  parent,
-  color = 'black',
-  width = '0.4%',
-  x = 0,
-  y = 0,
-}) {
-  const vertical = svgDrawLine({
-    color,
-    width,
-    x1: '-100%',
-    x2: '100%',
-    y1: y,
-    y2: y,
-  });
-
-  const horizontal = svgDrawLine({
-    color,
-    width,
-    x1: x,
-    x2: x,
-    y1: '-100%',
-    y2: '100%',
-  });
-
-  parent.appendChild(vertical);
-  parent.appendChild(horizontal);
 }
 
 function addToDataset({element, dataObject}) {
