@@ -267,24 +267,7 @@ export async function drawPreview() {
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
   ][0];
 
-  while (
-    previewLabel.parentElement.parentElement.firstChild.getBoundingClientRect()
-      .width < previewLabel.getBoundingClientRect().width
-  ) {
-    previewLabel.setAttribute(
-      'font-size',
-      Math.round(previewLabel.getAttribute('font-size') * 0.95)
-    );
-  }
-
-  const labelResizeFactor =
-    Math.abs(getBedblockLabelRotation(previewLabel)) > 0 ? 0.6 : 0.9;
-  if (previewLabel) {
-    previewLabel.setAttribute(
-      'font-size',
-      previewLabel.getAttribute('font-size') * labelResizeFactor
-    );
-  }
+  fitIntoBedblock(previewLabel);
 
   const previewOrigin = [
     ...$('addBedblock__preview').getElementsByClassName('svg_bedblockOrigin'),
@@ -314,23 +297,7 @@ export async function drawAll() {
     .map(createBedblockSVG)
     .forEach(bedblockSvg => svg.append(bedblockSvg));
 
-  $$('.svg__bedblockLabel').forEach(label => {
-    while (
-      label.parentElement.parentElement.firstChild.getBoundingClientRect()
-        .width < label.getBoundingClientRect().width
-    ) {
-      label.setAttribute(
-        'font-size',
-        Math.round(label.getAttribute('font-size') * 0.95)
-      );
-    }
-    const labelResizeFactor =
-      Math.abs(getBedblockLabelRotation(label)) > 0 ? 0.6 : 0.9;
-    label.setAttribute(
-      'font-size',
-      label.getAttribute('font-size') * labelResizeFactor
-    );
-  });
+  $$('.svg__bedblockLabel').forEach(fitIntoBedblock);
 
   $$('.svg_bedblockOrigin').forEach(circle =>
     Svg.setRadius({circle, radius: maxValues.paddingMax})
@@ -381,4 +348,22 @@ function createViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
   const viewBoxWidth = xMax - xMin + padding * 2;
   const viewBoxHeight = yMax - yMin + padding * 2;
   return `${viewBoxMinX} ${viewBoxMinY} ${viewBoxWidth} ${viewBoxHeight}`;
+}
+
+function fitIntoBedblock(label) {
+  while (
+    label.parentElement.parentElement.firstChild.getBoundingClientRect().width <
+    label.getBoundingClientRect().width
+  ) {
+    label.setAttribute(
+      'font-size',
+      Math.round(label.getAttribute('font-size') * 0.95)
+    );
+  }
+  const labelResizeFactor =
+    Math.abs(getBedblockLabelRotation(label)) > 0 ? 0.6 : 0.9;
+  label.setAttribute(
+    'font-size',
+    label.getAttribute('font-size') * labelResizeFactor
+  );
 }
