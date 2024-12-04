@@ -219,7 +219,7 @@ export async function drawPreview() {
     farmid: localStorage.selectedFarm,
     gap: Number($('addBedblock__gap').value),
     height: Number($('addBedblock__bedlength').value),
-    number: Number($('addBedblock__number').value),
+    number: Math.max(Number($('addBedblock__number').value), 1),
     orientation: Number($('addBedblock__orientation').value),
     width:
       Number($('addBedblock__number').value) *
