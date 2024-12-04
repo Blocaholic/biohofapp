@@ -307,7 +307,7 @@ export async function drawAll() {
   svg.append(originCross);
 }
 
-const getBedblockLabelRotation = label => {
+const getBedblockRotation = label => {
   if (!label) return 0;
   return Number(
     label.parentElement.parentElement
@@ -351,19 +351,27 @@ function createViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
 }
 
 function fitIntoBedblock(label) {
-  while (
-    label.parentElement.parentElement.firstChild.getBoundingClientRect().width <
-    label.getBoundingClientRect().width
-  ) {
-    label.setAttribute(
-      'font-size',
-      Math.round(label.getAttribute('font-size') * 0.95)
-    );
+  while (isWiderThanBedblock(label)) {
+    reduceFontSizeByFivePercent(label);
   }
-  const labelResizeFactor =
-    Math.abs(getBedblockLabelRotation(label)) > 0 ? 0.6 : 0.9;
-  label.setAttribute(
-    'font-size',
-    label.getAttribute('font-size') * labelResizeFactor
-  );
+  setPaddingAround(label);
+  return;
+
+  function isWiderThanBedblock(label) {
+    const bedblockBackground = label.parentElement.parentElement.firstChild;
+    const bedblockWidth = bedblockBackground.getBoundingClientRect().width;
+    return bedblockWidth < label.getBoundingClientRect().width;
+  }
+
+  function reduceFontSizeByFivePercent(label) {
+    const previousFontSize = label.getAttribute('font-size');
+    const shrinkedFontSize = Math.round(previousFontSize * 0.95);
+    label.setAttribute('font-size', shrinkedFontSize);
+  }
+
+  function setPaddingAround(label) {
+    const resizeFactor = getBedblockRotation(label) === 0 ? 0.9 : 0.6;
+    const fittedFontSize = label.getAttribute('font-size');
+    label.setAttribute('font-size', fittedFontSize * resizeFactor);
+  }
 }
