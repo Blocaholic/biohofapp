@@ -258,7 +258,7 @@ export async function drawPreview() {
 
   const previewSVG = createBedblockSVG({
     ...previewBedblock,
-    y: yMax - (previewBedblock.y + previewBedblock.bedlength) + yMaxOffset,
+    y: getCanvasY(yMax, previewBedblock) + yMaxOffset,
   });
 
   svg.insertBefore(previewSVG, svg.lastElementChild);
@@ -290,10 +290,7 @@ export async function drawAll() {
   svg.addToDataset(maxValues);
 
   bedblocks
-    .map(bedblock => ({
-      ...bedblock,
-      y: maxValues.yMax - (bedblock.y + bedblock.bedlength),
-    }))
+    .map(bedblock => ({...bedblock, y: getCanvasY(maxValues.yMax, bedblock)}))
     .map(createBedblockSVG)
     .forEach(bedblockSvg => svg.append(bedblockSvg));
 
@@ -374,4 +371,8 @@ function fitIntoBedblock(label) {
     const fittedFontSize = label.getAttribute('font-size');
     label.setAttribute('font-size', fittedFontSize * resizeFactor);
   }
+}
+
+function getCanvasY(yMax, bedblock) {
+  return yMax - (bedblock.y + bedblock.bedlength);
 }
