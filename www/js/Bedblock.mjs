@@ -256,10 +256,9 @@ export async function drawPreview() {
     yMaxOffset,
   });
 
-  const previewSVG = createBedblockSVG({
-    ...previewBedblock,
-    y: getCanvasY(yMax, previewBedblock) + yMaxOffset,
-  });
+  const previewSVG = createBedblockSVG(
+    toSvgCoordinates(previewBedblock, yMax, yMaxOffset)
+  );
 
   svg.insertBefore(previewSVG, svg.lastElementChild);
 
@@ -290,7 +289,7 @@ export async function drawAll() {
   svg.addToDataset(maxValues);
 
   bedblocks
-    .map(bedblock => ({...bedblock, y: getCanvasY(maxValues.yMax, bedblock)}))
+    .map(bedblock => toSvgCoordinates(bedblock, maxValues.yMax))
     .map(createBedblockSVG)
     .forEach(bedblockSvg => svg.append(bedblockSvg));
 
@@ -373,6 +372,6 @@ function fitIntoBedblock(label) {
   }
 }
 
-function getCanvasY(yMax, bedblock) {
-  return yMax - (bedblock.y + bedblock.bedlength);
+function toSvgCoordinates(bedblock, yMax, yOffset = 0) {
+  return {...bedblock, y: yMax - (bedblock.y + bedblock.bedlength) + yOffset};
 }
