@@ -13,7 +13,7 @@ const $hide = element =>
 
 export {$, $$, $show, $hide};
 
-// manipulate prototype of Element
+// add methods to prototype of Element
 
 (() => {
   if ('addToDataset' in Element.prototype)
