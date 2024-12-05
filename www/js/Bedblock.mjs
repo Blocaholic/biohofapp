@@ -29,90 +29,98 @@ export async function add(event) {
 }
 
 const createBedblockSVG = bedblock => {
-  const {
-    x,
-    y,
-    bedlength,
-    bedwidth,
-    orientation,
-    name,
-    gap,
-    number,
-    preview,
-    width = bedwidth * number + gap * (number - 1),
-    height = bedlength,
-    padding = Math.min(height, width) / 20,
-  } = bedblock;
+  bedblock.width =
+    bedblock.bedwidth * bedblock.number + bedblock.gap * (bedblock.number - 1);
+  bedblock.height = bedblock.bedlength;
+  bedblock.padding = Math.min(bedblock.height, bedblock.width) / 20;
 
-  const bedblockWrapper = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'g'
-  );
-  bedblockWrapper.setAttribute(
-    'transform',
-    `translate(${x} ${y}) rotate(${orientation} 0 ${height})`
-  );
-  bedblockWrapper.setAttribute('id', preview ? 'addBedblock__preview' : '');
-
-  const bedblockBackground = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'rect'
-  );
-  bedblockBackground.setAttributeNS(null, 'paint-order', 'stroke fill');
-  bedblockBackground.setAttributeNS(null, 'fill', '#d0b8a9');
-  bedblockBackground.setAttributeNS(
-    null,
-    'stroke-width',
-    preview ? padding : '0'
-  );
-  bedblockBackground.setAttributeNS(null, 'stroke', preview ? 'red' : '');
-  bedblockBackground.setAttributeNS(null, 'width', width);
-  bedblockBackground.setAttributeNS(null, 'height', height);
-
-  const labelWrapper = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'svg'
-  );
-  labelWrapper.setAttributeNS(null, 'width', width);
-  labelWrapper.setAttributeNS(null, 'height', height);
-
-  const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  label.setAttributeNS(null, 'x', '50%');
-  label.setAttributeNS(null, 'y', '50%');
-  label.setAttributeNS(null, 'class', 'svg__bedblockLabel');
-  label.setAttributeNS(null, 'font-size', Math.min(height, width) / 2);
-  label.setAttributeNS(
-    null,
-    'transform',
-    `rotate(${-orientation} ${width / 2} ${height / 2})`
-  );
-  label.textContent = name;
-  labelWrapper.append(label);
-
-  const bedblockOrigin = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'circle'
-  );
-  bedblockOrigin.setAttributeNS(null, 'fill', 'red');
-  bedblockOrigin.setAttributeNS(null, 'r', padding);
-  bedblockOrigin.setAttributeNS(null, 'cy', height);
-  bedblockOrigin.setAttributeNS(null, 'cx', '0');
-  bedblockOrigin.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
-
+  const bedblockWrapper = createBedblockWrapper(bedblock);
+  const bedblockBackground = createBedblockBackground(bedblock);
   bedblockWrapper.append(bedblockBackground);
+  const labelWrapper = createLabelWrapper(bedblock);
+  const label = createLabel(bedblock);
+  labelWrapper.append(label);
+  const bedblockOrigin = createBedblockOrigin(bedblock);
 
-  for (let i = 0; i < number; i++) {
-    const bed = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    bed.setAttributeNS(null, 'fill', '#aa8974');
-    bed.setAttributeNS(null, 'stroke-width', '0');
-    bed.setAttributeNS(null, 'width', bedwidth);
-    bed.setAttributeNS(null, 'height', height);
-    bed.setAttributeNS(null, 'x', i * (bedwidth + gap));
+  for (let i = 0; i < bedblock.number; i++) {
+    const bed = createBed(bedblock, i);
     bedblockWrapper.append(bed);
   }
 
   bedblockWrapper.append(labelWrapper, bedblockOrigin);
   return bedblockWrapper;
+
+  function createBedblockWrapper(bedblock) {
+    const {x, y, orientation, height, preview} = bedblock;
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute(
+      'transform',
+      `translate(${x} ${y}) rotate(${orientation} 0 ${height})`
+    );
+    g.setAttribute('id', preview ? 'addBedblock__preview' : '');
+    return g;
+  }
+
+  function createBedblockBackground(bedblock) {
+    const {preview, padding, width, height} = bedblock;
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttributeNS(null, 'paint-order', 'stroke fill');
+    rect.setAttributeNS(null, 'fill', '#d0b8a9');
+    rect.setAttributeNS(null, 'stroke-width', preview ? padding : '0');
+    rect.setAttributeNS(null, 'stroke', preview ? 'red' : '');
+    rect.setAttributeNS(null, 'width', width);
+    rect.setAttributeNS(null, 'height', height);
+    return rect;
+  }
+
+  function createLabelWrapper(bedblock) {
+    const {width, height} = bedblock;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttributeNS(null, 'width', width);
+    svg.setAttributeNS(null, 'height', height);
+    return svg;
+  }
+
+  function createLabel(bedblock) {
+    const {orientation, width, height, name} = bedblock;
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttributeNS(null, 'x', '50%');
+    text.setAttributeNS(null, 'y', '50%');
+    text.setAttributeNS(null, 'class', 'svg__bedblockLabel');
+    text.setAttributeNS(null, 'font-size', Math.min(height, width) / 2);
+    text.setAttributeNS(
+      null,
+      'transform',
+      `rotate(${-orientation} ${width / 2} ${height / 2})`
+    );
+    text.textContent = name;
+    return text;
+  }
+
+  function createBedblockOrigin(bedblock) {
+    const {padding, height} = bedblock;
+    const circle = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'circle'
+    );
+    circle.setAttributeNS(null, 'r', padding);
+    circle.setAttributeNS(null, 'fill', 'red');
+    circle.setAttributeNS(null, 'cy', height);
+    circle.setAttributeNS(null, 'cx', '0');
+    circle.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
+    return circle;
+  }
+
+  function createBed(bedblock, bedNumber) {
+    const {bedwidth, height, gap} = bedblock;
+    const bed = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bed.setAttributeNS(null, 'fill', '#aa8974');
+    bed.setAttributeNS(null, 'stroke-width', '0');
+    bed.setAttributeNS(null, 'width', bedwidth);
+    bed.setAttributeNS(null, 'height', height);
+    bed.setAttributeNS(null, 'x', bedNumber * (bedwidth + gap));
+    return bed;
+  }
 };
 
 const getMaxCoordinates = bedblocks => {
