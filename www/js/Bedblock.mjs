@@ -263,13 +263,11 @@ export async function drawPreview() {
   const previewLabel = [
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
   ][0];
-
   fitIntoBedblock(previewLabel);
 
   const previewOrigin = [
     ...$('addBedblock__preview').getElementsByClassName('svg_bedblockOrigin'),
   ][0];
-
   previewOrigin.setSvgCircleRadius(maxValues.paddingMax);
 }
 
