@@ -241,23 +241,21 @@ export async function drawPreview() {
       ? previousMaxValues.yMax - previewMaxValues.yMax
       : 0;
 
-  const xMax = Math.max(previousMaxValues.xMax, previewMaxValues.xMax);
-  const xMin = Math.min(previousMaxValues.xMin, previewMaxValues.xMin);
-  const yMax = Math.max(previousMaxValues.yMax, previewMaxValues.yMax);
-  const yMin = Math.min(previousMaxValues.yMin, previewMaxValues.yMin);
-  const paddingMax = Math.max(
-    previousMaxValues.paddingMax,
-    previewMaxValues.paddingMax
-  );
+  const maxValues = {
+    xMax: Math.max(previousMaxValues.xMax, previewMaxValues.xMax),
+    xMin: Math.min(previousMaxValues.xMin, previewMaxValues.xMin),
+    yMax: Math.max(previousMaxValues.yMax, previewMaxValues.yMax),
+    yMin: Math.min(previousMaxValues.yMin, previewMaxValues.yMin),
+    paddingMax: Math.max(
+      previousMaxValues.paddingMax,
+      previewMaxValues.paddingMax
+    ),
+  };
 
-  setSVGdimensions({
-    svg,
-    maxValues: {xMax, xMin, yMax, yMin, paddingMax},
-    yMaxOffset,
-  });
+  setSVGdimensions({svg, maxValues, yMaxOffset});
 
   const previewSVG = createBedblockSVG(
-    toSvgCoordinates(previewBedblock, yMax, yMaxOffset)
+    toSvgCoordinates(previewBedblock, maxValues.yMax, yMaxOffset)
   );
 
   svg.insertBefore(previewSVG, svg.lastElementChild);
@@ -272,14 +270,12 @@ export async function drawPreview() {
     ...$('addBedblock__preview').getElementsByClassName('svg_bedblockOrigin'),
   ][0];
 
-  previewOrigin.setSvgCircleRadius(paddingMax);
+  previewOrigin.setSvgCircleRadius(maxValues.paddingMax);
 }
 
 export async function drawAll() {
   const bedblocks = await fetchJson('./api/bedblock', 'GET').then(bedblocks =>
-    bedblocks
-      .flat()
-      .filter(bedblock => +bedblock.farmid === +localStorage.selectedFarm)
+    bedblocks.flat().filter(bedblockBelongsToSelectedFarm)
   );
 
   const svg = $('settings__bedblocksSVG');
@@ -374,4 +370,8 @@ function fitIntoBedblock(label) {
 
 function toSvgCoordinates(bedblock, yMax, yOffset = 0) {
   return {...bedblock, y: yMax - (bedblock.y + bedblock.bedlength) + yOffset};
+}
+
+function bedblockBelongsToSelectedFarm(bedblock) {
+  return bedblock.farmid === Number(localStorage.selectedFarm);
 }
