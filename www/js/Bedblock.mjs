@@ -29,12 +29,20 @@ export async function add(event) {
 }
 
 const createBedblockSVG = bedblock => {
-  const {x, y, bedlength, bedwidth, orientation, name, gap, number, preview} =
-    bedblock;
-
-  const width = bedwidth * number + gap * (number - 1);
-  const height = bedlength;
-  const padding = Math.min(height, width) / 20;
+  const {
+    x,
+    y,
+    bedlength,
+    bedwidth,
+    orientation,
+    name,
+    gap,
+    number,
+    preview,
+    width = bedwidth * number + gap * (number - 1),
+    height = bedlength,
+    padding = Math.min(height, width) / 20,
+  } = bedblock;
 
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
   g.setAttribute(
