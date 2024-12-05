@@ -44,63 +44,75 @@ const createBedblockSVG = bedblock => {
     padding = Math.min(height, width) / 20,
   } = bedblock;
 
-  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  g.setAttribute(
+  const bedblockWrapper = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'g'
+  );
+  bedblockWrapper.setAttribute(
     'transform',
     `translate(${x} ${y}) rotate(${orientation} 0 ${height})`
   );
-  g.setAttribute('id', preview ? 'addBedblock__preview' : '');
+  bedblockWrapper.setAttribute('id', preview ? 'addBedblock__preview' : '');
 
-  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rect.setAttributeNS(null, 'paint-order', 'stroke fill');
-  rect.setAttributeNS(null, 'fill', '#d0b8a9');
-  rect.setAttributeNS(null, 'stroke-width', preview ? padding : '0');
-  rect.setAttributeNS(null, 'stroke', preview ? 'red' : '');
-  rect.setAttributeNS(null, 'width', width);
-  rect.setAttributeNS(null, 'height', height);
+  const bedblockBackground = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'rect'
+  );
+  bedblockBackground.setAttributeNS(null, 'paint-order', 'stroke fill');
+  bedblockBackground.setAttributeNS(null, 'fill', '#d0b8a9');
+  bedblockBackground.setAttributeNS(
+    null,
+    'stroke-width',
+    preview ? padding : '0'
+  );
+  bedblockBackground.setAttributeNS(null, 'stroke', preview ? 'red' : '');
+  bedblockBackground.setAttributeNS(null, 'width', width);
+  bedblockBackground.setAttributeNS(null, 'height', height);
 
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  svg.setAttributeNS(null, 'width', width);
-  svg.setAttributeNS(null, 'height', height);
+  const labelWrapper = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'svg'
+  );
+  labelWrapper.setAttributeNS(null, 'width', width);
+  labelWrapper.setAttributeNS(null, 'height', height);
 
-  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  text.setAttributeNS(null, 'x', '50%');
-  text.setAttributeNS(null, 'y', '50%');
-  text.setAttributeNS(null, 'class', 'svg__bedblockLabel');
-  text.setAttributeNS(null, 'font-size', Math.min(height, width) / 2);
-  text.setAttributeNS(
+  const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+  label.setAttributeNS(null, 'x', '50%');
+  label.setAttributeNS(null, 'y', '50%');
+  label.setAttributeNS(null, 'class', 'svg__bedblockLabel');
+  label.setAttributeNS(null, 'font-size', Math.min(height, width) / 2);
+  label.setAttributeNS(
     null,
     'transform',
     `rotate(${-orientation} ${width / 2} ${height / 2})`
   );
-  text.textContent = name;
+  label.textContent = name;
+  labelWrapper.append(label);
 
-  const circle = document.createElementNS(
+  const bedblockOrigin = document.createElementNS(
     'http://www.w3.org/2000/svg',
     'circle'
   );
-  circle.setAttributeNS(null, 'fill', 'red');
-  circle.setAttributeNS(null, 'r', padding);
-  circle.setAttributeNS(null, 'cy', height);
-  circle.setAttributeNS(null, 'cx', '0');
-  circle.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
+  bedblockOrigin.setAttributeNS(null, 'fill', 'red');
+  bedblockOrigin.setAttributeNS(null, 'r', padding);
+  bedblockOrigin.setAttributeNS(null, 'cy', height);
+  bedblockOrigin.setAttributeNS(null, 'cx', '0');
+  bedblockOrigin.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
 
-  g.append(rect);
+  bedblockWrapper.append(bedblockBackground);
+
   for (let i = 0; i < number; i++) {
-    const bedRect = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'rect'
-    );
-    bedRect.setAttributeNS(null, 'fill', '#aa8974');
-    bedRect.setAttributeNS(null, 'stroke-width', '0');
-    bedRect.setAttributeNS(null, 'width', bedwidth);
-    bedRect.setAttributeNS(null, 'height', height);
-    bedRect.setAttributeNS(null, 'x', i * (bedwidth + gap));
-    g.append(bedRect);
+    const bed = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bed.setAttributeNS(null, 'fill', '#aa8974');
+    bed.setAttributeNS(null, 'stroke-width', '0');
+    bed.setAttributeNS(null, 'width', bedwidth);
+    bed.setAttributeNS(null, 'height', height);
+    bed.setAttributeNS(null, 'x', i * (bedwidth + gap));
+    bedblockWrapper.append(bed);
   }
-  svg.append(text);
-  g.append(svg, circle);
-  return g;
+
+  bedblockWrapper.append(labelWrapper, bedblockOrigin);
+  return bedblockWrapper;
 };
 
 const getMaxCoordinates = bedblocks => {
