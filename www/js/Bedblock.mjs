@@ -272,7 +272,7 @@ export async function drawPreview() {
     ...$('addBedblock__preview').getElementsByClassName('svg_bedblockOrigin'),
   ][0];
 
-  previewOrigin.setAttributeNS(null, 'r', paddingMax);
+  previewOrigin.setSvgCircleRadius(paddingMax);
 }
 
 export async function drawAll() {
@@ -296,7 +296,7 @@ export async function drawAll() {
   $$('.svg__bedblockLabel').forEach(fitIntoBedblock);
 
   $$('.svg_bedblockOrigin').forEach(circle =>
-    Svg.setRadius({circle, radius: maxValues.paddingMax})
+    circle.setSvgCircleRadius(maxValues.paddingMax)
   );
 
   const originCross = Svg.drawCross({y: maxValues.yMax});

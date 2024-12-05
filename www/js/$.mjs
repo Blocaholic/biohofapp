@@ -49,3 +49,12 @@ export {$, $$, $show, $hide};
     this.removeAttribute('height');
   };
 })();
+
+(() => {
+  if ('setSvgCircleRadius' in Element.prototype)
+    return console.log('"Element.prototype.setSvgCircleRadius" already exists');
+
+  Element.prototype.setSvgCircleRadius = function (radius) {
+    this.setAttributeNS(null, 'r', radius);
+  };
+})();

@@ -1,7 +1,3 @@
-export function setRadius({circle, radius}) {
-  circle.setAttributeNS(null, 'r', radius);
-}
-
 export function drawLine({color = 'black', width = '0.4%', x1, x2, y1, y2}) {
   const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
 
