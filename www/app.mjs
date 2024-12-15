@@ -6,7 +6,7 @@ import * as Device from './js/Device.mjs';
 import * as Utils from './js/Utils.mjs';
 import * as Token from './js/Token.mjs';
 import * as Farm from './js/Farm.mjs';
-import * as Bedblock from './js/Bedblock.mjs';
+import * as Bedblocks from './js/Bedblocks.mjs';
 import * as Error from './js/Error.mjs';
 
 import './js/pages/planCrops.mjs';
@@ -118,7 +118,7 @@ const init = () => {
   $('addBedblock__link').addEventListener('click', _ => {
     Sections.show('addBedblock');
     $('addBedblock__previewCanvas').appendChild($('settings__bedblocksSVG'));
-    Bedblock.drawPreview();
+    Bedblocks.drawPreview();
   });
 
   $('editFarm__close').addEventListener('click', _ => $hide('editFarm__modal'));
@@ -154,7 +154,7 @@ const init = () => {
     Sections.show('settings');
     $('addBedblock__preview')?.remove();
     $('settings__bedblocks').appendChild($('settings__bedblocksSVG'));
-    Bedblock.resetSVGviewBox();
+    Bedblocks.resetSVGviewBox();
   });
 
   $('editFarm__button').addEventListener('click', Farm.rename);
@@ -187,7 +187,7 @@ const init = () => {
     $show('addFarm__modal')
   );
 
-  $('addBedblock__submitButton').addEventListener('click', Bedblock.add);
+  $('addBedblock__submitButton').addEventListener('click', Bedblocks.add);
 
   $$('[id^="selectedFarm__module"]').forEach(checkbox =>
     checkbox.addEventListener('change', event => Farm.updateModules(event))
@@ -206,7 +206,9 @@ const init = () => {
     $('addBedblock__x'),
     $('addBedblock__y'),
     $('addBedblock__orientation'),
-  ].forEach(element => element.addEventListener('input', Bedblock.drawPreview));
+  ].forEach(element =>
+    element.addEventListener('input', Bedblocks.drawPreview)
+  );
 
   setInterval(Token.get, 180 * 1000);
 };
@@ -410,7 +412,7 @@ const main = async () => {
 
   $('addBedblock__start').value = Temporal.Now.plainDateISO().toString();
 
-  Bedblock.drawAll();
+  Bedblocks.drawAll();
 
   if (localStorage.lastPage) return Sections.show(localStorage.lastPage);
   return Sections.show('welcome');
