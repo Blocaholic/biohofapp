@@ -3,6 +3,7 @@ import {fetchJson} from './Utils.mjs';
 import * as Error from './Error.mjs';
 import * as Sections from './Sections.mjs';
 import * as Svg from './Svg.mjs';
+import {Bedblock} from './Datatypes/Bedblock.mjs';
 
 export async function add(event) {
   event.preventDefault();
@@ -28,11 +29,8 @@ export async function add(event) {
   location.reload();
 }
 
-const createBedblockSVG = bedblock => {
-  bedblock.width =
-    bedblock.bedwidth * bedblock.number + bedblock.gap * (bedblock.number - 1);
-  bedblock.height = bedblock.bedlength;
-  bedblock.padding = Math.min(bedblock.height, bedblock.width) / 20;
+const createBedblockSVG = bedblockData => {
+  const bedblock = new Bedblock(bedblockData);
 
   const bedblockWrapper = createBedblockWrapper(bedblock);
   const bedblockBackground = createBedblockBackground(bedblock);
@@ -217,10 +215,8 @@ const getMaxCoordinates = bedblocks => {
   let yMin = 0;
   let paddingMax = 0;
 
-  bedblocks.forEach(bedblock => {
-    bedblock.width =
-      bedblock.number * (bedblock.bedwidth + bedblock.gap) - bedblock.gap;
-    bedblock.height = bedblock.bedlength;
+  bedblocks.forEach(bedblockData => {
+    const bedblock = new Bedblock(bedblockData);
 
     const bedblockXmax = getXmax(bedblock);
     const bedblockXmin = getXmin(bedblock);
