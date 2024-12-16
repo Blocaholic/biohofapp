@@ -197,11 +197,6 @@ export async function drawPreview() {
     ...$('addBedblock__preview').getElementsByClassName('svg__bedblockLabel'),
   ][0];
   fitIntoBedblock(previewLabel);
-
-  const previewOrigin = [
-    ...$('addBedblock__preview').getElementsByClassName('svg_bedblockOrigin'),
-  ][0];
-  previewOrigin.setSvgCircleRadius(maxValues.paddingMax);
 }
 
 export async function drawAll() {
@@ -223,10 +218,6 @@ export async function drawAll() {
     .forEach(bedblockSvg => svg.append(bedblockSvg));
 
   $$('.svg__bedblockLabel').forEach(fitIntoBedblock);
-
-  $$('.svg_bedblockOrigin').forEach(circle =>
-    circle.setSvgCircleRadius(maxValues.paddingMax)
-  );
 
   const originCross = Svg.drawCross({y: maxValues.yMax});
   svg.append(originCross);

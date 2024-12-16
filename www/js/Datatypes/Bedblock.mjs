@@ -37,7 +37,7 @@ export function Bedblock({
   this.preview = Boolean(preview);
   this.width = this.number * (this.bedwidth + this.gap) - this.gap;
   this.height = this.bedlength;
-  this.padding = Math.min(this.height, this.width) / 20;
+  this.padding = (this.height + this.width) / 40;
   Utils.deepFreeze(this);
 }
 
@@ -117,16 +117,34 @@ Bedblock.prototype.toSvg = function ({yMax, yOffset = 0}) {
 
   function createBedblockOrigin(bedblock) {
     const {padding, height} = bedblock;
-    const circle = document.createElementNS(
+    const plus = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+    const horizontal = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      'circle'
+      'line'
     );
-    circle.setAttributeNS(null, 'r', padding);
-    circle.setAttributeNS(null, 'fill', 'red');
-    circle.setAttributeNS(null, 'cy', height);
-    circle.setAttributeNS(null, 'cx', '0');
-    circle.setAttributeNS(null, 'class', 'svg_bedblockOrigin');
-    return circle;
+    horizontal.setAttributeNS(null, 'stroke', 'black');
+    horizontal.setAttributeNS(null, 'stroke-width', padding * 0.8);
+    horizontal.setAttributeNS(null, 'x1', -(padding * 1.4));
+    horizontal.setAttributeNS(null, 'x2', padding * 1.4);
+    horizontal.setAttributeNS(null, 'y1', height);
+    horizontal.setAttributeNS(null, 'y2', height);
+
+    const vertical = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'line'
+    );
+    vertical.setAttributeNS(null, 'stroke', 'black');
+    vertical.setAttributeNS(null, 'stroke-width', padding * 0.8);
+    vertical.setAttributeNS(null, 'x1', '0');
+    vertical.setAttributeNS(null, 'x2', '0');
+    vertical.setAttributeNS(null, 'y1', height - padding * 1.4);
+    vertical.setAttributeNS(null, 'y2', height + padding * 1.4);
+
+    plus.append(horizontal);
+    plus.append(vertical);
+
+    return plus;
   }
 
   function createBed(bedblock, bedNumber) {
