@@ -30,19 +30,19 @@ export async function add(event) {
 }
 
 const getMaxCoordinates = bedblocks => {
-  const rotateCoordinates = (coords, degrees) => {
-    const {x, y} = coords;
+  const max = {xMax: 0, xMin: 0, yMax: 0, yMin: 0, paddingMax: 0};
 
-    const sinDegrees = angleDegrees => Math.sin((angleDegrees * Math.PI) / 180);
-    const cosDegrees = angleDegrees => Math.cos((angleDegrees * Math.PI) / 180);
+  bedblocks.forEach(bedblock => {
+    max.xMax = Math.max(max.xMax, getXmax(bedblock));
+    max.xMin = Math.min(max.xMin, getXmin(bedblock));
+    max.yMax = Math.max(max.yMax, getYmax(bedblock));
+    max.yMin = Math.min(max.yMin, getYmin(bedblock));
+    max.paddingMax = Math.max(max.paddingMax, bedblock.padding);
+  });
 
-    const newX = x * cosDegrees(-degrees) - y * sinDegrees(-degrees);
-    const newY = x * sinDegrees(-degrees) + y * cosDegrees(-degrees);
+  return max;
 
-    return {x: Math.round(newX), y: Math.round(newY)};
-  };
-
-  const getXmax = bedblock => {
+  function getXmax(bedblock) {
     if (bedblock.orientation < 0)
       return (
         rotateCoordinates(
@@ -64,8 +64,9 @@ const getMaxCoordinates = bedblocks => {
           bedblock.orientation
         ).x + bedblock.x
       );
-  };
-  const getYmax = bedblock => {
+  }
+
+  function getYmax(bedblock) {
     if (bedblock.orientation < 0)
       return (
         rotateCoordinates(
@@ -87,8 +88,9 @@ const getMaxCoordinates = bedblocks => {
           bedblock.orientation
         ).y + bedblock.y
       );
-  };
-  const getXmin = bedblock => {
+  }
+
+  function getXmin(bedblock) {
     if (bedblock.orientation < 0)
       return (
         rotateCoordinates(
@@ -101,8 +103,9 @@ const getMaxCoordinates = bedblocks => {
       );
     if (bedblock.orientation === 0) return bedblock.x;
     if (bedblock.orientation > 0) return bedblock.x;
-  };
-  const getYmin = bedblock => {
+  }
+
+  function getYmin(bedblock) {
     if (bedblock.orientation < 0) return bedblock.y;
     if (bedblock.orientation === 0) return bedblock.y;
     if (bedblock.orientation > 0)
@@ -115,30 +118,19 @@ const getMaxCoordinates = bedblocks => {
           bedblock.orientation
         ).y + bedblock.y
       );
-  };
+  }
 
-  let xMax = 0;
-  let xMin = 0;
-  let yMax = 0;
-  let yMin = 0;
-  let paddingMax = 0;
+  function rotateCoordinates(coords, degrees) {
+    const {x, y} = coords;
 
-  bedblocks.forEach(bedblockData => {
-    const bedblock = new Bedblock(bedblockData);
+    const sinDegrees = angleDegrees => Math.sin((angleDegrees * Math.PI) / 180);
+    const cosDegrees = angleDegrees => Math.cos((angleDegrees * Math.PI) / 180);
 
-    const bedblockXmax = getXmax(bedblock);
-    const bedblockXmin = getXmin(bedblock);
-    const bedblockYmax = getYmax(bedblock);
-    const bedblockYmin = getYmin(bedblock);
-    const bedblockPadding = Math.min(bedblock.height, bedblock.width) / 10;
+    const newX = x * cosDegrees(-degrees) - y * sinDegrees(-degrees);
+    const newY = x * sinDegrees(-degrees) + y * cosDegrees(-degrees);
 
-    if (bedblockXmax > xMax) xMax = bedblockXmax;
-    if (bedblockXmin < xMin) xMin = bedblockXmin;
-    if (bedblockYmax > yMax) yMax = bedblockYmax;
-    if (bedblockYmin < yMin) yMin = bedblockYmin;
-    if (bedblockPadding > paddingMax) paddingMax = bedblockPadding;
-  });
-  return {xMax, xMin, yMax, yMin, paddingMax};
+    return {x: Math.round(newX), y: Math.round(newY)};
+  }
 };
 
 export async function drawPreview() {
