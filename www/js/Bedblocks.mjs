@@ -56,7 +56,7 @@ export async function drawPreview() {
   const previousMaxValues = svg.dataset;
   const previewMaxValues = getMaxCoordinates([previewBedblock]);
 
-  const yMaxOffset =
+  const yOffset =
     previewMaxValues.yMax > previousMaxValues.yMax
       ? previousMaxValues.yMax - previewMaxValues.yMax
       : 0;
@@ -66,17 +66,14 @@ export async function drawPreview() {
     xMin: Math.min(previousMaxValues.xMin, previewMaxValues.xMin),
     yMax: Math.max(previousMaxValues.yMax, previewMaxValues.yMax),
     yMin: Math.min(previousMaxValues.yMin, previewMaxValues.yMin),
-    paddingMax: Math.max(
-      previousMaxValues.paddingMax,
-      previewMaxValues.paddingMax
-    ),
+    padding: Math.max(previousMaxValues.padding, previewMaxValues.padding),
   };
 
-  setSVGdimensions({svg, maxValues, yMaxOffset});
+  setSVGdimensions({svg, maxValues, yOffset});
 
   const previewSVG = previewBedblock.toSvg({
     yMax: maxValues.yMax,
-    yOffset: yMaxOffset,
+    yOffset,
   });
 
   svg.insertBefore(previewSVG, svg.lastElementChild);
@@ -115,33 +112,30 @@ export function resetSVGviewBox() {
   const svg = $('settings__bedblocksSVG');
   const maxValues = svg.dataset;
 
-  if (maxValues.paddingMax === undefined) return;
+  if (maxValues.padding === undefined) return;
 
   setSVGdimensions({svg, maxValues});
 }
 
-function setSVGdimensions({svg, maxValues, yMaxOffset = 0}) {
-  const {xMax, xMin, yMax, yMin, paddingMax} = maxValues;
+function setSVGdimensions({svg, maxValues, yOffset = 0}) {
+  const {xMax, xMin, yMax, yMin, padding} = maxValues;
 
-  Number(paddingMax) === 0
+  Number(padding) === 0
     ? svg.setWidthAndHeightToZero()
     : svg.removeWidthAndHeight();
 
   svg.setAttribute(
     'viewBox',
-    createViewBoxValue({xMax, xMin, yMax, yMin, padding: paddingMax})
-      .split(' ')
-      .map((element, index) => (index === 1 ? +element + yMaxOffset : element))
-      .join(' ')
+    createViewBoxValue({xMax, xMin, yMax, yMin, padding, yOffset})
   );
-}
 
-function createViewBoxValue({xMax, xMin, yMax, yMin, padding}) {
-  const viewBoxMinX = -(padding - xMin);
-  const viewBoxMinY = -padding;
-  const viewBoxWidth = xMax - xMin + padding * 2;
-  const viewBoxHeight = yMax - yMin + padding * 2;
-  return `${viewBoxMinX} ${viewBoxMinY} ${viewBoxWidth} ${viewBoxHeight}`;
+  function createViewBoxValue({xMax, xMin, yMax, yMin, padding, yOffset}) {
+    const viewBoxMinX = -(padding - xMin);
+    const viewBoxMinY = -padding + yOffset;
+    const viewBoxWidth = xMax - xMin + padding * 2;
+    const viewBoxHeight = yMax - yMin + padding * 2;
+    return `${viewBoxMinX} ${viewBoxMinY} ${viewBoxWidth} ${viewBoxHeight}`;
+  }
 }
 
 function fitIntoBedblock(label) {
@@ -185,7 +179,7 @@ const getMaxCoordinates = bedblocks => {
   const xMin = bedblocks.reduce((min, b) => Math.min(min, b.xMin), 0);
   const yMax = bedblocks.reduce((max, b) => Math.max(max, b.yMax), 0);
   const yMin = bedblocks.reduce((min, b) => Math.min(min, b.yMin), 0);
-  const paddingMax = bedblocks.reduce((max, b) => Math.max(max, b.padding), 0);
+  const padding = bedblocks.reduce((max, b) => Math.max(max, b.padding), 0);
 
-  return {xMax, xMin, yMax, yMin, paddingMax};
+  return {xMax, xMin, yMax, yMin, padding};
 };
