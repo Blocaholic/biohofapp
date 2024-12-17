@@ -29,106 +29,6 @@ export async function add(event) {
   location.reload();
 }
 
-const getMaxCoordinates = bedblocks => {
-  const xMax = bedblocks.reduce((max, b) => Math.max(max, getXmax(b)), 0);
-  const xMin = bedblocks.reduce((min, b) => Math.min(min, getXmin(b)), 0);
-  const yMax = bedblocks.reduce((max, b) => Math.max(max, getYmax(b)), 0);
-  const yMin = bedblocks.reduce((min, b) => Math.min(min, getYmin(b)), 0);
-  const paddingMax = bedblocks.reduce((max, b) => Math.max(max, b.padding), 0);
-
-  return {xMax, xMin, yMax, yMin, paddingMax};
-
-  function getXmax(bedblock) {
-    if (bedblock.orientation < 0)
-      return (
-        rotateCoordinates(
-          {
-            x: bedblock.width,
-            y: 0,
-          },
-          bedblock.orientation
-        ).x + bedblock.x
-      );
-    if (bedblock.orientation === 0) return bedblock.x + bedblock.width;
-    if (bedblock.orientation > 0)
-      return (
-        rotateCoordinates(
-          {
-            x: bedblock.width,
-            y: bedblock.height,
-          },
-          bedblock.orientation
-        ).x + bedblock.x
-      );
-  }
-
-  function getYmax(bedblock) {
-    if (bedblock.orientation < 0)
-      return (
-        rotateCoordinates(
-          {
-            x: bedblock.width,
-            y: bedblock.height,
-          },
-          bedblock.orientation
-        ).y + bedblock.y
-      );
-    if (bedblock.orientation === 0) return bedblock.y + bedblock.height;
-    if (bedblock.orientation > 0)
-      return (
-        rotateCoordinates(
-          {
-            x: 0,
-            y: bedblock.height,
-          },
-          bedblock.orientation
-        ).y + bedblock.y
-      );
-  }
-
-  function getXmin(bedblock) {
-    if (bedblock.orientation < 0)
-      return (
-        rotateCoordinates(
-          {
-            x: 0,
-            y: bedblock.height,
-          },
-          bedblock.orientation
-        ).x + bedblock.x
-      );
-    if (bedblock.orientation === 0) return bedblock.x;
-    if (bedblock.orientation > 0) return bedblock.x;
-  }
-
-  function getYmin(bedblock) {
-    if (bedblock.orientation < 0) return bedblock.y;
-    if (bedblock.orientation === 0) return bedblock.y;
-    if (bedblock.orientation > 0)
-      return (
-        rotateCoordinates(
-          {
-            x: bedblock.width,
-            y: 0,
-          },
-          bedblock.orientation
-        ).y + bedblock.y
-      );
-  }
-
-  function rotateCoordinates(coords, degrees) {
-    const {x, y} = coords;
-
-    const sinDegrees = angleDegrees => Math.sin((angleDegrees * Math.PI) / 180);
-    const cosDegrees = angleDegrees => Math.cos((angleDegrees * Math.PI) / 180);
-
-    const newX = x * cosDegrees(-degrees) - y * sinDegrees(-degrees);
-    const newY = x * sinDegrees(-degrees) + y * cosDegrees(-degrees);
-
-    return {x: Math.round(newX), y: Math.round(newY)};
-  }
-};
-
 export async function drawPreview() {
   $('addBedblock__preview')?.remove();
 
@@ -211,16 +111,6 @@ export async function drawAll() {
   svg.append(originCross);
 }
 
-const getBedblockRotation = label => {
-  if (!label) return 0;
-  return Number(
-    label.parentElement.parentElement
-      .getAttribute('transform')
-      .match(/rotate\((.+)\)/)[1]
-      .split(' ')[0]
-  );
-};
-
 export function resetSVGviewBox() {
   const svg = $('settings__bedblocksSVG');
   const maxValues = svg.dataset;
@@ -277,9 +167,29 @@ function fitIntoBedblock(label) {
     const resizeFactor = getBedblockRotation(label) === 0 ? 0.9 : 0.6;
     const fittedFontSize = label.getAttribute('font-size');
     label.setAttribute('font-size', fittedFontSize * resizeFactor);
+
+    function getBedblockRotation(label) {
+      if (!label) return 0;
+      return Number(
+        label.parentElement.parentElement
+          .getAttribute('transform')
+          .match(/rotate\((.+)\)/)[1]
+          .split(' ')[0]
+      );
+    }
   }
 }
 
 function bedblockBelongsToSelectedFarm(bedblock) {
   return bedblock.farmid === Number(localStorage.selectedFarm);
 }
+
+const getMaxCoordinates = bedblocks => {
+  const xMax = bedblocks.reduce((max, b) => Math.max(max, b.xMax), 0);
+  const xMin = bedblocks.reduce((min, b) => Math.min(min, b.xMin), 0);
+  const yMax = bedblocks.reduce((max, b) => Math.max(max, b.yMax), 0);
+  const yMin = bedblocks.reduce((min, b) => Math.min(min, b.yMin), 0);
+  const paddingMax = bedblocks.reduce((max, b) => Math.max(max, b.padding), 0);
+
+  return {xMax, xMin, yMax, yMin, paddingMax};
+};

@@ -59,3 +59,15 @@ export const deepFreeze = object => {
   }
   return Object.freeze(object);
 };
+
+export const rotateCoordinates = (coords, degrees) => {
+  const {x, y} = coords;
+
+  const sinDegrees = angleDegrees => Math.sin((angleDegrees * Math.PI) / 180);
+  const cosDegrees = angleDegrees => Math.cos((angleDegrees * Math.PI) / 180);
+
+  const newX = x * cosDegrees(-degrees) - y * sinDegrees(-degrees);
+  const newY = x * sinDegrees(-degrees) + y * cosDegrees(-degrees);
+
+  return {x: Math.round(newX), y: Math.round(newY)};
+};

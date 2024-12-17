@@ -35,11 +35,85 @@ export function Bedblock({
   this.x = Number(x);
   this.y = Number(y);
   this.preview = Boolean(preview);
-  this.width = this.number * (this.bedwidth + this.gap) - this.gap;
-  this.height = this.bedlength;
-  this.padding = (this.height + this.width) / 40;
   Utils.deepFreeze(this);
 }
+
+Object.defineProperties(Bedblock.prototype, {
+  width: {
+    get() {
+      return this.number * (this.bedwidth + this.gap) - this.gap;
+    },
+  },
+  height: {
+    get() {
+      return this.bedlength;
+    },
+  },
+  padding: {
+    get() {
+      return (this.height + this.width) / 40;
+    },
+  },
+  topRight: {
+    get() {
+      return {x: this.width, y: this.height};
+    },
+  },
+  topLeft: {
+    get() {
+      return {x: 0, y: this.height};
+    },
+  },
+  bottomRight: {
+    get() {
+      return {x: this.width, y: 0};
+    },
+  },
+  xMax: {
+    get() {
+      if (this.orientation < 0)
+        return (
+          Utils.rotateCoordinates(this.bottomRight, this.orientation).x + this.x
+        );
+      if (this.orientation > 0)
+        return (
+          Utils.rotateCoordinates(this.topRight, this.orientation).x + this.x
+        );
+      return this.x + this.width;
+    },
+  },
+  xMin: {
+    get() {
+      if (this.orientation < 0)
+        return (
+          Utils.rotateCoordinates(this.topLeft, this.orientation).x + this.x
+        );
+      return this.x;
+    },
+  },
+  yMax: {
+    get() {
+      if (this.orientation < 0)
+        return (
+          Utils.rotateCoordinates(this.topRight, this.orientation).y + this.y
+        );
+      if (this.orientation > 0)
+        return (
+          Utils.rotateCoordinates(this.topLeft, this.orientation).y + this.y
+        );
+      return this.y + this.height;
+    },
+  },
+  yMin: {
+    get() {
+      if (this.orientation > 0)
+        return (
+          Utils.rotateCoordinates(this.bottomRight, this.orientation).y + this.y
+        );
+      return this.y;
+    },
+  },
+});
 
 Bedblock.prototype.toSvg = function ({yMax, yOffset = 0}) {
   const bedblock = toSvgCoordinates(this, yMax, yOffset);
