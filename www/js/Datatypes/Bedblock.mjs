@@ -113,6 +113,11 @@ Object.defineProperties(Bedblock.prototype, {
       return this.y;
     },
   },
+  belongsToSelectedFarm: {
+    get() {
+      return this.farmid === Number(localStorage.selectedFarm);
+    },
+  },
 });
 
 Bedblock.prototype.toSvg = function ({yMax, yOffset = 0}) {

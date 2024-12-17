@@ -91,8 +91,8 @@ export async function drawAll() {
   const bedblocks = await fetchJson('./api/bedblock', 'GET').then(bedblocks =>
     bedblocks
       .flat()
-      .filter(bedblockBelongsToSelectedFarm)
       .map(bedblock => new Bedblock(bedblock))
+      .filter(bedblock => bedblock.belongsToSelectedFarm)
   );
 
   const svg = $('settings__bedblocksSVG');
@@ -165,8 +165,8 @@ function fitIntoBedblock(label) {
 
   function setPaddingAround(label) {
     const resizeFactor = getBedblockRotation(label) === 0 ? 0.9 : 0.6;
-    const fittedFontSize = label.getAttribute('font-size');
-    label.setAttribute('font-size', fittedFontSize * resizeFactor);
+    const fontSize = label.getAttribute('font-size');
+    label.setAttribute('font-size', fontSize * resizeFactor);
 
     function getBedblockRotation(label) {
       if (!label) return 0;
@@ -178,10 +178,6 @@ function fitIntoBedblock(label) {
       );
     }
   }
-}
-
-function bedblockBelongsToSelectedFarm(bedblock) {
-  return bedblock.farmid === Number(localStorage.selectedFarm);
 }
 
 const getMaxCoordinates = bedblocks => {
