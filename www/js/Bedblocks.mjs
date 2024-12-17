@@ -30,17 +30,13 @@ export async function add(event) {
 }
 
 const getMaxCoordinates = bedblocks => {
-  const max = {xMax: 0, xMin: 0, yMax: 0, yMin: 0, paddingMax: 0};
+  const xMax = bedblocks.reduce((max, b) => Math.max(max, getXmax(b)), 0);
+  const xMin = bedblocks.reduce((min, b) => Math.min(min, getXmin(b)), 0);
+  const yMax = bedblocks.reduce((max, b) => Math.max(max, getYmax(b)), 0);
+  const yMin = bedblocks.reduce((min, b) => Math.min(min, getYmin(b)), 0);
+  const paddingMax = bedblocks.reduce((max, b) => Math.max(max, b.padding), 0);
 
-  bedblocks.forEach(bedblock => {
-    max.xMax = Math.max(max.xMax, getXmax(bedblock));
-    max.xMin = Math.min(max.xMin, getXmin(bedblock));
-    max.yMax = Math.max(max.yMax, getYmax(bedblock));
-    max.yMin = Math.min(max.yMin, getYmin(bedblock));
-    max.paddingMax = Math.max(max.paddingMax, bedblock.padding);
-  });
-
-  return max;
+  return {xMax, xMin, yMax, yMin, paddingMax};
 
   function getXmax(bedblock) {
     if (bedblock.orientation < 0)
