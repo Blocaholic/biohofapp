@@ -174,7 +174,7 @@ function fitIntoBedblock(label) {
   }
 }
 
-const getMaxCoordinates = bedblocks => {
+function getMaxCoordinates(bedblocks) {
   const xMax = bedblocks.reduce((max, b) => Math.max(max, b.xMax), 0);
   const xMin = bedblocks.reduce((min, b) => Math.min(min, b.xMin), 0);
   const yMax = bedblocks.reduce((max, b) => Math.max(max, b.yMax), 0);
@@ -182,4 +182,4 @@ const getMaxCoordinates = bedblocks => {
   const padding = bedblocks.reduce((max, b) => Math.max(max, b.padding), 0);
 
   return {xMax, xMin, yMax, yMin, padding};
-};
+}
