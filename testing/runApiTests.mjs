@@ -2,23 +2,23 @@
 
 import {Temporal} from '../www/js/Temporal.mjs';
 
-import {test} from './test.mjs';
-import {testBaseURL} from './tests/baseURL.mjs';
-import {testApiBasics} from './tests/apiBasics.mjs';
-import {testDevicesRegister} from './tests/devicesRegister.mjs';
-import {testDevicesConfirm} from './tests/devicesConfirm.mjs';
-import {testAuthCreateToken} from './tests/authCreateToken.mjs';
-import {testDevicesRename} from './tests/devicesRename.mjs';
+import {test} from './utils/test.mjs';
+import {testBaseURL} from './apiTests/baseURL.mjs';
+import {testApiBasics} from './apiTests/apiBasics.mjs';
+import {testDevicesRegister} from './apiTests/devicesRegister.mjs';
+import {testDevicesConfirm} from './apiTests/devicesConfirm.mjs';
+import {testAuthCreateToken} from './apiTests/authCreateToken.mjs';
+import {testDevicesRename} from './apiTests/devicesRename.mjs';
 
-import {testFarmsAdd} from './tests/farmsAdd.mjs';
-import {testFarmsGet} from './tests/farmsGet.mjs';
-import {testFarmsRename} from './tests/farmsRename.mjs';
-import {testFarmsUpdateModules} from './tests/farmsUpdateModules.mjs';
-import {testFarmsAddMember} from './tests/farmsAddMember.mjs';
-import {testFarmsUpdateMember} from './tests/farmsUpdateMember.mjs';
-import {testFarmsRemoveMember} from './tests/farmsRemoveMember.mjs';
-import {testFarmsDelete} from './tests/farmsDelete.mjs';
-import {testBedblockAdd} from './tests/bedblockAdd.mjs';
+import {testFarmsAdd} from './apiTests/farmsAdd.mjs';
+import {testFarmsGet} from './apiTests/farmsGet.mjs';
+import {testFarmsRename} from './apiTests/farmsRename.mjs';
+import {testFarmsUpdateModules} from './apiTests/farmsUpdateModules.mjs';
+import {testFarmsAddMember} from './apiTests/farmsAddMember.mjs';
+import {testFarmsUpdateMember} from './apiTests/farmsUpdateMember.mjs';
+import {testFarmsRemoveMember} from './apiTests/farmsRemoveMember.mjs';
+import {testFarmsDelete} from './apiTests/farmsDelete.mjs';
+import {testBedblockAdd} from './apiTests/bedblockAdd.mjs';
 
 const starttime = Temporal.Now.instant().epochMilliseconds;
 

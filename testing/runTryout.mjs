@@ -2,15 +2,11 @@
 
 import {Temporal} from '../www/js/Temporal.mjs';
 
-/* const date = Temporal.PlainDate.from('2024-11-05');
-const newDate = date.add({days: 5});
-console.log(newDate.toString()); */
+import {test} from './utils/test.mjs';
+import {httpRequest} from './utils/httpRequest.mjs';
+import {getJson} from './utils/getJson.mjs';
 
-import {test} from './test.mjs';
-import {expect} from './expect.mjs';
-import {httpRequest, getJson} from './utils.mjs';
-
-import {testBedblockAdd} from './tests/bedblockAdd.mjs';
+import {testBedblockAdd} from './apiTests/bedblockAdd.mjs';
 
 const starttime = Temporal.Now.instant().epochMilliseconds;
 

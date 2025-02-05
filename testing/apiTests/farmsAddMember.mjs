@@ -1,9 +1,10 @@
-import {test} from '../test.mjs';
-import {expect} from '../expect.mjs';
-import {httpRequest, getJson} from '../utils.mjs';
+import {test} from '../utils/test.mjs';
+import {expect} from '../utils/expect.mjs';
+import {httpRequest} from '../utils/httpRequest.mjs';
+import {getJson} from '../utils/getJson.mjs';
 
-export const testFarmsRemoveMember = async function (users, testfarmid) {
-  console.log('\n### Farms::remove_member (Failure)');
+export const testFarmsAddMember = async function (users, testfarmid) {
+  console.log('\n### Farms::add_member (Failure)');
 
   console.log('#### missing email');
   await httpRequest({
@@ -11,10 +12,10 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      emil: users.user4.email,
-      userid: users.user4.userid,
+      operation: 'add_member',
       farmid: testfarmid,
+      emil: 'testbot2@reinwiese.de',
+      role: 'admin',
     },
   })
     .then(expect.responseCode(400))
@@ -32,10 +33,10 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      email: 'invalid.de',
-      userid: users.user4.userid,
+      operation: 'add_member',
       farmid: testfarmid,
+      email: 'testbot2reinwiese.de',
+      role: 'admin',
     },
   })
     .then(expect.responseCode(400))
@@ -47,85 +48,16 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
       );
     });
 
-  console.log('#### missing userid');
-  await httpRequest({
-    url: `farms`,
-    method: `PATCH`,
-    headers: [['token', users.user1.token]],
-    body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      useid: users.user4.userid,
-      farmid: testfarmid,
-    },
-  })
-    .then(expect.responseCode(400))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include ""userid" is required"',
-        expect.toMatch(json.message?.toLowerCase(), /"userid" is required/)
-      );
-    });
-
-  console.log('#### invalid userid');
-  await httpRequest({
-    url: `farms`,
-    method: `PATCH`,
-    headers: [['token', users.user1.token]],
-    body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: Number(users.user4.userid) + 0.5,
-      farmid: testfarmid,
-    },
-  })
-    .then(expect.responseCode(400))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include ""userid" must be an integer"',
-        expect.toMatch(
-          json.message?.toLowerCase(),
-          /"userid" must be an integer/
-        )
-      );
-    });
-
-  console.log('#### userid does not fit email');
-  await httpRequest({
-    url: `farms`,
-    method: `PATCH`,
-    headers: [['token', users.user1.token]],
-    body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: users.user3.userid,
-      farmid: testfarmid,
-    },
-  })
-    .then(expect.responseCode(400))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include "userid does not fit email adress"',
-        expect.toMatch(
-          json.message?.toLowerCase(),
-          /userid does not fit email adress/
-        )
-      );
-    });
-
   console.log('#### missing farmid');
   await httpRequest({
     url: `farms`,
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: users.user4.userid,
+      operation: 'add_member',
       farid: testfarmid,
+      email: 'testbot2@reinwiese.de',
+      role: 'admin',
     },
   })
     .then(expect.responseCode(400))
@@ -143,20 +75,65 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: users.user4.userid,
-      farmid: Number(testfarmid) + 0.3,
+      operation: 'add_member',
+      farmid: 0,
+      email: 'testbot2@reinwiese.de',
+      role: 'admin',
     },
   })
     .then(expect.responseCode(400))
     .then(getJson)
     .then(json => {
       test(
-        'Error message should include ""farmid" must be an integer"',
+        'Error message should include ""farmid" must be greater than 0"',
         expect.toMatch(
           json.message?.toLowerCase(),
-          /"farmid" must be an integer/
+          /"farmid" must be greater than 0/
+        )
+      );
+    });
+
+  console.log('#### missing role');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: 'testbot2@reinwiese.de',
+      ole: 'admin',
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include ""role" is required"',
+        expect.toMatch(json.message?.toLowerCase(), /"role" is required/)
+      );
+    });
+
+  console.log('#### invalid role');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: 'testbot2@reinwiese.de',
+      role: 'adrian',
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "role "adrian" not excepted"',
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /role "adrian" not excepted/
         )
       );
     });
@@ -167,10 +144,10 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      email: 'kennichnich@reinwiese.de',
-      userid: users.user4.userid,
+      operation: 'add_member',
       farmid: testfarmid,
+      email: 'testbot99@reinwiese.de',
+      role: 'admin',
     },
   })
     .then(expect.responseCode(400))
@@ -185,16 +162,40 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
       );
     });
 
+  console.log('#### unconfirmed user');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: users.unconfirmedUser.email,
+      role: 'employee',
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "cannot add unconfirmed user"',
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /cannot add unconfirmed user/
+        )
+      );
+    });
+
   console.log('#### no permission');
   await httpRequest({
     url: `farms`,
     method: `PATCH`,
     headers: [['token', users.user3.token]],
     body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: users.user4.userid,
+      operation: 'add_member',
       farmid: testfarmid,
+      email: 'testbot2@reinwiese.de',
+      role: 'admin',
     },
   })
     .then(expect.responseCode(401))
@@ -206,85 +207,107 @@ export const testFarmsRemoveMember = async function (users, testfarmid) {
       );
     });
 
-  console.log('#### Owner cannot be removed');
+  console.log('#### cannot add owner');
   await httpRequest({
     url: `farms`,
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      email: users.user1.email,
-      userid: users.user1.userid,
+      operation: 'add_member',
       farmid: testfarmid,
+      email: 'testbot2@reinwiese.de',
+      role: 'owner',
     },
   })
     .then(expect.responseCode(401))
     .then(getJson)
     .then(json => {
       test(
-        'Error message should include "owner cannot be removed"',
-        expect.toMatch(json.message?.toLowerCase(), /owner cannot be removed/)
-      );
-    });
-
-  console.log('#### Admin cannot remove other admins');
-  await httpRequest({
-    url: `farms`,
-    method: `PATCH`,
-    headers: [['token', users.user1.token]],
-    body: {
-      operation: 'update_member',
-      farmid: testfarmid,
-      email: users.user4.email,
-      role: 'admin',
-      userid: users.user4.userid,
-    },
-  }).then(expect.responseCode(200));
-  await httpRequest({
-    url: `farms`,
-    method: `PATCH`,
-    headers: [['token', users.user2.token]],
-    body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: users.user4.userid,
-      farmid: testfarmid,
-    },
-  })
-    .then(expect.responseCode(401))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include "admin cannot remove other admins"',
+        'Error message should include "role "owner" must not be added"',
         expect.toMatch(
           json.message?.toLowerCase(),
-          /admin cannot remove other admins/
+          /role "owner" must not be added/
         )
       );
     });
-  await httpRequest({
-    url: `farms`,
-    method: `PATCH`,
-    headers: [['token', users.user1.token]],
-    body: {
-      operation: 'update_member',
-      farmid: testfarmid,
-      email: users.user4.email,
-      role: 'visitor',
-      userid: users.user4.userid,
-    },
-  }).then(expect.responseCode(200));
 
-  console.log('\n### Farms::remove_member (Success)');
+  console.log('#### user already member');
   await httpRequest({
     url: `farms`,
     method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      operation: 'remove_member',
-      email: users.user4.email,
-      userid: users.user4.userid,
+      operation: 'add_member',
       farmid: testfarmid,
+      email: 'testbot1@reinwiese.de',
+      role: 'admin',
+    },
+  })
+    .then(expect.responseCode(400))
+    .then(getJson)
+    .then(json => {
+      test(
+        'Error message should include "user is already member"',
+        expect.toMatch(json.message?.toLowerCase(), /user is already member/)
+      );
+    });
+
+  console.log('\n### Farms::add_member (Success)');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: 'testbot2@reinwiese.de',
+      role: 'admin',
+    },
+  })
+    .then(expect.responseCode(200))
+    .then(getJson)
+    .then(json => {
+      test(
+        'response should include "success"',
+        expect.toBeTruthy(json.success)
+      );
+      test(
+        'value of "success" should be "success"',
+        expect.toEqual(json.success, 'success')
+      );
+    });
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: 'testbot3@reinwiese.de',
+      role: 'employee',
+    },
+  })
+    .then(expect.responseCode(200))
+    .then(getJson)
+    .then(json => {
+      test(
+        'response should include "success"',
+        expect.toBeTruthy(json.success)
+      );
+      test(
+        'value of "success" should be "success"',
+        expect.toEqual(json.success, 'success')
+      );
+    });
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'add_member',
+      farmid: testfarmid,
+      email: 'testbot4@reinwiese.de',
+      role: 'visitor',
     },
   })
     .then(expect.responseCode(200))

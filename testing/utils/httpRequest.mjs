@@ -11,7 +11,3 @@ export async function httpRequest(request) {
   }
   return await fetch(`https://biohofapp.de/api/${request.url}`, options);
 }
-
-export function getJson(response) {
-  return response.json();
-}

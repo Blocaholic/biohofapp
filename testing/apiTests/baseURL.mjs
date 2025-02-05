@@ -1,5 +1,5 @@
-import {test} from '../test.mjs';
-import {expect} from '../expect.mjs';
+import {test} from '../utils/test.mjs';
+import {expect} from '../utils/expect.mjs';
 
 export const testBaseURL = async function () {
   console.log('\n### GET Base URL (Success)');

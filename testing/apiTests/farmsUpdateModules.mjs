@@ -1,46 +1,44 @@
-import {test} from '../test.mjs';
-import {expect} from '../expect.mjs';
-import {httpRequest, getJson} from '../utils.mjs';
+import {test} from '../utils/test.mjs';
+import {expect} from '../utils/expect.mjs';
+import {httpRequest} from '../utils/httpRequest.mjs';
+import {getJson} from '../utils/getJson.mjs';
 
-export const testFarmsAdd = async function (users) {
-  console.log('\n### Farms::Add (Failure)');
+export const testFarmsUpdateModules = async function (users, testfarmid) {
+  console.log('\n### Farms::update_modules (Failure)');
 
-  console.log('#### token userid does not match owners id');
+  console.log('#### invalid operation');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
+    method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user2.userid,
-      module_chicken: 1,
-      module_marketgarden: 0,
-      module_goats: 1,
-      module_bees: 1,
+      operation: 'update_modul',
+      farmid: testfarmid,
+      module_chicken: 0,
+      module_marketgarden: 1,
+      module_goats: 0,
+      module_bees: 0,
     },
   })
-    .then(expect.responseCode(401))
+    .then(expect.responseCode(405))
     .then(getJson)
     .then(json => {
       test(
-        'Error message should include "token does not belong to owner"',
-        expect.toMatch(
-          json.message?.toLowerCase(),
-          /token does not belong to owner/
-        )
+        'Error message should include "invalid operation"',
+        expect.toMatch(json.message?.toLowerCase(), /invalid operation/)
       );
     });
 
   console.log('#### invalid token');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
+    method: `PATCH`,
     headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_marketgarden: 0,
+      module_marketgarden: 1,
       module_goats: 0,
       module_bees: 0,
     },
@@ -54,16 +52,16 @@ export const testFarmsAdd = async function (users) {
       );
     });
 
-  console.log('#### missing farmname');
+  console.log('#### invalid farmid');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
+    method: `PATCH`,
     headers: [['token', users.user1.token]],
     body: {
-      farnmame: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: 66.6,
       module_chicken: 0,
-      module_marketgarden: 0,
+      module_marketgarden: 1,
       module_goats: 0,
       module_bees: 0,
     },
@@ -72,82 +70,10 @@ export const testFarmsAdd = async function (users) {
     .then(getJson)
     .then(json => {
       test(
-        'Error message should include ""farmname" is required"',
-        expect.toMatch(json.message?.toLowerCase(), /"farmname" is required/)
-      );
-    });
-
-  console.log('#### invalid farmname');
-  await httpRequest({
-    url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
-    body: {
-      farmname: 13,
-      owner: users.user1.userid,
-      module_chicken: 0,
-      module_marketgarden: 0,
-      module_goats: 0,
-      module_bees: 0,
-    },
-  })
-    .then(expect.responseCode(400))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include "farmname must be at least 3 characters"',
+        'Error message should include ""farmid" must be an integer"',
         expect.toMatch(
           json.message?.toLowerCase(),
-          /farmname must be at least 3 characters/
-        )
-      );
-    });
-
-  console.log('#### missing owners userid');
-  await httpRequest({
-    url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
-    body: {
-      farmname: `Testfarm`,
-      woner: users.user1.userid,
-      module_chicken: 0,
-      module_marketgarden: 0,
-      module_goats: 0,
-      module_bees: 0,
-    },
-  })
-    .then(expect.responseCode(400))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include ""owner" is required"',
-        expect.toMatch(json.message?.toLowerCase(), /"owner" is required/)
-      );
-    });
-
-  console.log('#### invalid userid');
-  await httpRequest({
-    url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
-    body: {
-      farmname: `Testfarm`,
-      owner: -13,
-      module_chicken: 0,
-      module_marketgarden: 0,
-      module_goats: 0,
-      module_bees: 0,
-    },
-  })
-    .then(expect.responseCode(400))
-    .then(getJson)
-    .then(json => {
-      test(
-        'Error message should include ""owner" must be greater than 0"',
-        expect.toMatch(
-          json.message?.toLowerCase(),
-          /"owner" must be greater than 0/
+          /"farmid" must be an integer/
         )
       );
     });
@@ -155,13 +81,13 @@ export const testFarmsAdd = async function (users) {
   console.log('#### missing module_marketgarden');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_garketmarden: 0,
+      module_market: 1,
       module_goats: 0,
       module_bees: 0,
     },
@@ -181,13 +107,13 @@ export const testFarmsAdd = async function (users) {
   console.log('#### missing module_chicken');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
-      module_hicken: 0,
-      module_marketgarden: 0,
+      operation: 'update_modules',
+      farmid: testfarmid,
+      module_chick: 0,
+      module_marketgarden: 1,
       module_goats: 0,
       module_bees: 0,
     },
@@ -207,14 +133,14 @@ export const testFarmsAdd = async function (users) {
   console.log('#### missing module_goats');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_marketgarden: 0,
-      module_gods: 0,
+      module_marketgarden: 1,
+      module_goat: 0,
       module_bees: 0,
     },
   })
@@ -223,22 +149,25 @@ export const testFarmsAdd = async function (users) {
     .then(json => {
       test(
         'Error message should include ""module_goats" is required"',
-        expect.toMatch(json.message?.toLowerCase(), /"module_goats" is required/)
+        expect.toMatch(
+          json.message?.toLowerCase(),
+          /"module_goats" is required/
+        )
       );
     });
 
   console.log('#### missing module_bees');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_marketgarden: 0,
+      module_marketgarden: 1,
       module_goats: 0,
-      module_pees: 0,
+      module_bee: 0,
     },
   })
     .then(expect.responseCode(400))
@@ -253,11 +182,11 @@ export const testFarmsAdd = async function (users) {
   console.log('#### invalid module_marketgarden');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
       module_marketgarden: 3,
       module_goats: 0,
@@ -279,13 +208,13 @@ export const testFarmsAdd = async function (users) {
   console.log('#### invalid module_chicken');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
-      module_chicken: -1,
-      module_marketgarden: 0,
+      operation: 'update_modules',
+      farmid: testfarmid,
+      module_chicken: 'b',
+      module_marketgarden: 1,
       module_goats: 0,
       module_bees: 0,
     },
@@ -305,14 +234,14 @@ export const testFarmsAdd = async function (users) {
   console.log('#### invalid module_goats');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_marketgarden: 0,
-      module_goats: 'b',
+      module_marketgarden: 1,
+      module_goats: -1,
       module_bees: 0,
     },
   })
@@ -331,15 +260,15 @@ export const testFarmsAdd = async function (users) {
   console.log('#### invalid module_bees');
   await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user1.token.slice(1) + 'x']],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_marketgarden: 0,
+      module_marketgarden: 1,
       module_goats: 0,
-      module_bees: 5e3,
+      module_bees: 1e3,
     },
   })
     .then(expect.responseCode(400))
@@ -354,32 +283,85 @@ export const testFarmsAdd = async function (users) {
       );
     });
 
-  console.log('\n### Farms::Add (Success)');
-  return await httpRequest({
+  console.log('#### no permission');
+  await httpRequest({
     url: `farms`,
-    method: `POST`,
-    headers: [['token', users.user1.token]],
+    method: `PATCH`,
+    headers: [['token', users.user3.token]],
     body: {
-      farmname: `Testfarm`,
-      owner: users.user1.userid,
+      operation: 'update_modules',
+      farmid: testfarmid,
       module_chicken: 0,
-      module_marketgarden: 0,
+      module_marketgarden: 1,
       module_goats: 0,
       module_bees: 0,
     },
   })
-    .then(expect.responseCode(201))
+    .then(expect.responseCode(401))
     .then(getJson)
     .then(json => {
-      test('Farmid should be sent back', expect.toBeTruthy(json.farmid));
       test(
-        'Farmid should be an integer',
-        expect.toBeTruthy(Number.isInteger(+json.farmid))
+        'Error message should include "no permission"',
+        expect.toMatch(json.message?.toLowerCase(), /no permission/)
+      );
+    });
+
+  console.log('\n### Farms::update_modules (Success)');
+  await httpRequest({
+    url: `farms`,
+    method: `PATCH`,
+    headers: [['token', users.user1.token]],
+    body: {
+      operation: 'update_modules',
+      farmid: testfarmid,
+      module_chicken: 0,
+      module_marketgarden: 1,
+      module_goats: 0,
+      module_bees: 0,
+    },
+  })
+    .then(expect.responseCode(200))
+    .then(getJson)
+    .then(json => {
+      test(
+        'response should include "success"',
+        expect.toBeTruthy(json.success)
       );
       test(
-        'Farmid should be greater than 0',
-        expect.toBeTruthy(json.farmid > 0)
+        'value of "success" should be "success"',
+        expect.toEqual(json.success, 'success')
       );
       return json;
-    });
+    })
+    .then(
+      async _ =>
+        await httpRequest({
+          url: `farms`,
+          method: `GET`,
+          headers: [['token', users.user1.token]],
+        })
+          .then(getJson)
+          .then(json => {
+            test(
+              'length of existing farms should be 1',
+              expect.toEqual(json.length, 1)
+            );
+            test(
+              'module_chicken should be 0',
+              expect.toEqual(json[0].module_chicken, 0)
+            );
+            test(
+              'module_marketgarden should be 0',
+              expect.toEqual(json[0].module_marketgarden, 1)
+            );
+            test(
+              'module_goats should be 0',
+              expect.toEqual(json[0].module_goats, 0)
+            );
+            test(
+              'module_bees should be 0',
+              expect.toEqual(json[0].module_bees, 0)
+            );
+          })
+    );
 };

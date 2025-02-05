@@ -1,6 +1,7 @@
-import {test} from '../test.mjs';
-import {expect} from '../expect.mjs';
-import {httpRequest, getJson} from '../utils.mjs';
+import {test} from '../utils/test.mjs';
+import {expect} from '../utils/expect.mjs';
+import {httpRequest} from '../utils/httpRequest.mjs';
+import {getJson} from '../utils/getJson.mjs';
 
 export const testDevicesRename = async function (users) {
   console.log('\n### Devices::Rename (not yet implemented)');
